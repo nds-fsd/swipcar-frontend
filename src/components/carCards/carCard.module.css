@@ -1,0 +1,97 @@
+.card_wrapper_xlarge {
+  display: flex;
+  flex-direction: column;
+  width: 353px;
+  height: 288px;
+  background-color: #ffffff;
+  border: 1px solid rgb(230, 232, 240);
+  border-radius: 8px;
+  box-shadow: rgb(195 205 224 / 80%) 0px 2px 16px 0px;
+  padding: 10px;
+  margin: 0 0 15px 0px;
+  cursor: pointer;
+}
+.card_wrapper_medium {
+  display: flex;
+  flex-direction: column;
+  width: 303px;
+  height: 218px;
+  background-color: #ffffff;
+  border: 1px solid rgb(230, 232, 240);
+  border-radius: 8px;
+  box-shadow: rgb(195 205 224 / 80%) 0px 2px 16px 0px;
+  padding: 10px;
+  margin: 0 0 15px 0;
+  cursor: pointer;
+}
+.card_wrapper_small {
+  display: flex;
+  flex-direction: column;
+  width: 268px;
+  height: 218px;
+  background-color: #ffffff;
+  border: 1px solid rgb(230, 232, 240);
+  border-radius: 8px;
+  box-shadow: rgb(195 205 224 / 80%) 0px 2px 16px 0px;
+  padding: 10px;
+  margin: 0 0 15px 0px;
+  cursor: pointer;
+}
+.card_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.card_header_left {
+  display: flex;
+  flex-direction: column;
+}
+.card_title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21px;
+  color: rgb(2, 24, 89);
+  margin-bottom: 5px;
+}
+.card_fuel_container {
+  display: flex;
+  flex-direction: row;
+}
+.gas_pump_icon {
+  width: 14px;
+  height: 14px;
+  color: rgb(172, 181, 198);
+  align-items: flex-end;
+}
+.card_fuel {
+  display: flex;
+  color: rgb(172, 181, 198);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  margin-left: 10px;
+}
+.card_header_right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.price_text {
+  display: flex;
+  color: rgb(172, 181, 198);
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 14px;
+}
+.lowerprice {
+  display: flex;
+  color: rgb(11, 158, 217);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.car_picture {
+  margin-top: -20px;
+  width: 100%;
+}

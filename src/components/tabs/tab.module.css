@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+}
+.tab {
+  display: flex;
+  min-width: 95px;
+  padding: 7px 15px;
+  border: none;
+  border-radius: 10px;
+  color: rgb(255, 69, 151);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 24px;
+  justify-content: center;
+  background-color: #ffffff;
+  outline: none;
+  cursor: pointer;
+  margin: 0 2.5px;
+}
+.tab_active {
+  background-color: rgb(230, 232, 240);
+  color: rgb(172, 181, 198);
+}
+.tab:hover {
+  color: rgb(255, 69, 151);
+  background-color: rgb(230, 232, 240);
+}
