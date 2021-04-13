@@ -1,5 +1,9 @@
 import React from 'react';
 import './App.css';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import * as Icons from '@fortawesome/free-solid-svg-icons';
+
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Header from './components/header';
 import HomePage from './pages/homePage';
@@ -10,6 +14,7 @@ import NewCarsListPage from './pages/carListPages/newCarsListPage.view';
 import UsedCarsListPage from './pages/carListPages/usedCarsListPage.view';
 import VanCarsListPage from './pages/carListPages/vanCarsListPage.view';
 import CarProfilePage from './pages/carProfilePage';
+import CreateRentingPage from './pages/createRentingPage';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,
@@ -23,6 +28,14 @@ import {
 } from './routers/routers';
 
 function App() {
+
+
+  const iconList = Object.keys(Icons)
+    .filter((key) => key !== 'fas' && key !== 'prefix')
+    .map((icon) => Icons[icon]);
+
+  library.add(...iconList);
+
   return (
     <Router>
       <div>
@@ -46,7 +59,9 @@ function App() {
           <Route path={VAN_CARS_LIST_PAGE}>
             <VanCarsListPage />
           </Route>
-          <Route path={FORM_PAGE}></Route>
+          <Route path={`${FORM_PAGE}`}>
+            <CreateRentingPage />
+          </Route>
           <Route path={`${CAR_PROFILE_PAGE}`} exact>
             <CarProfilePage />
           </Route>
