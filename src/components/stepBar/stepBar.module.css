@@ -1,0 +1,48 @@
+._tittle {
+  color: #021859;
+}
+.step_bar_container {
+  font-size: 0;
+}
+.step_bar {
+  border-color: #cecece;
+  border-style: solid;
+  display: inline-block;
+}
+.step_bar_node {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  cursor: pointer;
+}
+
+.step_bar_segment {
+  width: 55px;
+  position: relative;
+  bottom: 12px;
+  border-width: 1px;
+}
+
+.step_bar_segment_active {
+  transition: border-color 0.75s ease;
+  border-color: #ff4597;
+}
+
+.active_node,
+.completed_section {
+  transition: border-color 0.75s ease;
+  border-color: #ff4597;
+}
+
+.completed_node {
+  transition: background-color 0.75s ease;
+  background-color: #ff4597;
+}
+
+.step_names p {
+  display: inline-block;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-right: 5px;
+}
