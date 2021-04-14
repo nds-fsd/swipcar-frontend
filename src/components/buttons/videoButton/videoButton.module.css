@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 115.8px;
+  height: 36px;
+  border: 1px solid rgb(255, 69, 151);
+  border-radius: 28px;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 28px;
+  color: rgb(255, 69, 151);
+  margin: 0 5px 0 10px;
+}
+.icon_container {
+  display: flex;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgb(255, 69, 151);
+  border-radius: 28px;
+}
+.arrow_icon {
+  display: flex;
+  width: 22px;
+  height: 18px;
+  color: rgb(255, 69, 151);
+}

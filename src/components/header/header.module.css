@@ -24,6 +24,14 @@
   max-height: 100px;
   padding: 25px 25px;
 }
+.container_small {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-height: 100px;
+  padding: 25px 0;
+}
 .logo_container {
   display: flex;
   align-items: center;

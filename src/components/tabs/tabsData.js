@@ -1,6 +1,6 @@
 import { NEW_CARS_LIST_PAGE, USED_CARS_LIST_PAGE, VAN_CARS_LIST_PAGE } from '../../routers/routers';
 
-const CarListTabsData = [
+const TabsData = [
   {
     id: 1,
     tab: 'Nuevos',
@@ -21,4 +21,4 @@ const CarListTabsData = [
   },
 ];
 
-export default CarListTabsData;
+export default TabsData;
