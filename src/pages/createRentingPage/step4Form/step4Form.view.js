@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import styles from '../createRentingPage.module.css';
+import stylesPure from '../../../components/pureComponents/pureComponents.module.css';
 import useWindowSize from '../../../constants/useWindowSize';
 import InputComponent from '../../../components/pureComponents/inputComponent';
 // import DATADOMIE from '../dataDomie';
 import ButtonActionIconComponent from '../../../components/pureComponents/buttonActionIconComponent';
-const Step4Form = () => {
-  //   const carEstate = CarProfileDataEstate.map((value) => {
-  // console.log('value[0]', Object.keys(value)[0]);
-  // debugger;
-  //   })
+import { useForm } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ButtonComponent from '../../../components/pureComponents/buttonComponent';
 
+const Step4Form = ({ stepPagePrev, stepPageNext }) => {
   const [inputData, setInputData] = useState({
     toggleButton: false,
   });
@@ -19,6 +19,8 @@ const Step4Form = () => {
     // setInputData(e.target.value);
     setInputData({ ...inputData, [e.target.name]: e.target.value });
   };
+
+  //! Rehacer con swhitch case
   const addTecnology = () => {
     // setInputData(e.target.value);
     alert('Add Technology!!');
@@ -36,8 +38,26 @@ const Step4Form = () => {
     alert('Add Exterior!!');
   };
 
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [entradas, setentradas] = useState([]);
+
+  console.log('errors : ', errors);
+
+  const onSubmit = (data, e) => {
+    console.log('data :', data);
+    setentradas([...entradas, data]);
+    console.log('entradas : ', entradas);
+    stepPageNext();
+    // limpiar campos
+    e.target.reset();
+  };
+
   return (
-    <div  className={styles._form_step_animation}>
+    <form className={styles._form_step_animation} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={styles._tittle}>Tecnología Incluida</h2>
 
       <div
@@ -47,12 +67,21 @@ const Step4Form = () => {
       >
         <div className={styles._boxElements}>
           <InputComponent
+              {...register('tecnologia', { required: 'Tecnología requerida' })}
             placeholder="Añade una tecnología"
-            name="cilindrada"
+            name="tecnologia"
             type="text"
             onChange={handleInput}
           />
-          <br/>
+            {errors.tecnologia && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.tecnologia.message}
+              </p>
+            )}
+          <br />
           <ButtonActionIconComponent actionButton={addTecnology} />
         </div>
       </div>
@@ -66,12 +95,21 @@ const Step4Form = () => {
       >
         <div className={styles._boxElements}>
           <InputComponent
+              {...register('confort', { required: 'Confort requerida' })}
             placeholder="Añade un confort"
-            name="cilindrada"
+            name="confort"
             type="text"
             onChange={handleInput}
           />
-          <br/>
+            {errors.confort && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.confort.message}
+              </p>
+            )}
+          <br />
           <ButtonActionIconComponent actionButton={addConfort} />
         </div>
       </div>
@@ -85,12 +123,21 @@ const Step4Form = () => {
       >
         <div className={styles._boxElements}>
           <InputComponent
+              {...register('seguridad', { required: 'Seguridad requerida' })}
             placeholder="Añade una seguridad"
-            name="cilindrada"
+            name="seguridad"
             type="text"
             onChange={handleInput}
           />
-          <br/>
+            {errors.seguridad && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.seguridad.message}
+              </p>
+            )}
+          <br />
           <ButtonActionIconComponent actionButton={addSegurity} />
         </div>
       </div>
@@ -104,16 +151,35 @@ const Step4Form = () => {
       >
         <div className={styles._boxElements}>
           <InputComponent
+              {...register('exterior', { required: 'Exterior requerido' })}
             placeholder="Añade un exterior"
-            name="cilindrada"
+            name="exterior"
             type="text"
             onChange={handleInput}
           />
-          <br/>
+            {errors.exterior && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.exterior.message}
+              </p>
+            )}
+          <br />
           <ButtonActionIconComponent actionButton={addExterior} />
         </div>
       </div>
-    </div>
+
+      <div className={styles._row_buttons}>
+        <ButtonComponent
+          label="Paso Anterior"
+          alt="Paso Anterior"
+          type="cancel"
+          actionButton={stepPagePrev}
+        />
+        <ButtonComponent label="Paso Siguiente" type="submit" alt="Paso Siguiente" />
+      </div>
+    </form>
   );
 };
 

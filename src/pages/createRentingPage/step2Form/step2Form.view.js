@@ -1,126 +1,290 @@
 import React, { useState } from 'react';
 import styles from '../createRentingPage.module.css';
-import useWindowSize from '../../../constants/useWindowSize';
+import stylesPure from '../../../components/pureComponents/pureComponents.module.css';
 import InputComponent from '../../../components/pureComponents/inputComponent';
 import SelectComponent from '../../../components/pureComponents/selectComponent';
-// import ToggleButtonComponent from '../../../components/pureComponents/toggleButtonComponent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import useWindowSize from '../../../constants/useWindowSize';
+import { useForm } from 'react-hook-form';
+
 import DATADOMIE from '../dataDomie';
-const Step2Form = () => {
-  const rentingvalue = [
-    {
-      _id: 1,
-      toggleLabel: 'Sin Entrada',
-      iconLabel: 'piggy-bank',
-      isChecked: true,
-    },
-    {
-      _id: 2,
-      toggleLabel: 'Seguro a todo riesgo sin franquicia',
-      iconLabel: 'car-crash',
-      isChecked: false,
-    },
-    {
-      _id: 3,
-      toggleLabel: 'Asistencia en carretera',
-      iconLabel: 'truck-pickup',
-      isChecked: true,
-    },
-    {
-      _id: 4,
-      toggleLabel: 'Mantenimiento y revisiones',
-      iconLabel: 'air-freshener',
-      isChecked: true,
-    },
-    {
-      _id: 5,
-      toggleLabel: 'Averías y reparaciones',
-      iconLabel: 'tools',
-      isChecked: false,
-    },
-  ];
+import ButtonComponent from '../../../components/pureComponents/buttonComponent';
 
-  //   const carEstate = CarProfileDataEstate.map((value) => {
-  // console.log('value[0]', Object.keys(value)[0]);
-  // debugger;
-  //   })
-
+const Step2Form = ({stepPagePrev, stepPageNext}) => {
   const [inputData, setInputData] = useState({
     toggleButton: false,
   });
   const windowSize = useWindowSize();
 
   const handleInput = (e) => {
-    // setInputData(e.target.value);
     setInputData({ ...inputData, [e.target.name]: e.target.value });
+
+    console.log('inputData   : ' , inputData);
+  };
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [entradas, setentradas] = useState([]);
+
+  console.log('errors : ', errors);
+
+  const onSubmit = (data, e) => {
+    console.log('data :', data);
+    setentradas([...entradas, data]);
+    console.log('entradas : ', entradas);
+    stepPageNext();
+    // limpiar campos
+    e.target.reset();
   };
 
   return (
-    <div className={styles._form_step_animation} >
-      <div
-        className={`${windowSize !== 'sm' && styles._row3_xlg}
+    <div>
+      <form className={styles._form_step_animation} onSubmit={handleSubmit(onSubmit)}>
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-      >
-        <div className={styles._boxElements}>
-          <SelectComponent
-            placeholder="Distintivo Eco"
-            name="ecoMark"
-            onChange={handleInput}
-            dataoptions={DATADOMIE.EcoMark}
-          />
+        >
+          <div className={styles._boxElements}>
+            <SelectComponent
+              {...register('ecoMark', { required: 'Distintivo Eco requerido' })}
+              placeholder="Distintivo Eco"
+              name="ecoMark"
+              dataoptions={DATADOMIE.EcoMark}
+            />
+            {errors.ecoMark && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.ecoMark.message}
+              </p>
+            )}
+          </div>
+
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('cvMotor', {
+                required: 'Número de CV requerido',
+                maxLength: {
+                  value: 3,
+                  message: 'Número de CV superior al requerido',
+                },
+                minLength: {
+                  value: 2,
+                  message: 'Mínimo 2 carácteres',
+                },
+              })}
+              placeholder="CV del Motor"
+              name="cvMotor"
+              id="cvMotor"
+              type="number"
+            />
+            {errors.cvMotor && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.cvMotor.message}
+              </p>
+            )}
+          </div>
+
+          <div className={styles._boxElements}>
+            <SelectComponent
+              {...register('puertas', { required: 'Número de puertas requerido' })}
+              placeholder="Número de Puertas"
+              name="puertas"
+              onChange={handleInput}
+              dataoptions={DATADOMIE.Puertas}
+            />
+            {errors.puertas && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.puertas.message}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className={styles._boxElements}>
-          <InputComponent
-            placeholder="CV del Motor"
-            name="cvMotor"
-            type="text"
-            onChange={handleInput}
-          />
-        </div>
 
-        <div className={styles._boxElements}>
-          <SelectComponent
-            placeholder="Número de Puertas"
-            name="puertas"
-            onChange={handleInput}
-            dataoptions={DATADOMIE.Puertas}
-          />
-        </div>
-      </div>
-      <div
-        className={`${windowSize !== 'sm' && styles._row3_xlg}
+
+
+
+         <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
       ${windowSize === 'sm' && styles._row3_sm}  
       `}
-      >
-        <div className={styles._boxElements}>
-          <InputComponent
-            placeholder="Emisión en gramos por CO2/Km"
-            name="emisionMotor"
-            type="number"
-            onChange={handleInput}
-          />
+        >
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('emisionMotor', { required: 'Emisión requerida' })}
+              placeholder="Emisión en gramos por CO2/Km"
+              name="emisionMotor"
+              type="number"
+              onChange={handleInput}
+            />
+            {errors.emisionMotor && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.emisionMotor.message}
+              </p>
+            )}
+          </div>
+
+          <div className={styles._boxElements}>
+            <SelectComponent
+              {...register('color', { required: 'Color requerido' })}
+              placeholder="Seleciona un Color"
+              name="color"
+              onChange={handleInput}
+              dataoptions={DATADOMIE.Color}
+            />
+            {errors.color && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.color.message}
+              </p>
+            )}
+          </div>
+
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('cilindradaMotor', { required: 'Cilindrada requerida' })}
+              placeholder="Cilindrada en cm3"
+              name="cilindradaMotor"
+              type="number"
+              onChange={handleInput}
+            />
+            {errors.cilindradaMotor && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.cilindradaMotor.message}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className={styles._boxElements}>
-          <SelectComponent
-            placeholder="Seleciona un Color"
-            name="color"
-            onChange={handleInput}
-            dataoptions={DATADOMIE.Color}
-          />
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}  
+    `}
+        >
+          
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('consumo', { required: 'Consumo requerido' })}
+              placeholder="Consumo medio litros/100km"
+              name="consumo"
+              type="text"
+              onChange={handleInput}
+            />
+            {errors.consumo && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.consumo.message}
+              </p>
+            )}
+          </div>
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('maletero', { required: 'Capacidad maletero requerida' })}
+              placeholder="Capacidad de Maletero en litros"
+              name="maletero"
+              type="number"
+              onChange={handleInput}
+            />
+            {errors.maletero && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.maletero.message}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className={styles._boxElements}>
-          <InputComponent
-            placeholder="Cilindrada"
-            name="cilindradaMotor"
-            type="text"
-            onChange={handleInput}
-          />
+        <h2 className={styles._tittle}>Medidas del coche</h2>
+
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}
+    `}
+        >
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('dimensionesLargo', { required: 'Largo requerido' })}
+              placeholder="Largo (cm)"
+              name="dimensionesLargo"
+              type="number"
+              onChange={handleInput}
+            />
+            {errors.dimensionesLargo && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.dimensionesLargo.message}
+              </p>
+            )}
+          </div>
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('dimensionesAlto', { required: 'Alto requerido' })}
+              placeholder="Alto (cm)"
+              name="dimensionesAlto"
+              type="number"
+              onChange={handleInput}
+            />
+            {errors.dimensionesAlto && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.dimensionesAlto.message}
+              </p>
+            )}
+          </div>
+          <div className={styles._boxElements}>
+            <InputComponent
+              {...register('dimensionesAncho', { required: 'Ancho requerido' })}
+              placeholder="Ancho (cm)"
+              name="dimensionesAncho"
+              type="number"
+              onChange={handleInput}
+            />
+            {errors.dimensionesAncho && (
+              <p className={stylesPure._error_label}>
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                {errors.dimensionesAncho.message}
+              </p>
+            )}
+          </div>
         </div>
 
-      </div>
+        <div className={styles._row_buttons}>
+            <ButtonComponent label="Paso Anterior" alt="Paso Anterior" type="cancel" actionButton={stepPagePrev}/>
+            <ButtonComponent label="Paso Siguiente" type="submit" alt="Paso Siguiente" />
+          </div>
+
+      </form>
     </div>
   );
 };

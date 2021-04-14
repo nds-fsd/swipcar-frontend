@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 0 10px -7px #333;
+  box-shadow: 0 0 10px -9px #333;
 }
 ._label {
   font-size: 1.4em;

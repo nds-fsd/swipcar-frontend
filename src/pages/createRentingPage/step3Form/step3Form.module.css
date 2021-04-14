@@ -140,6 +140,7 @@
   margin: 5px;
 }
 ._toggles_list {
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
