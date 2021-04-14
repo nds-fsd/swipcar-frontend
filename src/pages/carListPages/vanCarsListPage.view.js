@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './carListPage.module.css';
-import CarListTabsData from './carListTabsData';
+import TabsData from '../../components/tabs/tabsData';
 import Tab from '../../components/tabs/tab.view';
 
 const VanCarsListPage = () => {
@@ -17,7 +17,7 @@ const VanCarsListPage = () => {
         </div>
         <div className={styles.cars_action_container}>
           <div className={styles.tab_wrapper}>
-            {CarListTabsData.map(({ id, tab, path }) => (
+            {TabsData.map(({ id, tab, path }) => (
               <Tab
                 key={id}
                 tab={tab}

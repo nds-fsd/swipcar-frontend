@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './carList.module.css';
-import CarCardData from '../carCards/carCardsData';
 import CarCardSmall from '../carCards/carCardSmall.view';
-import useWindowSize from '../../constants/useWindowSize';
+import { CarListContext } from '../../contexts/carListContext';
 
 const CarListSmall = () => {
-  const windowSize = useWindowSize();
+  const { listOfCars } = useContext(CarListContext);
+
   return (
     <div className={styles.car_list}>
-      {CarCardData.map(({ id, brandname, modelname, fuel, lowerprice, ecomarktype, photourl }) => (
+      {listOfCars.map((carcard) => (
         <CarCardSmall
-          key={id}
-          brandname={brandname}
-          modelname={modelname}
-          fuel={fuel}
-          lowerprice={lowerprice}
-          ecomarktype={ecomarktype}
-          photourl={photourl}
+          key={carcard._id}
+          brand={carcard.brand.brandname}
+          model={carcard.model.modelname}
+          fuel={carcard.fuel.fueltype}
+          lowerprice={carcard.lowerprice.lowerprice}
+          ecomark={carcard.ecomark.ecomarktype}
+          photocar={carcard.photocar[0].photourl}
         />
       ))}
     </div>

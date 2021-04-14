@@ -20,15 +20,18 @@ import useWindowSize from '../../constants/useWindowSize';
 
 const Header = () => {
   const windowSize = useWindowSize();
-  const [menuItemName, setMenuItemName] = useState();
   const [openSideBar, setOpenSideBar] = useState(false);
 
   return (
     <div>
       <SideBar openSideBar={openSideBar} closeSideBar={() => setOpenSideBar(false)} />
       <div className={styles.header}>
-        {windowSize === 'xlg' ? (
-          <div className={styles.container_large}>
+        {windowSize === 'xlg' || windowSize === 'lg' ? (
+          <div
+            className={`${windowSize === 'xlg' && styles.container_large} || ${
+              windowSize === 'lg' && styles.container_medium
+            }`}
+          >
             <div className={styles.logo_container}>
               <div className={styles.logo}>
                 <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
@@ -59,42 +62,12 @@ const Header = () => {
               </div>
             </div>
           </div>
-        ) : null}
-        {windowSize === 'lg' ? (
-          <div className={styles.container_medium}>
-            <div className={styles.logo_container}>
-              <div className={styles.logo}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
-                  <Logo />
-                </Link>
-              </div>
-            </div>
-            <div className={styles.menu_container}>
-              <div className={styles.nav_container}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={NEW_CARS_LIST_PAGE}>
-                  <MenuItem menuItemName="Coches" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>
-                  <MenuItem menuItemName="Particulares" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
-                  <MenuItem menuItemName="Autónomos" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
-                  <MenuItem menuItemName="Empresas" />
-                </Link>
-              </div>
-            </div>
-            <div className={styles.login_container}>
-              <div className={styles.login_buttons}>
-                <LoginButton />
-                <SigninButton />
-              </div>
-            </div>
-          </div>
-        ) : null}
-        {windowSize === 'md' || windowSize === 'sm' ? (
-          <div className={styles.container_medium}>
+        ) : (
+          <div
+            className={`${windowSize === 'md' && styles.container_medium} || ${
+              windowSize === 'sm' && styles.container_small
+            }`}
+          >
             <div className={styles.menu_sidebar}>
               <MenuIcon
                 type="button"
@@ -115,7 +88,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );

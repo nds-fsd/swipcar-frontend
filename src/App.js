@@ -59,10 +59,10 @@ function App() {
           <Route path={VAN_CARS_LIST_PAGE}>
             <VanCarsListPage />
           </Route>
-          <Route path={`${FORM_PAGE}`}>
+          <Route path={FORM_PAGE}>
             <CreateRentingPage />
           </Route>
-          <Route path={`${CAR_PROFILE_PAGE}`} exact>
+          <Route path={CAR_PROFILE_PAGE} exact>
             <CarProfilePage />
           </Route>
           <Route path={HOME_PAGE}>

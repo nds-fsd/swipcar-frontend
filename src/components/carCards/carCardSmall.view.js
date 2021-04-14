@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './carCard.module.css';
 import { ReactComponent as GasPumpIcon } from '../assets/gasPumpIcon.svg';
 
-const CarCardSmall = ({ id, brandname, modelname, fuel, lowerprice, ecomarktype, photourl }) => {
+const CarCardSmall = ({ id, brand, model, fuel, lowerprice, ecomark, photocar }) => {
   return (
     <div className={styles.card_wrapper_small}>
       <div className={styles.card_header}>
         <div className={styles.card_header_left}>
           <div className={styles.card_title}>
-            {brandname} {modelname}
+            {brand} {model}
           </div>
           <div className={styles.card_fuel_container}>
             <GasPumpIcon className={styles.gas_pump_icon} />
@@ -22,7 +22,7 @@ const CarCardSmall = ({ id, brandname, modelname, fuel, lowerprice, ecomarktype,
         </div>
       </div>
 
-      <img className={styles.car_picture} alt="carPicture" src={photourl} />
+      <img className={styles.car_picture} alt="carPicture" src={photocar} />
     </div>
   );
 };

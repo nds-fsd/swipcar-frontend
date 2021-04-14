@@ -56,6 +56,14 @@
   width: 100%;
   height: 68px;
 }
+.new_cars_action_container_sm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 68px;
+  padding: 25px 0;
+}
 
 .filter_container {
   display: flex;
@@ -64,6 +72,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+.tabs_content_sm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 15px;
+  margin-bottom: 25px;
 }
 .tab_wrapper {
   display: flex;
