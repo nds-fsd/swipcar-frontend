@@ -25,7 +25,6 @@ function SideBar({ openSideBar, closeSideBar }) {
                     key={item.id}
                     style={{ textDecoration: 'none', color: 'inherit' }}
                     to={item.path}
-                    closeSideBar={closeSideBar}
                   >
                     <div className={styles.nav_link}>{item.title}</div>
                   </Link>

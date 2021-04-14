@@ -1,0 +1,51 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.container {
+  display: flex;
+  text-align: center;
+  min-width: auto;
+  height: 20px;
+  margin: 0 5px 0 0;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 11px;
+  color: rgba(97, 102, 112, 0.8);
+  border: 1px solid rgb(230, 232, 240);
+  align-items: center;
+  background: rgb(230, 232, 240);
+  cursor: pointer;
+}
+
+.container:hover {
+  color: rgb(255, 69, 151);
+  border: 1px solid rgb(255, 69, 151);
+  border-radius: 4px;
+  color: rgb(255, 69, 151);
+}
+.container_link {
+  display: flex;
+  text-align: center;
+  min-width: auto;
+  height: 20px;
+  margin: 0 5px 0 0;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 11px;
+  color: rgba(97, 102, 112, 0.8);
+  border: 1px solid rgb(230, 232, 240);
+  align-items: center;
+  background: none;
+  background: none;
+}
+.container_link:hover {
+  border: 1px solid rgb(230, 232, 240);
+  cursor: cursor;
+}
+.homeIcon {
+  width: 14px;
+  height: 14px;
+}

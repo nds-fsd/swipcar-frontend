@@ -47,7 +47,7 @@ function App() {
             <VanCarsListPage />
           </Route>
           <Route path={FORM_PAGE}></Route>
-          <Route path={`${CAR_PROFILE_PAGE}`} exact>
+          <Route path={CAR_PROFILE_PAGE}>
             <CarProfilePage />
           </Route>
           <Route path={HOME_PAGE}>

@@ -1,9 +1,12 @@
 import React from 'react';
 import styles from './filterButton.module.css';
+import useWindowSize from '../../../constants/useWindowSize';
 
 const FilterButton = ({ setOpenFilter }) => {
+  const windowSize = useWindowSize();
   const handleFilter = () => {
-    setOpenFilter(false);
+    windowSize === 'xlg' && setOpenFilter(false);
+    windowSize === 'lg' && setOpenFilter(false);
   };
   return (
     <div>
