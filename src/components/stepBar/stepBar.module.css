@@ -1,5 +1,7 @@
 ._tittle {
-  color: #021859;
+  color: #ffa034;
+  font-size: xx-large;
+  font-weight: 400;
 }
 .step_bar_container {
   font-size: 0;
@@ -26,18 +28,18 @@
 
 .step_bar_segment_active {
   transition: border-color 0.75s ease;
-  border-color: #ff4597;
+  border-color: #006198;
 }
 
 .active_node,
 .completed_section {
   transition: border-color 0.75s ease;
-  border-color: #ff4597;
+  border-color: #006198;
 }
 
 .completed_node {
   transition: background-color 0.75s ease;
-  background-color: #ff4597;
+  background-color: #006198;
 }
 
 .step_names p {

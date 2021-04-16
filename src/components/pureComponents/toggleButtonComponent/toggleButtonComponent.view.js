@@ -25,7 +25,9 @@ const ToggleButtonComponent = (props) => {
           />
           <div>
             <div className={stylesToggle._circle_toggle}>
-              <FontAwesomeIcon icon={props.iconlabel} className={stylesToggle._icon_label} />
+              {props.iconlabel && (
+                <FontAwesomeIcon icon={props.iconlabel} className={stylesToggle._icon_label} />
+              )}
             </div>
           </div>
         </label>

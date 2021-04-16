@@ -1,12 +1,13 @@
-._input, ._select {
+._input,
+._select {
   width: 100%;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: hsl(0, 0%, 100%);
-  border-color: hsl(0, 0%, 80%);
-  border-radius: 12px;
+  /* border-color: hsl(0, 0%, 80%); */
+  border-radius: 4px;
   border-style: solid;
   border-width: 1px;
   box-shadow: none;
@@ -28,14 +29,14 @@
   -webkit-transition: all 100ms;
   transition: all 100ms;
   box-sizing: border-box;
-  border: solid 2px #c3cde0;
-  color: #979797 !important;
+  border: solid 2px #d6dae0;
+  color: #a1a1a1 !important;
   font-size: 1.2em;
   line-height: 21px;
   font-weight: 500;
   font-family: Rubik, sans-serif;
   background: #fff;
-  padding: 9px 15px;
+  padding: 9px 10px;
   margin-bottom: 0;
   z-index: 1;
 }
@@ -45,7 +46,30 @@
   font-size: 1em;
 }
 
-._button_cancel, ._button_ok {
+._button_cancel,
+._button_ok {
+  padding: 0 10px;
+  height: 50px;
+  border-radius: 4px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  outline: none;
+  font-weight: bold;
+  color: #ffa034;
+  border: 2px solid #ffa034;
+  box-shadow: 0 0 10px -5px #333;
+}
+._button_cancel {
+  background-color: #ffffff;
+}
+._button_ok {
+  background-color: #006198;
+}
+/* ._button_cancel, ._button_ok {
   padding: 0 10px;
   height: 50px;
   border-radius: 24px;
@@ -55,11 +79,9 @@
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  outline: none;
-  
-}
-
-._button_cancel {  
+  outline: none;  
+} */
+/* ._button_cancel {  
   background-color: #ffffff;
   color: #ff4597;
   border: 2px solid #ff4597;
@@ -68,7 +90,7 @@
   background-color: #ff4597;
   color: #ffffff;
   border: none;
-}
+} */
 
 ._button_action_icon {
   width: 50px;
@@ -112,23 +134,23 @@
   z-index: 1;
 }
 ._label_form {
-  margin: 0px 0 5px 17px;
+  margin: 0px 0 5px 5px;
   letter-spacing: 0px;
   display: block;
-  color: rgba(2, 24, 89, 0.6);
+  color: #006198;
   font-weight: 400;
-  font-size: 1.1em;
+  font-size: 1em;
   line-height: 1.2em;
 }
 
 ._error_label {
-  margin: 8px 0 4px 13px;
+  margin: 8px 0 4px 5px;
   color: #ff9b4f;
   text-transform: uppercase;
   font-size: 0.7em;
   font-weight: bold;
   letter-spacing: 1px;
 }
-._error_label_icon{
+._error_label_icon {
   margin-right: 5px;
 }

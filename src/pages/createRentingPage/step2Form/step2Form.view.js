@@ -42,8 +42,8 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
   };
 
   return (
-    <div>
-      <form className={styles._form_step_animation} onSubmit={handleSubmit(onSubmit)}>
+    <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div
           className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
@@ -99,7 +99,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               {...register('puertas', { required: 'Número de puertas requerido' })}
               placeholder="Número de Puertas"
               name="puertas"
-              onChange={handleInput}
               dataoptions={DATADOMIE.Puertas}
             />
             {errors.puertas && (
@@ -112,11 +111,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
             )}
           </div>
         </div>
-
-
-
-
-
          <div
           className={`${windowSize !== 'sm' && styles._row3_xlg}
       ${windowSize === 'sm' && styles._row3_sm}  
@@ -128,7 +122,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               placeholder="Emisión en gramos por CO2/Km"
               name="emisionMotor"
               type="number"
-              onChange={handleInput}
             />
             {errors.emisionMotor && (
               <p className={stylesPure._error_label}>
@@ -145,7 +138,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               {...register('color', { required: 'Color requerido' })}
               placeholder="Seleciona un Color"
               name="color"
-              onChange={handleInput}
               dataoptions={DATADOMIE.Color}
             />
             {errors.color && (
@@ -164,7 +156,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               placeholder="Cilindrada en cm3"
               name="cilindradaMotor"
               type="number"
-              onChange={handleInput}
             />
             {errors.cilindradaMotor && (
               <p className={stylesPure._error_label}>
@@ -181,15 +172,13 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
           className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-        >
-          
+        >          
           <div className={styles._boxElements}>
             <InputComponent
               {...register('consumo', { required: 'Consumo requerido' })}
               placeholder="Consumo medio litros/100km"
               name="consumo"
               type="text"
-              onChange={handleInput}
             />
             {errors.consumo && (
               <p className={stylesPure._error_label}>
@@ -206,7 +195,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               placeholder="Capacidad de Maletero en litros"
               name="maletero"
               type="number"
-              onChange={handleInput}
             />
             {errors.maletero && (
               <p className={stylesPure._error_label}>
@@ -232,7 +220,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               placeholder="Largo (cm)"
               name="dimensionesLargo"
               type="number"
-              onChange={handleInput}
             />
             {errors.dimensionesLargo && (
               <p className={stylesPure._error_label}>
@@ -249,7 +236,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               placeholder="Alto (cm)"
               name="dimensionesAlto"
               type="number"
-              onChange={handleInput}
             />
             {errors.dimensionesAlto && (
               <p className={stylesPure._error_label}>
@@ -266,7 +252,6 @@ const Step2Form = ({stepPagePrev, stepPageNext}) => {
               placeholder="Ancho (cm)"
               name="dimensionesAncho"
               type="number"
-              onChange={handleInput}
             />
             {errors.dimensionesAncho && (
               <p className={stylesPure._error_label}>

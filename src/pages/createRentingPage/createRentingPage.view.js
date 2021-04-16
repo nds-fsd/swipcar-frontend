@@ -38,7 +38,7 @@ const CreateRentingPage = () => {
       >
         <StepBar stepForm={stepForm} />
 
-        {/* <StoreProvider> */}
+        <StoreProvider>
           <div className={styles._wrapper}>
             {stepForm === 1 && (
               <Step1Form
@@ -76,7 +76,7 @@ const CreateRentingPage = () => {
               />
             )}
           </div>
-        {/* </StoreProvider> */}
+        </StoreProvider>
       </div>
     </div>
   );
