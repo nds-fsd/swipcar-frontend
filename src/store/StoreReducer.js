@@ -1,6 +1,7 @@
 const InitialStore = {
   Step1Data: {
-    carBrand: 9,
+    nuevoSeminuevo: '',
+    carBrand: '',
     carModel: '',
     carVersion: '',
     carType: '',
@@ -9,12 +10,12 @@ const InitialStore = {
   },
 
   Step2Data: {
-     ecoMark: '',
+    ecoMark: '',
     cvMotor: '',
     puertas: '',
     emisionMotor: '',
     color: '',
-   cilindradaMotor: '',
+    cilindradaMotor: '',
     consumo: '',
     maletero: '',
     dimensionesLargo: '',
@@ -30,14 +31,14 @@ const InitialStore = {
 };
 
 const types = {
-  add:'add to initialState'
-}
+  add: 'add to initialState',
+};
 
 const StoreReducer = (state, action) => {
   switch (action.type) {
     case types.add:
-      console.log('action', action)
-    return { ...state, [action.key]: action.data};
+      console.log('action', action);
+      return { ...state, [action.key]: action.data };
     default:
       return state;
   }

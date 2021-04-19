@@ -4,13 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import styles from '../pureComponents.module.css';
 import stylesToggle from './toggleButtonComponent.module.css';
 
-const ToggleButtonComponent = (props) => {
-  const [isChecked, setIsChecked] = useState(props.checked);
+const ToggleButtonComponent = React.forwardRef((props, ref) => {
 
-  const _handleToggle = (e) => {
-    setIsChecked(!isChecked);
-    // setInputData({ ...inputData, [e.target.name]: !isChecked });
-  };
 
   return (
     <div className={stylesToggle._toggle_box}>
@@ -19,9 +14,8 @@ const ToggleButtonComponent = (props) => {
         <label>
           <input
             className={stylesToggle.switch}
-            onChange={_handleToggle}
             {...props}
-            checked={isChecked}
+            ref={ref}
           />
           <div>
             <div className={stylesToggle._circle_toggle}>
@@ -34,7 +28,7 @@ const ToggleButtonComponent = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default ToggleButtonComponent;
 

@@ -21,8 +21,6 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
     handleSubmit,
   } = useForm();
 
-  const [stepForm1Data, setStepForm1Data] = useState([]);
-
   console.log('errors : ', errors);
 
   const [store, dispatch] = useContext(StoreContext);
@@ -37,37 +35,62 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
   const onSubmit = (data, e) => {
     console.log('data :', data);
 
-    setStepForm1Data([...stepForm1Data, data]);
-
     dispatch({ type: types.add, key: 'Step1Data', data });
-    // console.log('setInitial State : ', Step1Data);
-    // stepPageNext();
+    stepPageNext();
     // limpiar campos
     // e.target.reset();
   };
 
-  // const [inputData, setInputData] = useState({
-  //   toggleButton: false,
-  // });
+  const [inputData, setInputData] = useState({});
+
   const windowSize = useWindowSize();
+
+  const [isChecked, setIsChecked] = useState({});
+
+  const _handleToggle = (e) => {
+    setIsChecked({ ...isChecked, [e.target.name]: isChecked });
+    setInputData({ ...inputData, [e.target.name]: !isChecked });
+  };
+
+  useEffect(() => {
+    console.log('inputData  : ', inputData);
+    console.log('isChecked  : ', isChecked);
+  }, [inputData])
 
   return (
     <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles._toggles_list}>
+        <div
+          className={styles._toggles_list}
+          {...register('nuevoSeminuevo', { required: 'Se ha de seleccionar una opción' })}
+          refs="nuevoSeminuevo"
+          name="nuevoSeminuevo"
+        >
           {DATADOMIE.CarProfileDataEstate.map((value) => (
             <div key={value._id}>
               <div>
                 <ToggleButtonComponent
+                  label={value.label}
                   name={value.name}
                   type="checkbox"
-                  checked={value.isChecked}
-                  label={value.name}
+                  defaultChecked={value.isChecked}
+                  onChange={(e) => {
+                    _handleToggle(e);
+                  }}
                 />
               </div>
             </div>
           ))}
         </div>
+
+        {errors.nuevoSeminuevo && (
+          <p className={stylesPure._error_label}>
+            <span className={stylesPure._error_label_icon}>
+              <FontAwesomeIcon icon="exclamation-triangle" />
+            </span>
+            {errors.nuevoSeminuevo.message}
+          </p>
+        )}
 
         <div
           className={`${windowSize !== 'sm' && styles._row3_xlg}
@@ -98,8 +121,8 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
             <SelectComponent
               {...register('carModel', { required: 'Modelo de coche requerido' })}
               refs={Step1Data.carModel}
-              label="Modelo"
-              placeholder="Selecciona un Modelo"
+              label="Selecciona un Modelo"
+              placeholder="Modelo"
               name="carModel"
               defaultValue={carModel}
               dataoptions={DATADOMIE.Model}
@@ -113,13 +136,13 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
               </p>
             )}
           </div>
-          
+
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('carVersion', { required: 'Versión de coche requerida' })}
               refs={Step1Data.carVersion}
               label="Versión del Modelo"
-              placeholder="Modelo"
+              placeholder="Versión"
               name="carVersion"
               defaultValue={carVersion}
               dataoptions={DATADOMIE.Version}
