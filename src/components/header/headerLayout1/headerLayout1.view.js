@@ -7,17 +7,17 @@ import {
   AUTONOMOS_PAGE,
   NEW_CARS_LIST_PAGE,
   SIGNIN_PAGE,
-} from '../../routers/routers';
-import styles from './header.module.css';
-import SearchBar from './search/searchBar.view';
-import MenuItem from '../header/menuItem/menuItem.view';
-import SideBar from '../header/sideBar/sideBar.view';
-import { ReactComponent as EcocarsLogo } from '../assets/ecocarsLogo.svg';
-import { ReactComponent as MenuIcon } from '../assets/menuicon.svg';
-import { ReactComponent as LoginIcon } from '../assets/loginIcon.svg';
-import useWindowSize from '../../constants/useWindowSize';
+} from '../../../routers/routers';
+import styles from './headerLayout1.module.css';
+import SearchBarComplete from '../search/searchBarComplete/searchBarComplete.view';
+import MenuItem from '../menuItem/menuItem.view';
+import SideBar from '../sideBar/sideBar.view';
+import { ReactComponent as EcocarsLogo } from '../../assets/ecocarsLogo.svg';
+import { ReactComponent as MenuIcon } from '../../assets/menuicon.svg';
+import { ReactComponent as LoginIcon } from '../../assets/loginIcon.svg';
+import useWindowSize from '../../../constants/useWindowSize';
 
-const Header = () => {
+const HeaderLayout1 = () => {
   const windowSize = useWindowSize();
   const [openSideBar, setOpenSideBar] = useState(false);
 
@@ -81,7 +81,7 @@ const Header = () => {
             )}
           </Link>
           <div className={styles._search_container}>
-            <SearchBar placeholder="Todas las categorias" />
+            <SearchBarComplete placeholder="Todas las categorias" />
           </div>
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
             <div className={styles._login_container}>
@@ -114,4 +114,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderLayout1;
