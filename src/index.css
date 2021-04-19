@@ -3,10 +3,9 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(247, 247, 250);
+  background-color: rgb(255, 255, 255);
   user-select: none;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto, 'Open-Sans', Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: 'Poppins', Roboto, 'Open-Sans', Arial, sans-serif;
 }
 /* *::-webkit-scrollbar {
   width: 8px;

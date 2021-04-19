@@ -15,6 +15,7 @@ import UsedCarsListPage from './pages/carListPages/usedCarsListPage.view';
 import VanCarsListPage from './pages/carListPages/vanCarsListPage.view';
 import CarProfilePage from './pages/carProfilePage';
 import CreateRentingPage from './pages/createRentingPage';
+import LoginPage from './pages/loginSigninPages/loginPage';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,
@@ -25,11 +26,10 @@ import {
   USED_CARS_LIST_PAGE,
   VAN_CARS_LIST_PAGE,
   FORM_PAGE,
+  LOGIN_PAGE,
 } from './routers/routers';
 
 function App() {
-
-
   const iconList = Object.keys(Icons)
     .filter((key) => key !== 'fas' && key !== 'prefix')
     .map((icon) => Icons[icon]);
@@ -41,6 +41,9 @@ function App() {
       <div>
         <Header />
         <Switch>
+          <Route path={LOGIN_PAGE}>
+            <LoginPage />
+          </Route>
           <Route path={PARTICULARES_PAGE}>
             <ParticularesPage />
           </Route>

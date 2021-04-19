@@ -8,3 +8,5 @@ export const PARTICULARES_PAGE = '/renting-particulares';
 export const AUTONOMOS_PAGE = '/renting-autonomos';
 export const EMPRESAS_PAGE = '/renting-empresas';
 export const FORM_PAGE = '/crear-renting';
+export const LOGIN_PAGE = '/login';
+export const SIGNIN_PAGE = '/signin';
