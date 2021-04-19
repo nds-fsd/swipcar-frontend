@@ -33,10 +33,9 @@ function SideBar({ openSideBar, closeSideBar }) {
             </div>
             <hr className={styles.divider} />
             <div className={styles.nav_link_container2}>
-              <div className={styles.nav_link2}>¿Cómo funciona?</div>
-              <div className={styles.nav_link2}>Blog</div>
-              <div className={styles.nav_link2}>Opciones de coches</div>
-              <div className={styles.nav_link2}>Preguntas frecuentes</div>
+              <div className={styles.nav_link2}>Chatea con nosotros</div>
+              <div className={styles.nav_link2}>+34 931 160 669</div>
+              <div className={styles.nav_link2}>info@ecocars.com</div>
             </div>
           </div>
           <div className={styles.social_container}>

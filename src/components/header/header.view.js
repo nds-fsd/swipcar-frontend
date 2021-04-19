@@ -6,16 +6,15 @@ import {
   EMPRESAS_PAGE,
   AUTONOMOS_PAGE,
   NEW_CARS_LIST_PAGE,
+  SIGNIN_PAGE,
 } from '../../routers/routers';
 import styles from './header.module.css';
+import SearchBar from './search/searchBar.view';
 import MenuItem from '../header/menuItem/menuItem.view';
-import LoginButton from '../header/loginButton/loginButton.view';
-import SigninButton from '../header/loginButton/signinButton.view';
 import SideBar from '../header/sideBar/sideBar.view';
-import { ReactComponent as Logo } from '../assets/Swipcar.svg';
+import { ReactComponent as EcocarsLogo } from '../assets/ecocarsLogo.svg';
 import { ReactComponent as MenuIcon } from '../assets/menuicon.svg';
-
-// custom Hook for window-sized UI
+import { ReactComponent as LoginIcon } from '../assets/loginIcon.svg';
 import useWindowSize from '../../constants/useWindowSize';
 
 const Header = () => {
@@ -25,67 +24,88 @@ const Header = () => {
   return (
     <div>
       <SideBar openSideBar={openSideBar} closeSideBar={() => setOpenSideBar(false)} />
-      <div className={styles.header}>
-        {windowSize === 'xlg' || windowSize === 'lg' ? (
-          <div
-            className={`${windowSize === 'xlg' && styles.container_large} || ${
-              windowSize === 'lg' && styles.container_medium
-            }`}
-          >
-            <div className={styles.logo_container}>
-              <div className={styles.logo}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
-                  <Logo />
-                </Link>
-              </div>
-            </div>
-            <div className={styles.menu_container}>
-              <div className={styles.nav_container}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={NEW_CARS_LIST_PAGE}>
-                  <MenuItem menuItemName="Coches" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>
-                  <MenuItem menuItemName="Particulares" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
-                  <MenuItem menuItemName="Autónomos" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
-                  <MenuItem menuItemName="Empresas" />
-                </Link>
-              </div>
-            </div>
-            <div className={styles.login_container}>
-              <div className={styles.login_buttons}>
-                <LoginButton />
-                <SigninButton />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div
-            className={`${windowSize === 'md' && styles.container_medium} || ${
-              windowSize === 'sm' && styles.container_small
-            }`}
-          >
-            <div className={styles.menu_sidebar}>
+      <div className={styles._header}>
+        <div
+          className={
+            windowSize === 'sm' ? styles._header_top_wrapper_sm : styles._header_top_wrapper
+          }
+        >
+          {windowSize === 'sm' && (
+            <div className={styles._menu_icon_container}>
               <MenuIcon
                 type="button"
-                className={styles.icon}
+                className={styles._menu_icon}
                 onClick={() => setOpenSideBar(true)}
               />
             </div>
-            <div className={styles.logo_container}>
-              <div className={styles.logo}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
-                  <Logo />
-                </Link>
-              </div>
+          )}
+          {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
+            <div className={styles._header_top_left_inner_container}>
+              <p className={styles._header_top_green_link_left}>Chatea con nosotros</p>
+              <p className={styles._header_top_link}>+34 931 160 669</p>
+              <p className={styles._header_top_link}>info@ecocars.com</p>
             </div>
-            <div className={styles.login_container}>
-              <div className={styles.login_buttons}>
-                <LoginButton />
-              </div>
+          )}
+          {(windowSize === 'md' || windowSize === 'sm') && (
+            <div className={styles._logo_sm_container}>
+              <EcocarsLogo className={styles._header_logo_sm} />
+            </div>
+          )}
+          {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
+            <div className={styles._header_top_right_inner_container}>
+              <p className={styles._header_top_green_link_right}>Nosotros</p>
+              <p className={styles._header_top_green_link_right}>Contacto</p>
+            </div>
+          )}
+          {windowSize === 'sm' && (
+            <div className={styles._login_top_container}>
+              <LoginIcon className={styles._login_icon} />
+            </div>
+          )}
+        </div>
+
+        <div
+          className={`${
+            (windowSize === 'xlg' || windowSize === 'lg') && styles._header_middle_wrapper
+          } ${windowSize === 'md' && styles._header_middle_wrapper_center} ${
+            windowSize === 'sm' && styles._header_middle_wrapper_sm
+          }`}
+        >
+          <Link style={{ textDecoration: 'none' }} to={HOME_PAGE}>
+            {(windowSize === 'xlg' || windowSize === 'lg') && (
+              <EcocarsLogo
+                className={
+                  windowSize === 'xlg' ? styles._header_middle_logo_xlg : styles._header_middle_logo
+                }
+              />
+            )}
+          </Link>
+          <div className={styles._search_container}>
+            <SearchBar placeholder="Todas las categorias" />
+          </div>
+          {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
+            <div className={styles._login_container}>
+              <Link to={SIGNIN_PAGE}>
+                <LoginIcon className={styles._login_icon} />
+              </Link>
+            </div>
+          )}
+        </div>
+        {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
+          <div className={styles._nav_wrapper}>
+            <div className={styles._nav_container}>
+              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={NEW_CARS_LIST_PAGE}>
+                <MenuItem menuItemName="Coches" />
+              </Link>
+              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>
+                <MenuItem menuItemName="Particulares" />
+              </Link>
+              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
+                <MenuItem menuItemName="Autónomos" />
+              </Link>
+              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
+                <MenuItem menuItemName="Empresas" />
+              </Link>
             </div>
           </div>
         )}
