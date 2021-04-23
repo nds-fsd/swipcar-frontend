@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './carList.module.css';
 import CarCardSmall from '../carCards/carCardSmall.view';
-import { CarListContext } from '../../contexts/carListContext';
+import { CarListContext } from '../../store/carListContext';
 
 const CarListSmall = () => {
   const { listOfCars } = useContext(CarListContext);

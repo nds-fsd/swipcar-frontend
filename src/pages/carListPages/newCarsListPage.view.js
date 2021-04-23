@@ -9,7 +9,7 @@ import Tab from '../../components/tabs/tab.view';
 import CarListXLarge from '../../components/carLists/carListXLarge.view';
 import CarListMedium from '../../components/carLists/carListMedium.view';
 import CarListSmall from '../../components/carLists/carListSmall.view';
-import { CarListContextProvider } from '../../contexts/carListContext';
+import { CarListContextProvider } from '../../store/carListContext';
 
 const NewCarsListPage = () => {
   const [openFilter, setOpenFilter] = useState(false);

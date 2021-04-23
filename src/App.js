@@ -15,7 +15,7 @@ import UsedCarsListPage from './pages/carListPages/usedCarsListPage.view';
 import VanCarsListPage from './pages/carListPages/vanCarsListPage.view';
 import CarProfilePage from './pages/carProfilePage';
 import CreateRentingPage from './pages/createRentingPage';
-import LoginPage from './pages/loginSigninPages/loginPage';
+import LoginSigninPage from './pages/loginSigninPages/loginSigninPage';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,
@@ -26,7 +26,7 @@ import {
   USED_CARS_LIST_PAGE,
   VAN_CARS_LIST_PAGE,
   FORM_PAGE,
-  LOGIN_PAGE,
+  LOGIN_SIGNIN_PAGE,
 } from './routers/routers';
 
 function App() {
@@ -41,8 +41,8 @@ function App() {
       <div>
         <Header />
         <Switch>
-          <Route path={LOGIN_PAGE}>
-            <LoginPage />
+          <Route path={LOGIN_SIGNIN_PAGE}>
+            <LoginSigninPage />
           </Route>
           <Route path={PARTICULARES_PAGE}>
             <ParticularesPage />

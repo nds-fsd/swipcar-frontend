@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './carList.module.css';
 import CarCardXLarge from '../carCards/carCardXLarge.view';
-import { CarListContext } from '../../contexts/carListContext';
+import { CarListContext } from '../../store/carListContext';
 
 const CarListXLarge = ({ carcard, carprofile }) => {
   const { listOfCars } = useContext(CarListContext);
