@@ -1,18 +1,21 @@
-.container {
+._wrapper {
   display: block;
+  margin: 0 12px;
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22.5px;
 }
-.menu_item {
+._container {
   display: flex;
   justify-content: center;
-  min-width: 90px;
+  min-width: 100px;
   max-height: 27px;
 }
-.link_item {
+._item {
   padding: 6px 0;
 }
-.link_item:active {
-  border-bottom: 1px solid rgb(2, 24, 89);
-}
+
 .link_item:hover {
-  color: #ff4597;
+  color: rgba(106, 152, 60, 1);
 }
