@@ -24,9 +24,6 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [entradas, setentradas] = useState([]);
-
-  console.log('errors : ', errors);
 
   const [store, dispatch] = useContext(StoreContext);
 
@@ -50,12 +47,9 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
   } = Step2Data;
 
   const onSubmit = (data, e) => {
-    console.log('data :', data);
-
+    // console.log('data :', data);
     dispatch({ type: types.add, key: 'Step2Data', data });
     stepPageNext();
-    // limpiar campos
-    // e.target.reset();
   };
 
   return (
@@ -69,7 +63,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('ecoMark', { required: 'Distintivo Eco requerido' })}
-              refs={Step2Data.ecoMark}
+              refs={ecoMark}
               label="Distintivo Eco"
               placeholder="Eco Mark"
               name="ecoMark"
@@ -99,7 +93,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
                   message: 'Mínimo 2 carácteres',
                 },
               })}
-              refs={Step2Data.cvMotor}
+              refs={cvMotor}
               label="CV del Motor"
               placeholder="CV"
               name="cvMotor"
@@ -165,7 +159,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('color', { required: 'Color requerido' })}
-              refs={Step2Data.color}
+              refs={color}
               label="Seleciona un Color"
               placeholder="Color"
               defaultValue={color}
@@ -185,7 +179,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <InputComponent
               {...register('cilindradaMotor', { required: 'Cilindrada requerida' })}
-              refs={Step2Data.cilindradaMotor}
+              refs={cilindradaMotor}
               label="Cilindrada en cm3"
               placeholder="Cilindrada"
               defaultValue={cilindradaMotor}
@@ -211,12 +205,12 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <InputComponent
               {...register('consumo', { required: 'Consumo requerido' })}
-              refs={Step2Data.consumo}
+              refs={consumo}
               label="Consumo medio litros/100km"
               placeholder="Consumo"
               defaultValue={consumo}
               name="consumo"
-              type="text"
+              type="number"
             />
             {errors.consumo && (
               <p className={stylesPure._error_label}>
@@ -230,7 +224,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <InputComponent
               {...register('maletero', { required: 'Capacidad maletero requerida' })}
-              refs={Step2Data.maletero}
+              refs={maletero}
               label="Capacidad de Maletero en litros"
               placeholder="Maletero"
               defaultValue={maletero}
@@ -258,7 +252,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <InputComponent
               {...register('dimensionesLargo', { required: 'Largo requerido' })}
-              refs={Step2Data.dimensionesLargo}
+              refs={dimensionesLargo}
               label="Largo del coche (cm)"
               placeholder="Largo"
               defaultValue={dimensionesLargo}
@@ -277,7 +271,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <InputComponent
               {...register('dimensionesAlto', { required: 'Alto requerido' })}
-              refs={Step2Data.dimensionesAlto}
+              refs={dimensionesAlto}
               label="Alto del coche (cm)"
               placeholder="Alto"
               defaultValue={dimensionesAlto}
@@ -296,7 +290,7 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <InputComponent
               {...register('dimensionesAncho', { required: 'Ancho requerido' })}
-              refs={Step2Data.dimensionesAncho}
+              refs={dimensionesAncho}
               label="Ancho del coche (cm)"
               placeholder="Ancho"
               defaultValue={dimensionesAncho}

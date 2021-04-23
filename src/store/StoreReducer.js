@@ -1,6 +1,7 @@
 const InitialStore = {
   Step1Data: {
-    nuevoSeminuevo: '',
+    nuevo: false,
+    seminuevo: false,
     carBrand: '',
     carModel: '',
     carVersion: '',

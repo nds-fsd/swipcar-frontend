@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 
 import useWindowSize from '../../../constants/useWindowSize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,67 +13,121 @@ import ButtonComponent from '../../../components/pureComponents/buttonComponent'
 import DATADOMIE from '../dataDomie';
 import { StoreContext } from '../../../store/StoreProvider';
 import { types } from '../../../store/StoreReducer';
+import { CreateCarRequestAll } from '../../../utils/createCarRequestAll';
 
 const Step1Form = ({ stepPagePrev, stepPageNext }) => {
+
+
   const {
     register,
     formState: { errors },
     handleSubmit,
+    watch
   } = useForm();
-
-  console.log('errors : ', errors);
 
   const [store, dispatch] = useContext(StoreContext);
 
+  const Step1Data = store.Step1Data;
+  const {
+    nuevo,
+    seminuevo,
+    carBrand,
+    carModel,
+    carVersion,
+    carType,
+    transmision,
+    fuel,
+  } = Step1Data;
+
+  const [dataFormOk, setDataFormOk] = useState(false);
+
   useEffect(() => {
     console.log('store effect : ', store);
+    if (store.Step1Data.carBrand !== '') {
+      setDataFormOk(true);
+    }
   }, [store]);
 
-  const Step1Data = store.Step1Data;
-  const { carBrand, carModel, carVersion, carType, transmision, fuel } = Step1Data;
+  // useEffect(() => {
+  //   console.log('store effect : ', store);
+  // }, [store]);
 
-  const onSubmit = (data, e) => {
-    console.log('data :', data);
-
-    dispatch({ type: types.add, key: 'Step1Data', data });
-    stepPageNext();
-    // limpiar campos
-    // e.target.reset();
+  const onSubmit = (data) => {
+    if (!errorNuevoSeminuevo) {
+      data = { ...data, nuevo: isChecked.nuevo, seminuevo: isChecked.seminuevo };
+      dispatch({ type: types.add, key: 'Step1Data', data });
+      stepPageNext();
+    }
   };
-
-  const [inputData, setInputData] = useState({});
 
   const windowSize = useWindowSize();
 
-  const [isChecked, setIsChecked] = useState({});
+  const nuevoRef = useRef();
+  const seminuevoRef = useRef();
 
+  //* Toggle Group (one selected) Logic
+  const [isChecked, setIsChecked] = useState({
+    nuevo,
+    seminuevo,
+  });
+  const [errorNuevoSeminuevo, setErrorNuevoSeminuevo] = useState(false);
+  useEffect(() => {
+    if (!isChecked.nuevo && !isChecked.seminuevo) {
+      setErrorNuevoSeminuevo(true);
+    } else {
+      setErrorNuevoSeminuevo(false);
+    }
+  }, [isChecked]);
   const _handleToggle = (e) => {
-    setIsChecked({ ...isChecked, [e.target.name]: isChecked });
-    setInputData({ ...inputData, [e.target.name]: !isChecked });
+    if (e.target.name === 'nuevo') {
+      if (seminuevoRef.current.checked) {
+        setIsChecked({ ...isChecked, nuevo: e.target.checked, seminuevo: false });
+        seminuevoRef.current.checked = false;
+      } else {
+        setIsChecked({ ...isChecked, nuevo: e.target.checked });
+      }
+    } else {
+      if (nuevoRef.current.checked) {
+        setIsChecked({ ...isChecked, seminuevo: e.target.checked, nuevo: false });
+        nuevoRef.current.checked = false;
+      } else {
+        setIsChecked({ ...isChecked, seminuevo: e.target.checked });
+      }
+    }
   };
+  useEffect(() => {
+    if (!isChecked.nuevo && !isChecked.seminuevo) {
+      setErrorNuevoSeminuevo(true);
+    } else {
+      setErrorNuevoSeminuevo(false);
+    }
+  }, [isChecked]);
+
+
+  const [brands, setBrands] = useState();
 
   useEffect(() => {
-    console.log('inputData  : ', inputData);
-    console.log('isChecked  : ', isChecked);
-  }, [inputData])
+    CreateCarRequestAll({ onSuccess: setBrands });
+  }, []);
 
+  const watchBrand = watch("carBrand");
+  // const watchModel = watch("carModel");
+  console.log('watchBrand : ', watchBrand);
+  
   return (
     <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div
-          className={styles._toggles_list}
-          {...register('nuevoSeminuevo', { required: 'Se ha de seleccionar una opción' })}
-          refs="nuevoSeminuevo"
-          name="nuevoSeminuevo"
-        >
+        <div className={styles._toggles_list}>
           {DATADOMIE.CarProfileDataEstate.map((value) => (
             <div key={value._id}>
               <div>
                 <ToggleButtonComponent
+                  ref={value.name === 'nuevo' ? nuevoRef : seminuevoRef}
                   label={value.label}
                   name={value.name}
+                  id={value.name}
                   type="checkbox"
-                  defaultChecked={value.isChecked}
+                  defaultChecked={value.name === 'nuevo' ? nuevo : seminuevo}
                   onChange={(e) => {
                     _handleToggle(e);
                   }}
@@ -82,16 +136,14 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
             </div>
           ))}
         </div>
-
-        {errors.nuevoSeminuevo && (
+        {errorNuevoSeminuevo && (
           <p className={stylesPure._error_label}>
             <span className={stylesPure._error_label_icon}>
               <FontAwesomeIcon icon="exclamation-triangle" />
             </span>
-            {errors.nuevoSeminuevo.message}
+            Selecciona una opción
           </p>
         )}
-
         <div
           className={`${windowSize !== 'sm' && styles._row3_xlg}
       ${windowSize === 'sm' && styles._row3_sm}  
@@ -100,12 +152,14 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('carBrand', { required: 'Marca de coche requerida' })}
-              refs={Step1Data.carBrand}
+              refs={carBrand}
+              // ref={carBrandRef}
               label="Selecciona una Marca"
               placeholder="Marca"
               name="carBrand"
               defaultValue={carBrand}
-              dataoptions={DATADOMIE.Brand}
+              dataoptions={brands}
+              dataget="brandname"
             />
             {errors.carBrand && (
               <p className={stylesPure._error_label}>
@@ -118,14 +172,17 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           </div>
 
           <div className={styles._boxElements}>
+          
             <SelectComponent
               {...register('carModel', { required: 'Modelo de coche requerido' })}
-              refs={Step1Data.carModel}
+              refs={carModel}
+              // ref={carModelRef}
               label="Selecciona un Modelo"
               placeholder="Modelo"
               name="carModel"
               defaultValue={carModel}
               dataoptions={DATADOMIE.Model}
+              disabled={watchBrand ? false : true}
             />
             {errors.carModel && (
               <p className={stylesPure._error_label}>
@@ -140,7 +197,7 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('carVersion', { required: 'Versión de coche requerida' })}
-              refs={Step1Data.carVersion}
+              refs={carVersion}
               label="Versión del Modelo"
               placeholder="Versión"
               name="carVersion"
@@ -166,7 +223,7 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('carType', { required: 'Tipo de coche requerido' })}
-              refs={Step1Data.carType}
+              refs={carType}
               label="Selecciona un tipo"
               placeholder="Tipo"
               name="carType"
@@ -186,7 +243,7 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('transmision', { required: 'Transmisión de coche requerida' })}
-              refs={Step1Data.transmision}
+              refs={transmision}
               label="Selecciona un tipo de Transmisión"
               placeholder="Transmisión"
               name="transmision"
@@ -206,7 +263,7 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           <div className={styles._boxElements}>
             <SelectComponent
               {...register('fuel', { required: 'Tipo de combustible requerido' })}
-              refs={Step1Data.fuel}
+              refs={fuel}
               label="Selecciona un tipo de Combustible"
               placeholder="Combustible"
               name="fuel"
