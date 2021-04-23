@@ -22,7 +22,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
   height: 26px;
   margin: 8px 0 9px 16px;
   padding-left: 20px;
@@ -70,7 +69,7 @@
 }
 ._search_container_sm {
   display: flex;
-  width: 460px;
+  width: 300px;
   height: 40px;
   border-radius: 15px;
   border: 1px solid rgba(209, 209, 209, 1);
@@ -80,7 +79,7 @@
 }
 
 ._input_sm {
-  width: 400px;
+  width: 260px;
   border: none;
   background: none;
   outline: none;

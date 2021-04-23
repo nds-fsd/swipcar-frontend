@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './searchBar.module.css';
-import { ReactComponent as SearchIcon } from '../../assets/searchIcon.svg';
-import useWindowSize from '../../../constants/useWindowSize';
+import styles from './searchBarComplete.module.css';
+import { ReactComponent as SearchIcon } from '../../../assets/searchIcon.svg';
+import useWindowSize from '../../../../constants/useWindowSize';
 
-const SearchBar = (props) => {
+const SearchBarComplete = (props) => {
   const windowSize = useWindowSize();
   return (
     <>
@@ -47,4 +47,4 @@ const SearchBar = (props) => {
   );
 };
 
-export default SearchBar;
+export default SearchBarComplete;

@@ -7,17 +7,17 @@ import {
   AUTONOMOS_PAGE,
   NEW_CARS_LIST_PAGE,
   SIGNIN_PAGE,
-} from '../../routers/routers';
-import styles from './header.module.css';
-import SearchBar from './search/searchBar.view';
-import MenuItem from '../header/menuItem/menuItem.view';
-import SideBar from '../header/sideBar/sideBar.view';
-import { ReactComponent as EcocarsLogo } from '../assets/ecocarsLogo.svg';
-import { ReactComponent as MenuIcon } from '../assets/menuicon.svg';
-import { ReactComponent as LoginIcon } from '../assets/loginIcon.svg';
-import useWindowSize from '../../constants/useWindowSize';
+} from '../../../routers/routers';
+import styles from './headerLayout1.module.css';
+import SearchBarComplete from '../search/searchBarComplete/searchBarComplete.view';
+import MenuItem from '../menuItem/menuItem.view';
+import SideBar from '../sideBar/sideBar.view';
+import { ReactComponent as EcocarsLogo } from '../../assets/ecocarsLogo.svg';
+import { ReactComponent as MenuIcon } from '../../assets/menuicon.svg';
+import { ReactComponent as LoginIcon } from '../../assets/loginIcon.svg';
+import useWindowSize from '../../../constants/useWindowSize';
 
-const Header = () => {
+const HeaderLayout1 = () => {
   const windowSize = useWindowSize();
   const [openSideBar, setOpenSideBar] = useState(false);
 
@@ -30,37 +30,48 @@ const Header = () => {
             windowSize === 'sm' ? styles._header_top_wrapper_sm : styles._header_top_wrapper
           }
         >
-          {windowSize === 'sm' && (
-            <div className={styles._menu_icon_container}>
-              <MenuIcon
-                type="button"
-                className={styles._menu_icon}
-                onClick={() => setOpenSideBar(true)}
-              />
-            </div>
-          )}
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
-            <div className={styles._header_top_left_inner_container}>
-              <p className={styles._header_top_green_link_left}>Chatea con nosotros</p>
-              <p className={styles._header_top_link}>+34 931 160 669</p>
-              <p className={styles._header_top_link}>info@ecocars.com</p>
-            </div>
+            <>
+              <div className={styles._header_top_left_inner_container}>
+                {windowSize === 'md' ? (
+                  <p className={styles._header_top_green_link_left}>Chat</p>
+                ) : (
+                  <p className={styles._header_top_green_link_left}>Chatea con nosotros</p>
+                )}
+                <p className={styles._header_top_link}>+34 931 160 669</p>
+                <p className={styles._header_top_link}>info@ecocars.com</p>
+              </div>
+
+              {windowSize === 'md' && (
+                <div className={styles._logo_sm_container}>
+                  <EcocarsLogo className={styles._header_logo_sm} />
+                </div>
+              )}
+
+              <div className={styles._header_top_right_inner_container}>
+                <p className={styles._header_top_green_link_right}>Nosotros</p>
+                <p className={styles._header_top_green_link_right}>Contacto</p>
+                <p className={styles._header_top_green_link_right}>Proveedores</p>
+              </div>
+            </>
           )}
-          {(windowSize === 'md' || windowSize === 'sm') && (
-            <div className={styles._logo_sm_container}>
-              <EcocarsLogo className={styles._header_logo_sm} />
-            </div>
-          )}
-          {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
-            <div className={styles._header_top_right_inner_container}>
-              <p className={styles._header_top_green_link_right}>Nosotros</p>
-              <p className={styles._header_top_green_link_right}>Contacto</p>
-            </div>
-          )}
+
           {windowSize === 'sm' && (
-            <div className={styles._login_top_container}>
-              <LoginIcon className={styles._login_icon} />
-            </div>
+            <>
+              <div className={styles._menu_icon_container}>
+                <MenuIcon
+                  type="button"
+                  className={styles._menu_icon}
+                  onClick={() => setOpenSideBar(true)}
+                />
+              </div>
+              <div className={styles._logo_sm_container}>
+                <EcocarsLogo className={styles._header_logo_sm} />
+              </div>
+              <div className={styles._login_top_container}>
+                <LoginIcon className={styles._login_icon} />
+              </div>
+            </>
           )}
         </div>
 
@@ -81,7 +92,7 @@ const Header = () => {
             )}
           </Link>
           <div className={styles._search_container}>
-            <SearchBar placeholder="Todas las categorias" />
+            <SearchBarComplete placeholder="Todas las categorias" />
           </div>
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
             <div className={styles._login_container}>
@@ -114,4 +125,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderLayout1;

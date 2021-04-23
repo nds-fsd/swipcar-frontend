@@ -22,7 +22,6 @@
   align-items: center;
 }
 ._header_top_green_link_left {
-  min-width: 116px;
   font-weight: 500;
   font-size: 12px;
   color: rgba(106, 152, 60, 1);
@@ -44,7 +43,7 @@
   font-weight: 500;
   font-size: 12px;
   color: rgba(21, 21, 21, 1);
-  margin-right: 33px;
+  margin-right: 20px;
 }
 
 /* Header-Top sm*/
@@ -65,6 +64,11 @@
   width: 22px;
   color: rgba(106, 152, 60, 1);
 }
+._logo_sm_container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
 ._header_logo_sm {
   display: flex;
   width: 90px;
@@ -83,7 +87,7 @@
   justify-content: space-between;
   width: 100%;
   max-width: 1050px;
-  min-height: 157px;
+  max-height: 157px;
   align-items: center;
 }
 ._header_middle_wrapper_center {
@@ -98,6 +102,7 @@
 ._header_middle_wrapper_sm {
   display: flex;
   margin-bottom: 20px;
+  justify-content: center;
   align-items: center;
 }
 ._header_middle_logo_xlg {
@@ -110,10 +115,9 @@
   width: 182px;
   margin: 30px 0 0 60px;
 }
-
 ._search_container {
   display: flex;
-  margin: 20px 0 0 20px;
+  margin: 20px 0 0 0px;
 }
 ._login_container {
   display: flex;
@@ -133,7 +137,7 @@
   height: auto;
   justify-content: center;
   background-color: rgba(249, 249, 249, 1);
-  padding: 10px 50px;
+  margin: 10px 0px;
 }
 ._nav_container {
   display: flex;
