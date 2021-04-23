@@ -30,37 +30,48 @@ const HeaderLayout1 = () => {
             windowSize === 'sm' ? styles._header_top_wrapper_sm : styles._header_top_wrapper
           }
         >
-          {windowSize === 'sm' && (
-            <div className={styles._menu_icon_container}>
-              <MenuIcon
-                type="button"
-                className={styles._menu_icon}
-                onClick={() => setOpenSideBar(true)}
-              />
-            </div>
-          )}
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
-            <div className={styles._header_top_left_inner_container}>
-              <p className={styles._header_top_green_link_left}>Chatea con nosotros</p>
-              <p className={styles._header_top_link}>+34 931 160 669</p>
-              <p className={styles._header_top_link}>info@ecocars.com</p>
-            </div>
+            <>
+              <div className={styles._header_top_left_inner_container}>
+                {windowSize === 'md' ? (
+                  <p className={styles._header_top_green_link_left}>Chat</p>
+                ) : (
+                  <p className={styles._header_top_green_link_left}>Chatea con nosotros</p>
+                )}
+                <p className={styles._header_top_link}>+34 931 160 669</p>
+                <p className={styles._header_top_link}>info@ecocars.com</p>
+              </div>
+
+              {windowSize === 'md' && (
+                <div className={styles._logo_sm_container}>
+                  <EcocarsLogo className={styles._header_logo_sm} />
+                </div>
+              )}
+
+              <div className={styles._header_top_right_inner_container}>
+                <p className={styles._header_top_green_link_right}>Nosotros</p>
+                <p className={styles._header_top_green_link_right}>Contacto</p>
+                <p className={styles._header_top_green_link_right}>Proveedores</p>
+              </div>
+            </>
           )}
-          {(windowSize === 'md' || windowSize === 'sm') && (
-            <div className={styles._logo_sm_container}>
-              <EcocarsLogo className={styles._header_logo_sm} />
-            </div>
-          )}
-          {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
-            <div className={styles._header_top_right_inner_container}>
-              <p className={styles._header_top_green_link_right}>Nosotros</p>
-              <p className={styles._header_top_green_link_right}>Contacto</p>
-            </div>
-          )}
+
           {windowSize === 'sm' && (
-            <div className={styles._login_top_container}>
-              <LoginIcon className={styles._login_icon} />
-            </div>
+            <>
+              <div className={styles._menu_icon_container}>
+                <MenuIcon
+                  type="button"
+                  className={styles._menu_icon}
+                  onClick={() => setOpenSideBar(true)}
+                />
+              </div>
+              <div className={styles._logo_sm_container}>
+                <EcocarsLogo className={styles._header_logo_sm} />
+              </div>
+              <div className={styles._login_top_container}>
+                <LoginIcon className={styles._login_icon} />
+              </div>
+            </>
           )}
         </div>
 
