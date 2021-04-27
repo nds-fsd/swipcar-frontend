@@ -1,4 +1,16 @@
 const InitialStore = {
+  AllDataOptions: {
+    Brand: [],
+    Model: [],
+    Version: [],
+    CarType: [],
+    Color: [],
+    EcoMark: [],
+    EquipamientoDestacado: [],
+    Fuel: [],
+    Puertas: [],
+    Transmision: [],
+  },
   Step1Data: {
     nuevo: false,
     seminuevo: false,
@@ -36,12 +48,13 @@ const types = {
 };
 
 const StoreReducer = (state, action) => {
-  switch (action.type) {
-    case types.add:
-      console.log('action', action);
-      return { ...state, [action.key]: action.data };
-    default:
-      return state;
+  if (action) {
+    switch (action.type) {
+      case types.add:
+        return { ...state, [action.key]: action.data };
+      default:
+        return state;
+    }
   }
 };
 export { InitialStore, types };

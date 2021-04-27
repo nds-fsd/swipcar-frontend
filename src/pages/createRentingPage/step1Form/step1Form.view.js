@@ -13,21 +13,29 @@ import ButtonComponent from '../../../components/pureComponents/buttonComponent'
 import DATADOMIE from '../dataDomie';
 import { StoreContext } from '../../../store/StoreProvider';
 import { types } from '../../../store/StoreReducer';
-import { CreateCarRequestAll } from '../../../utils/createCarRequestAll';
+import { CreateCarRequestAll, CreateCarRequestModel } from '../../../utils/createCarRequestAll';
 
 const Step1Form = ({ stepPagePrev, stepPageNext }) => {
-
-
   const {
     register,
     formState: { errors },
     handleSubmit,
-    watch
+    watch,
   } = useForm();
 
   const [store, dispatch] = useContext(StoreContext);
 
+  const AllDataOptions = store.AllDataOptions;
   const Step1Data = store.Step1Data;
+
+  const {
+    carBrand: carBrandOptions,
+    carType: carTypeOptions,
+    transmision: transmisionOptions,
+    fuel: fuelOptions,
+    carModel: carModelOptions,
+    carVersion: carVersionOptions,
+  } = AllDataOptions;
   const {
     nuevo,
     seminuevo,
@@ -39,37 +47,61 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
     fuel,
   } = Step1Data;
 
-  const [dataFormOk, setDataFormOk] = useState(false);
-
-  useEffect(() => {
-    console.log('store effect : ', store);
-    if (store.Step1Data.carBrand !== '') {
-      setDataFormOk(true);
-    }
-  }, [store]);
-
-  // useEffect(() => {
-  //   console.log('store effect : ', store);
-  // }, [store]);
-
-  const onSubmit = (data) => {
-    if (!errorNuevoSeminuevo) {
-      data = { ...data, nuevo: isChecked.nuevo, seminuevo: isChecked.seminuevo };
-      dispatch({ type: types.add, key: 'Step1Data', data });
-      stepPageNext();
-    }
-  };
-
   const windowSize = useWindowSize();
 
   const nuevoRef = useRef();
   const seminuevoRef = useRef();
 
-  //* Toggle Group (one selected) Logic
   const [isChecked, setIsChecked] = useState({
     nuevo,
     seminuevo,
   });
+
+  // const [dataFormOk, setDataFormOk] = useState(false);
+
+  useEffect(() => {
+    console.log('store : ' , store);
+    // if (store.Step1Data.carBrand !== '') {
+    //   setDataFormOk(true);
+    // }
+  }, [store]);
+
+  const onSubmit = (data) => {
+    if (!errorNuevoSeminuevo) {
+      const dataAPI = { ...data, nuevo: isChecked.nuevo, seminuevo: isChecked.seminuevo };
+      dispatch({ type: types.add, key: 'Step1Data', dataAPI });
+      stepPageNext();
+    }
+  };
+  const [incrementalData, setIncrementalData] = useState({});
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    CreateCarRequestAll({ onSuccess: setIncrementalData });
+  }, []);
+  
+  useEffect(() => {
+    setData({ ...data, ...incrementalData });
+    dispatch({ type: types.add, key: 'AllDataOptions', data });
+    console.log('incrementalData : ' , incrementalData);
+  }, [incrementalData]);
+
+
+  // const addModel = () => {
+  //   setData({ ...data, ...incrementalData });
+  //   dispatch({ type: types.add, key: 'AllDataOptions', data });
+  // }
+
+  const watchBrand = watch('carBrand');
+  // const watchModel = watch('carModel');
+  useEffect(() => {
+    if (watchBrand) {
+      CreateCarRequestModel({ watchBrand, onSuccess: setIncrementalData });
+    }
+  }, [watchBrand]);
+  
+
+
   const [errorNuevoSeminuevo, setErrorNuevoSeminuevo] = useState(false);
   useEffect(() => {
     if (!isChecked.nuevo && !isChecked.seminuevo) {
@@ -103,17 +135,6 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
     }
   }, [isChecked]);
 
-
-  const [brands, setBrands] = useState();
-
-  useEffect(() => {
-    CreateCarRequestAll({ onSuccess: setBrands });
-  }, []);
-
-  const watchBrand = watch("carBrand");
-  // const watchModel = watch("carModel");
-  console.log('watchBrand : ', watchBrand);
-  
   return (
     <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -153,12 +174,11 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
             <SelectComponent
               {...register('carBrand', { required: 'Marca de coche requerida' })}
               refs={carBrand}
-              // ref={carBrandRef}
               label="Selecciona una Marca"
               placeholder="Marca"
               name="carBrand"
               defaultValue={carBrand}
-              dataoptions={brands}
+              dataoptions={carBrandOptions}
               dataget="brandname"
             />
             {errors.carBrand && (
@@ -172,16 +192,15 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
           </div>
 
           <div className={styles._boxElements}>
-          
             <SelectComponent
               {...register('carModel', { required: 'Modelo de coche requerido' })}
               refs={carModel}
-              // ref={carModelRef}
               label="Selecciona un Modelo"
               placeholder="Modelo"
               name="carModel"
               defaultValue={carModel}
-              dataoptions={DATADOMIE.Model}
+              dataoptions={watchBrand && carModelOptions}
+              dataget="modelname"
               disabled={watchBrand ? false : true}
             />
             {errors.carModel && (
@@ -202,6 +221,7 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
               placeholder="Versión"
               name="carVersion"
               defaultValue={carVersion}
+              // dataget="brandname"
               dataoptions={DATADOMIE.Version}
             />
             {errors.carVersion && (
@@ -228,7 +248,8 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
               placeholder="Tipo"
               name="carType"
               defaultValue={carType}
-              dataoptions={DATADOMIE.CarType}
+              dataget="brandname"
+              dataoptions={carTypeOptions}
             />
             {errors.carType && (
               <p className={stylesPure._error_label}>
@@ -247,8 +268,8 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
               label="Selecciona un tipo de Transmisión"
               placeholder="Transmisión"
               name="transmision"
-              defaultValue={transmision}
-              dataoptions={DATADOMIE.Transmision}
+              // defaultValue={carType}
+              dataoptions={transmisionOptions}
             />
             {errors.transmision && (
               <p className={stylesPure._error_label}>
@@ -268,7 +289,8 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
               placeholder="Combustible"
               name="fuel"
               defaultValue={fuel}
-              dataoptions={DATADOMIE.Fuel}
+              dataget="fueltype"
+              dataoptions={fuelOptions}
             />
             {errors.fuel && (
               <p className={stylesPure._error_label}>
