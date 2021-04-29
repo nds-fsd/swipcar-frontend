@@ -8,7 +8,7 @@ export const getUserToken = () => {
   return undefined;
 };
 
-export const getSessionUser = () => {
+export const getUserSession = () => {
   const session = getStorageObject('user-session');
   if (session) {
     return session.user;
@@ -16,7 +16,8 @@ export const getSessionUser = () => {
   return undefined;
 };
 
-export const setSessionUser = (sessionData) => {
+export const setUserSession = (sessionData) => {
+  console.log(sessionData);
   setStorageObject('user-session', sessionData);
 };
 

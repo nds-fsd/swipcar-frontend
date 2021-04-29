@@ -1,4 +1,4 @@
-import { getUserToken } from './auth/index';
+import { getUserToken, removeSession } from './auth/index';
 
 export const API_URL = 'http://localhost:3001';
 
@@ -63,6 +63,9 @@ const fetchRequest = (method = 'GET', path, userOptions = {}) => {
         // Maybe redirect to login page?
         return { authError: true };
       }
+      /* if (response.status === 409) {
+        removeSession();
+      } */
       return response.json();
     })
     .then((parsedResponse) => {

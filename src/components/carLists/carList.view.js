@@ -1,23 +1,23 @@
 import React, { useContext } from 'react';
 import styles from './carList.module.css';
-import CarCardXLarge from '../carCards/carCardXLarge.view';
+import CarCard from '../carCards/carCard.view';
 import { CarListContext } from '../../store/carListContext';
 
-const CarListXLarge = ({ carcard, carprofile }) => {
+const CarList = () => {
   const { listOfCars } = useContext(CarListContext);
 
   return (
     <div className={styles.car_list}>
       {listOfCars.map((carcard) => {
         return (
-          <CarCardXLarge
+          <CarCard
             key={carcard._id}
             brand={carcard.brand.brandname}
             model={carcard.model.modelname}
             fuel={carcard.fuel.fueltype}
             lowerprice={carcard.lowerprice.lowerprice}
-            ecomark={carcard.ecomark.ecomarktype}
             photocar={carcard.photocar[0].photourl}
+            carprofile={carcard.carprofile._id}
           />
         );
       })}
@@ -25,4 +25,4 @@ const CarListXLarge = ({ carcard, carprofile }) => {
   );
 };
 
-export default CarListXLarge;
+export default CarList;

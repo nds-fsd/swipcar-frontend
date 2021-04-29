@@ -7,7 +7,7 @@ export const CarListContext = createContext();
 export const CarListContextProvider = ({ children }) => {
   const [listOfCars, setListOfCars] = useState([]);
   useEffect(() => {
-    newCarsListRequest({ url: '/', onSuccess: setListOfCars });
+    newCarsListRequest({ url: '/carcard', onSuccess: setListOfCars });
   }, []);
 
   return <CarListContext.Provider value={{ listOfCars }}>{children}</CarListContext.Provider>;

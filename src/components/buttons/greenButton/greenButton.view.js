@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './loginSigninButton.module.css';
+import styles from './greenButton.module.css';
 
-const LoginSigninButton = (props) => {
+const GreenButton = (props) => {
   // const { design, label, actionButton } = props;
   return (
     <div>
@@ -16,4 +16,4 @@ const LoginSigninButton = (props) => {
   );
 };
 
-export default LoginSigninButton;
+export default GreenButton;

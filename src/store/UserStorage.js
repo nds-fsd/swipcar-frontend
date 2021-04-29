@@ -7,7 +7,7 @@ export const getStorageObject = (key) => {
 };
 
 export const setStorageObject = (key, object) => {
-  localStorage.getItem(key, JSON.stringify(object));
+  localStorage.setItem(key, JSON.stringify(object));
 };
 
 export const deleteStorageObject = (key) => {

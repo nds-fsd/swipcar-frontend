@@ -5,8 +5,8 @@ import {
   PARTICULARES_PAGE,
   EMPRESAS_PAGE,
   AUTONOMOS_PAGE,
-  NEW_CARS_LIST_PAGE,
-  SIGNIN_PAGE,
+  CARS_LIST_PAGE,
+  LOGIN_SIGNIN_PAGE,
 } from '../../../routers/routers';
 import styles from './headerLayout1.module.css';
 import SearchBarComplete from '../search/searchBarComplete/searchBarComplete.view';
@@ -51,7 +51,14 @@ const HeaderLayout1 = () => {
               <div className={styles._header_top_right_inner_container}>
                 <p className={styles._header_top_green_link_right}>Nosotros</p>
                 <p className={styles._header_top_green_link_right}>Contacto</p>
-                <p className={styles._header_top_green_link_right}>Proveedores</p>
+                <Link
+                  to={{
+                    pathname: LOGIN_SIGNIN_PAGE,
+                    state: { fromHeaderProvider: true },
+                  }}
+                >
+                  <p className={styles._header_top_green_link_right}>Proveedores</p>
+                </Link>
               </div>
             </>
           )}
@@ -96,7 +103,7 @@ const HeaderLayout1 = () => {
           </div>
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
             <div className={styles._login_container}>
-              <Link to={SIGNIN_PAGE}>
+              <Link to={LOGIN_SIGNIN_PAGE}>
                 <LoginIcon className={styles._login_icon} />
               </Link>
             </div>
@@ -105,7 +112,7 @@ const HeaderLayout1 = () => {
         {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
           <div className={styles._nav_wrapper}>
             <div className={styles._nav_container}>
-              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={NEW_CARS_LIST_PAGE}>
+              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={CARS_LIST_PAGE}>
                 <MenuItem menuItemName="Coches" />
               </Link>
               <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>

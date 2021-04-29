@@ -4,6 +4,7 @@
   height: 100vh;
   background-color: rgba(106, 152, 60, 1);
   position: fixed;
+  z-index: 30;
 }
 .sidebar_container {
   display: flex;

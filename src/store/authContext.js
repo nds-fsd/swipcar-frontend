@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 const initialStateUser = {};
 const initialStateToken = undefined;
 
-export const AuthContextprovider = ({ children }) => {
+export const AuthContextProvider = ({ children }) => {
   const [token, setToken] = useState(initialStateToken);
   const [user, setUser] = useState(initialStateUser);
 
@@ -22,7 +22,7 @@ export const AuthContextprovider = ({ children }) => {
     setUser(initialStateUser);
   };
 
-  const isLogged = () => {
+  const isLoged = () => {
     return !!token;
   };
 
@@ -32,7 +32,7 @@ export const AuthContextprovider = ({ children }) => {
     saveToken,
     saveUser,
     resetAuth,
-    isLogged,
+    isLoged,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -3,8 +3,7 @@ import {
   PARTICULARES_PAGE,
   EMPRESAS_PAGE,
   AUTONOMOS_PAGE,
-  NEW_CARS_LIST_PAGE,
-  VAN_CARS_LIST_PAGE,
+  CARS_LIST_PAGE,
 } from '../../../routers/routers';
 
 export const SideBarData = [
@@ -16,12 +15,12 @@ export const SideBarData = [
   {
     id: '2',
     title: 'Todos los coches',
-    path: NEW_CARS_LIST_PAGE,
+    path: CARS_LIST_PAGE,
   },
   {
     id: '3',
     title: 'Furgonetes',
-    path: VAN_CARS_LIST_PAGE,
+    path: CARS_LIST_PAGE,
   },
   {
     id: '4',

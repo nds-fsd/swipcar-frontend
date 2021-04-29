@@ -1,7 +1,7 @@
 ._scene {
   display: flex;
   justify-content: center;
-  margin: 50px 20px;
+  margin: 30px 20px;
 }
 
 ._wrapper {
@@ -35,6 +35,17 @@
   display: flex;
   height: 80px;
   margin-bottom: 20px;
+  padding: 0 20px;
+  justify-content: center;
+  text-align: center;
+  color: rgba(21, 21, 21, 1);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 48px;
+}
+._provider_left_login_title_container {
+  display: flex;
+  height: 50px;
   padding: 0 20px;
   justify-content: center;
   text-align: center;
@@ -158,4 +169,64 @@
   100% {
     transform: translateX(0);
   }
+}
+/* windowSize Small*/
+._bottom_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(106, 152, 60);
+  height: 40%;
+  align-items: center;
+}
+._bottom_login_title_container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 48px;
+}
+._login_button_container_sm {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+._bottom_signin_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(106, 152, 60);
+  height: 30%;
+  align-items: center;
+}
+
+._signin_button_container {
+  display: flex;
+  justify-content: center;
+}
+._proveedores_bottom_signin_container {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(106, 152, 60);
+  height: 20%;
+  align-items: center;
+}
+._proveedores_bottom_signin_title_container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  margin-bottom: 30px;
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 30px;
+}
+._proveedores_signin_button_container {
+  display: flex;
+  margin: -30px 20px 0 0;
 }
