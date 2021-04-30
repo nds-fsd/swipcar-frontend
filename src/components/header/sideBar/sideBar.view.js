@@ -6,9 +6,13 @@ import { ReactComponent as FacebookIcon } from '../../assets/facebookIcon.svg';
 import { ReactComponent as InstagramIcon } from '../../assets/instagramIcon.svg';
 import { ReactComponent as LinkedinIcon } from '../../assets/linkedinIcon.svg';
 import { SideBarData } from './sideBarData';
+import { LOGIN_SIGNIN_PAGE } from '../../../routers/routers';
 
 function SideBar({ openSideBar, closeSideBar }) {
   if (!openSideBar) return null;
+  const closeSidebar = () => {
+    openSideBar(!openSideBar);
+  };
   return (
     <div>
       <div className={styles.sidebar}>
@@ -26,7 +30,9 @@ function SideBar({ openSideBar, closeSideBar }) {
                     style={{ textDecoration: 'none', color: 'inherit' }}
                     to={item.path}
                   >
-                    <div className={styles.nav_link}>{item.title}</div>
+                    <div className={styles.nav_link} onClick={() => closeSideBar()}>
+                      {item.title}
+                    </div>
                   </Link>
                 );
               })}
@@ -36,6 +42,19 @@ function SideBar({ openSideBar, closeSideBar }) {
               <div className={styles.nav_link2}>Chatea con nosotros</div>
               <div className={styles.nav_link2}>+34 931 160 669</div>
               <div className={styles.nav_link2}>info@ecocars.com</div>
+            </div>
+            <hr className={styles.divider} />
+            <div className={styles.nav_link_container1}>
+              <Link
+                to={{
+                  pathname: LOGIN_SIGNIN_PAGE,
+                  state: { fromHeaderProvider: true },
+                }}
+              >
+                <div className={styles.nav_link} onClick={() => closeSideBar()}>
+                  Proveedores
+                </div>
+              </Link>
             </div>
           </div>
           <div className={styles.social_container}>

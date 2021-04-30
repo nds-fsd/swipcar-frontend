@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,
   EMPRESAS_PAGE,
   AUTONOMOS_PAGE,
-  NEW_CARS_LIST_PAGE,
-  SIGNIN_PAGE,
+  CARS_LIST_PAGE,
+  LOGIN_SIGNIN_PAGE,
+  DASHBOARD_PAGE,
 } from '../../../routers/routers';
 import styles from './headerLayout2.module.css';
 import SearchBarShort from '../search/searchBarShort/searchBarshort.view';
@@ -15,11 +16,31 @@ import SideBar from '../sideBar/sideBar.view';
 import { ReactComponent as EcocarsLogo } from '../../assets/ecocarsLogo.svg';
 import { ReactComponent as MenuIcon } from '../../assets/menuicon.svg';
 import { ReactComponent as LoginIcon } from '../../assets/loginIcon.svg';
+import { ReactComponent as SignoutIcon } from '../../assets/signoutIcon.svg';
 import useWindowSize from '../../../constants/useWindowSize';
+import { removeSession } from '../../../utils/auth';
+import { AuthContextProvider } from '../../../store/authContext';
 
 const HeaderLayout2 = () => {
+  const user = useContext(AuthContextProvider);
+  const history = useHistory();
   const windowSize = useWindowSize();
   const [openSideBar, setOpenSideBar] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState();
+
+  useEffect(() => {
+    const authorizedUser = localStorage.getItem('user-session');
+    if (authorizedUser) {
+      const activeUser = JSON.parse(authorizedUser);
+      setLoggedInUser(activeUser);
+    }
+  }, []);
+
+  const handleCloseSession = () => {
+    removeSession();
+    setLoggedInUser('');
+    history.push('/renting');
+  };
 
   return (
     <div>
@@ -60,16 +81,38 @@ const HeaderLayout2 = () => {
                   <div className={styles._header_top_right_inner_container}>
                     <div className={styles._header_top_green_link_right_container}>
                       <div className={styles._header_top_green_link_right}>Nosotros</div>
+
                       {windowSize === 'md' && (
                         <div className={styles._header_top_green_link_right}>Contacto</div>
                       )}
-                      <p className={styles._header_top_green_link_right}>Proveedores</p>
+                      {loggedInUser && loggedInUser.user.role === 'admin' ? (
+                        <Link to={DASHBOARD_PAGE}>
+                          <p className={styles._header_top_green_link_right}>Dashboard</p>
+                        </Link>
+                      ) : (
+                        <Link
+                          to={{
+                            pathname: LOGIN_SIGNIN_PAGE,
+                            state: { fromHeaderProvider: true },
+                          }}
+                        >
+                          <p className={styles._header_top_green_link_right}>Proveedores</p>
+                        </Link>
+                      )}
                     </div>
                   </div>
                   <div className={styles._login_container}>
-                    <Link to={SIGNIN_PAGE}>
-                      <LoginIcon className={styles._login_icon} />
-                    </Link>
+                    {loggedInUser && loggedInUser.user.role === 'user' ? (
+                      <SignoutIcon
+                        type="button"
+                        className={styles._login_icon}
+                        onClick={() => handleCloseSession()}
+                      />
+                    ) : (
+                      <Link to={LOGIN_SIGNIN_PAGE}>
+                        <LoginIcon className={styles._login_icon} />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -90,7 +133,7 @@ const HeaderLayout2 = () => {
                 </div>
               </Link>
               <div className={styles._login_container}>
-                <Link to={SIGNIN_PAGE}>
+                <Link to={LOGIN_SIGNIN_PAGE}>
                   <LoginIcon className={styles._login_icon} />
                 </Link>
               </div>
@@ -101,7 +144,7 @@ const HeaderLayout2 = () => {
       {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
         <div className={styles._nav_wrapper}>
           <div className={styles._nav_container}>
-            <Link style={{ textDecoration: 'none', color: 'inherit' }} to={NEW_CARS_LIST_PAGE}>
+            <Link style={{ textDecoration: 'none', color: 'inherit' }} to={CARS_LIST_PAGE}>
               <MenuItem menuItemName="Coches" />
             </Link>
             <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>

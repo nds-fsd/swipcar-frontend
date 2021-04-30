@@ -1,116 +1,73 @@
-.carlist_page {
+._carlist_page {
   display: flex;
   justify-content: center;
 }
-.scene_container_xlg {
+
+._scene_container {
   display: flex;
   flex-direction: column;
-  width: 1180px;
-  padding: 25px 25px 50px;
-  justify-content: center;
+  width: 100vw;
+  padding: 45px 0;
 }
-.scene_container_lg {
-  display: flex;
-  flex-direction: column;
-  width: 894px;
-  padding: 25px 25px 50px;
-  justify-content: center;
-}
-.scene_container_md {
-  display: flex;
-  flex-direction: column;
-  width: 883px;
-  padding: 25px 25px 50px;
-  justify-content: center;
-}
-.scene_title {
-  display: flex;
-  flex-direction: column;
-  margin: 0 0 28px;
-  height: 80px;
-}
-.title {
-  display: flex;
-  justify-content: center;
-  height: 32px;
-  margin: 15px 0;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 32px;
-  color: rgb(2, 24, 89);
-}
-.subtitle {
-  display: flex;
-  justify-content: center;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 18px;
-  color: rgb(2, 24, 89);
-  padding: 0 20px;
-  text-align: center;
-}
-.new_cars_action_container {
+
+/* Title & Tab container */
+._scene_sorting_container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
-  height: 68px;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 64px;
+  margin: 0 45px;
 }
-.new_cars_action_container_sm {
+._scene_sorting_container_sm {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 68px;
-  padding: 25px 0;
+}
+._title {
+  display: flex;
+  justify-content: center;
+  font-family: Poppins;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 48px;
+  color: rgba(21, 21, 21);
+  margin: 5px 0;
+}
+._title_md {
+  display: flex;
+  justify-content: center;
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 48px;
+  color: rgba(21, 21, 21);
+  margin: 5px 0;
+}
+._tab_container {
+  display: flex;
 }
 
+/* List container */
+._list_container {
+  display: flex;
+  flex-direction: row;
+
+  margin: 10px 21px 0 45px;
+}
+._left_list_container {
+  display: flex;
+  min-width: 268px;
+}
 .filter_container {
   display: flex;
 }
-.tabs_content {
+
+._right_list_container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-.tabs_content_sm {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-top: 15px;
-  margin-bottom: 25px;
-}
-.tab_wrapper {
-  display: flex;
-  justify-content: flex-end;
-  background-color: rgb(230, 232, 240);
-  border-radius: 10px;
-  width: fit-content;
-  max-height: 38px;
-  padding: 5px 2.5px;
-}
-.list_container {
-  display: flex;
-  margin-top: 30px;
-  max-width: 100%;
-  justify-content: space-between;
-}
-.list_container_sm {
-  display: flex;
-  margin-top: 30px;
-  max-width: 100%;
-}
-.list_container_medium {
-  display: flex;
-  margin-top: 30px;
-  max-width: 894px;
-  justify-content: space-between;
-}
-/* Used Cars & Van Cars Pages */
-.cars_action_container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   width: 100%;
-  height: 68px;
+  margin-left: 18px;
+  justify-content: center;
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import BreadcrumbItem from '../../components/breadcrumbItem/breadcrumbItem.view';
 import styles from './carProfilePage.module.css';
 import useWindowSize from '../../constants/useWindowSize';
@@ -14,15 +15,20 @@ import IconCarDescription from '../../components/iconCarDescription/iconCarDescr
 import { newCarProfileRequest } from '../../utils/carProfiletRequest';
 
 const CarProfilePage = () => {
+  const location = useLocation();
+  const carId = location.state?.carId;
+
   let windowSize = useWindowSize();
   const [carProfile, setCarProfile] = useState();
 
-  //let carID = '/606f0d78d105fa086e1101cb';
+  console.log(`first log :  ${carId}`);
 
   useEffect(() => {
-    newCarProfileRequest({ url: '/606f0d78d105fa086e1101cb', onSuccess: setCarProfile });
-  }, []);
-  console.log({ carProfile });
+    newCarProfileRequest({
+      url: `/carprofile/${carId}`,
+      onSuccess: setCarProfile,
+    });
+  }, [carId]);
 
   return (
     <div className={styles.carprofile_scene}>
@@ -33,7 +39,7 @@ const CarProfilePage = () => {
               className={`${windowSize === 'xlg' && styles.breadcrumbs_wrapper_xlg} || ${
                 windowSize === 'lg' && styles.breadcrumbs_wrapper_lg
               } || ${windowSize === 'md' && styles.breadcrumbs_wrapper_md}
-      || ${windowSize === 'sm' && styles.breadcrumbs_wrapper_sm}`}
+                || ${windowSize === 'sm' && styles.breadcrumbs_wrapper_sm}`}
             >
               <BreadcrumbItem />
             </div>
@@ -59,11 +65,13 @@ const CarProfilePage = () => {
                   windowSize === 'sm' && styles.photo_container_sm
                 }`}
               >
-                <img
-                  className={styles.photo}
-                  alt="imgcar"
-                  src={carProfile.carCard.photocar[0].photourl}
-                />
+                {
+                  <img
+                    className={styles.photo}
+                    alt="imgcar"
+                    src={carProfile.carCard.photocar[0].photourl}
+                  />
+                }
               </div>
               <div className={windowSize === 'sm' ? styles.video_wrapper_sm : styles.video_wrapper}>
                 <div className={styles.video_container}>

@@ -1,17 +1,11 @@
 import React from 'react';
 import styles from './filterButton.module.css';
-import useWindowSize from '../../../constants/useWindowSize';
 
-const FilterButton = ({ setOpenFilter }) => {
-  const windowSize = useWindowSize();
-  const handleFilter = () => {
-    windowSize === 'xlg' && setOpenFilter(false);
-    windowSize === 'lg' && setOpenFilter(false);
-  };
+const FilterButton = ({ buttonText, buttonStyle }) => {
   return (
     <div>
-      <button className={styles.button} onClick={() => handleFilter()}>
-        Filtros
+      <button className={buttonStyle === 'filled' ? styles._button_filled : styles._button_naked}>
+        {buttonText}
       </button>
     </div>
   );
