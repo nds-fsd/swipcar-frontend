@@ -1,0 +1,105 @@
+._table_container {
+  width: 95%;
+  max-height: 80vh;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px -8px #444;
+  position: relative;
+}
+._table_search_input {
+  width: 50%;
+  padding: 7px 7px 7px 40px;
+  margin: 10px;
+  font-size: medium;
+  color: #505050;
+  background-image: url(../../icons/search.svg);
+  background-repeat: no-repeat;
+  background-size: 16px;
+  background-position: 2% 50%;
+  border: 1px solid #c4c4c460;
+  border-radius: 7px;
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'roboto', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+._table_select_results {
+  width: 5%;
+  padding: 7px 0 7px 7px;
+  margin: 10px;
+  color: #777;
+  font-size: medium;
+  background-color: white;
+  border: 1px solid #c4c4c460;
+  border-radius: 7px;
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'roboto', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+.table {
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  color: #888;
+  min-width: 400px;
+}
+._body_data {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.table .header,
+.table .header .row, ._table_body_info {
+  display: flex;
+}
+.table .header div{
+  flex: 1;
+  padding: 15px 10px;
+  border-top: 1px solid rgb(238, 238, 238);
+  border-bottom: 1px solid rgb(238, 238, 238);
+  font-size: medium;
+  color: #444;
+  font-weight: 400;
+}
+._table_tr_info {
+  flex: 1;
+  padding: 10px 10px;
+  border-bottom: 1px solid rgb(238, 238, 238);
+  font-size: small;
+  color: #999;
+  font-weight: 400;
+}
+.table .header div .header,
+.table .row div .header {
+  background-color: rgb(238, 238, 238);
+}
+.table .header div .header div,
+.table .row div .header div {
+  cursor: pointer;
+}
+._table_tr_id_data {
+  flex-grow: 0.6;
+  overflow: hidden;
+  font-size: small;
+  text-overflow: ellipsis;
+}
+._table_tr_principal_data {
+  color: #648563;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+._table_tools_button {
+  color: #648563;
+  background-color: #f7f7f7;
+  border: none;
+  padding: 0 10px;
+  transition: 500ms;
+  cursor: pointer;
+}
+._table_tools_button:hover {
+  color: #FFF;
+  background-color: #648563;
+}

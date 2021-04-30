@@ -4,31 +4,31 @@ export const CreateCarRequestAll = async ({ onSuccess = () => {} }) => {
   const datas = [
     {
       endpoint: API_DEV.BRANDS,
-      key: 'Brand',
+      key: 'carBrand',
     },
     {
       endpoint: API_DEV.TYPE,
-      key: 'CarType',
+      key: 'carType',
     },
     {
       endpoint: API_DEV.TRANSMISION,
-      key: 'Transmision',
+      key: 'transmision',
     },
     {
       endpoint: API_DEV.FUEL,
-      key: 'Fuel',
+      key: 'fuel',
     },
     {
       endpoint: API_DEV.PUERTAS,
-      key: 'Puertas',
+      key: 'puertas',
     },
     {
       endpoint: API_DEV.ECOMARK,
-      key: 'EcoMark',
+      key: 'ecoMark',
     },
     {
       endpoint: API_DEV.COLOR,
-      key: 'Color',
+      key: 'color',
     },
     {
       endpoint: API_DEV.GOODY,
@@ -59,154 +59,7 @@ export const CreateCarRequestAll = async ({ onSuccess = () => {} }) => {
 
   Promise.all(fetchData)
     .then((values) => values.map((res, index) => handlePair(res, index)))
-    .catch(console.log('eeeeeeeeeeeeeeeeeeerrrooooooooooooooooorrr!!!!!'));
-
-  // const fetchedData = await datas.map((dataToFetch) => ({
-  //   key: dataToFetch.key,
-  //   data: fetch(API_DEV.API + dataToFetch.endpoint)
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         return res.json();
-  //       }
-  //       return Promise.reject();
-  //     })
-  //     .then((res) => {
-  //       onSuccess({ AllDataOptions: { [dataToFetch.key]: [res] } });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     }),
-  // }));
-
-  // debugger;
-
-  // onSuccess(fetchedData);
-
-  /*fetch(API_DEV.API + API_DEV.BRANDS)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ Brand: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.TYPE)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ CarType: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.TRANSMISION)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ Transmision: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.FUEL)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ Fuel: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.PUERTAS)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ Puertas: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.ECOMARK)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ EcoMark: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.COLOR)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ Color: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.GOODY)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ Goodies: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  fetch(API_DEV.API + API_DEV.EQUIPMENT)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      }
-      return Promise.reject();
-    })
-    .then((res) => {
-      onSuccess({ EquipamientoDestacado: res });
-    })
-    .catch((err) => {
-      console.log(err);
-    });*/
+    .catch(console.log('error!'));
 };
 export const CreateCarRequestModel = ({ watchBrand, onSuccess = () => {} }) => {
   const url = API_DEV.API + API_DEV.MODELS + `bybrand/${watchBrand}`;
@@ -219,6 +72,33 @@ export const CreateCarRequestModel = ({ watchBrand, onSuccess = () => {} }) => {
     })
     .then((res) => {
       onSuccess({ Model: res });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const GetDataDashboardTable = ({ queryGetData, onSuccess = () => {} }) => {
+  const url = API_DEV.API + API_DEV.CARPROFILE + `dataOptions`;
+  const body = queryGetData;
+  const options = {
+    method: 'POST',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    }),
+    mode: 'cors',
+    body: JSON.stringify(body),
+  };
+  fetch(url, options)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
+    })
+    .then((res) => {
+      onSuccess(res);
+      // console.log('RES DASHBOARD ' , res );
     })
     .catch((err) => {
       console.log(err);

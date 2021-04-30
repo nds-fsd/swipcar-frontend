@@ -25,22 +25,26 @@ import {
   USED_CARS_LIST_PAGE,
   VAN_CARS_LIST_PAGE,
   FORM_PAGE,
+  DASHBOARD_PAGE,
 } from './routers/routers';
+import DashboardPage from './pages/dashboardPage/dashboardPage.view';
 
 function App() {
-
-
   const iconList = Object.keys(Icons)
     .filter((key) => key !== 'fas' && key !== 'prefix')
     .map((icon) => Icons[icon]);
 
   library.add(...iconList);
 
+
   return (
     <Router>
       <div>
         <Header />
         <Switch>
+          <Route path={DASHBOARD_PAGE}>
+            <DashboardPage />
+          </Route>
           <Route path={PARTICULARES_PAGE}>
             <ParticularesPage />
           </Route>

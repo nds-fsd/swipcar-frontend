@@ -8,3 +8,7 @@ export const PARTICULARES_PAGE = '/renting-particulares';
 export const AUTONOMOS_PAGE = '/renting-autonomos';
 export const EMPRESAS_PAGE = '/renting-empresas';
 export const FORM_PAGE = '/crear-renting';
+export const DASHBOARD_PAGE = '/dashboard';
+export const DASHBOARD_CARS_PAGE = '/dashboard/cars';
+export const DASHBOARD_USERS_PAGE = '/dashboard/users';
+export const DASHBOARD_VENDORS_PAGE = '/dashboard/vendors';
