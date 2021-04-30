@@ -72,20 +72,20 @@ const HeaderLayout1 = () => {
               <div className={styles._header_top_right_inner_container}>
                 <p className={styles._header_top_green_link_right}>Nosotros</p>
                 <p className={styles._header_top_green_link_right}>Contacto</p>
-                <Link
-                  to={{
-                    pathname: LOGIN_SIGNIN_PAGE,
-                    state: { fromHeaderProvider: true },
-                  }}
-                >
-                  {loggedInUser && loggedInUser.user.role === 'admin' ? (
-                    <Link to={DASHBOARD_PAGE}>
-                      <p className={styles._header_top_green_link_right}>Dashboard</p>
-                    </Link>
-                  ) : (
+                {loggedInUser && loggedInUser.user.role === 'admin' ? (
+                  <Link to={DASHBOARD_PAGE}>
+                    <p className={styles._header_top_green_link_right}>Dashboard</p>
+                  </Link>
+                ) : (
+                  <Link
+                    to={{
+                      pathname: LOGIN_SIGNIN_PAGE,
+                      state: { fromHeaderProvider: true },
+                    }}
+                  >
                     <p className={styles._header_top_green_link_right}>Proveedores</p>
-                  )}
-                </Link>
+                  </Link>
+                )}
               </div>
             </>
           )}

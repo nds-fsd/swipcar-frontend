@@ -5,7 +5,7 @@ const Checkbox = () => {
   return (
     <div className={styles._checkbox_wrapper}>
       <input type="checkbox" name="checkbox"></input>
-      <label>Fiat</label>
+      <label className={styles._checkbox_label}>Fiat</label>
     </div>
   );
 };
