@@ -6,21 +6,21 @@ import stylesToggle from './toggleButtonComponent.module.css';
 
 const ToggleButtonComponent = React.forwardRef((props, ref) => {
 
-
   return (
     <div className={stylesToggle._toggle_box}>
       <span className={stylesToggle._label}>{props.label}</span>
       <div className={stylesToggle.switch_container}>
         <label>
-          <input
-            className={stylesToggle.switch}
-            {...props}
-            ref={ref}
-          />
+          <input className={stylesToggle.switch} {...props} ref={ref} />
           <div>
             <div className={stylesToggle._circle_toggle}>
               {props.iconlabel && (
-                <FontAwesomeIcon icon={props.iconlabel} className={stylesToggle._icon_label} />
+                <FontAwesomeIcon
+                  icon={props.iconlabel}
+                  className={`${stylesToggle._icon_label} ${
+                    (ref && ref.current.value) && stylesToggle._icon_label_check
+                  }`}
+                />
               )}
             </div>
           </div>

@@ -136,7 +136,7 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
   }, [isChecked]);
 
   return (
-    <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
+    <div className={`${styles._wrapper}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles._toggles_list}>
           {DATADOMIE.CarProfileDataEstate.map((value) => (

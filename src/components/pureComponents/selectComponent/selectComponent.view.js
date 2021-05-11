@@ -7,7 +7,7 @@ const SelectComponent = React.forwardRef((props, ref) => {
     <div>
       <label className={styles._label_form}>{props.label}</label>
       <select className={styles._select} ref={ref} {...props}>
-        <option value="" disabled>
+        <option value="" disabled selected={!props.defaultValue}>
           {props.placeholder}
         </option>
         {props.dataoptions &&

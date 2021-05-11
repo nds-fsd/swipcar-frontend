@@ -1,22 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
+import {
+  DASHBOARD_PAGE,
+  DASHBOARD_VENDORS_PAGE,
+  DASHBOARD_USERS_PAGE,
+} from '../../routers/routers';
+import Modal from '../../components/modal/modal.view';
 import NavDashBoard from '../../components/navDashBoard';
-import TableDashboard from '../../components/tableDashboard/tableDashboard.view';
+import TableDashboardCarProfile from '../../components/tableDashboardCarProfile';
+import TableDashboardUsers from '../../components/tableDashboardUsers';
 import useWindowSize from '../../constants/useWindowSize';
 import styles from './dashboardPage.module.css';
+import CarProfileForm from '../../components/carProfileForm';
+import UserForm from '../../components/userForm';
 
 const DashboardPage = () => {
+  const location = useLocation();
+  const locationUrl = location.pathname;
   const windowSize = useWindowSize();
+
+  // const [modalType, setModalType] = useState('');
+
+  // useEffect(() => {
+  //   switch (locationUrl) {
+  //     case DASHBOARD_VENDORS_PAGE:
+  //       setModalType('editCarProfile');
+  //       break;
+  //     case DASHBOARD_USERS_PAGE:
+  //       setModalType('editUser');
+  //       break;
+  //     default:
+  //       setModalType('editCarProfile');
+  //       break;
+  //   }
+  // }, [locationUrl]);
+
+  //?MODAL
+  const [showModal, setShowModal] = useState(false);
+  const handleModal = () => {
+    setShowModal(!showModal);
+  };
+  //?MODAL
 
   return (
     <div className={styles._container}>
-      {/* <div className={styles._left}> */}
+      {showModal && (
+        <Modal>
+          {locationUrl === DASHBOARD_VENDORS_PAGE && (
+            <CarProfileForm
+              // modalObject={modalObject}
+              handleCloseModal={() => handleModal()}
+            />
+          )}
+
+          {locationUrl === DASHBOARD_USERS_PAGE && (
+            <UserForm
+              handleCloseModal={() => handleModal()}
+              // modalObject={modalObject}
+              // handleCloseModal={()=> console.log('Llega el putooooo!!')}
+            />
+          )}
+        </Modal>
+      )}
+
       <NavDashBoard />
-      {/* </div> */}
 
       <div className={styles._table_container}>
-        <h1 className={styles._title_table}>Coches de renting</h1>
-
-        <TableDashboard />
+        {locationUrl === DASHBOARD_VENDORS_PAGE && (
+          <>
+            <h1 className={styles._title_table}>Coches de renting</h1>
+            <TableDashboardCarProfile handleModal={handleModal} />
+          </>
+        )}
+        {locationUrl === DASHBOARD_USERS_PAGE && (
+          <>
+            <h1 className={styles._title_table}>Gestión de Usuarios</h1>
+            <TableDashboardUsers handleModal={handleModal} />
+          </>
+        )}
       </div>
     </div>
   );

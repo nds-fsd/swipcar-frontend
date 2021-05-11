@@ -51,10 +51,11 @@
   overflow-y: auto;
 }
 .table .header,
-.table .header .row, ._table_body_info {
+.table .header .row,
+._table_body_info {
   display: flex;
 }
-.table .header div{
+.table .header div {
   flex: 1;
   padding: 15px 10px;
   border-top: 1px solid rgb(238, 238, 238);
@@ -100,6 +101,30 @@
   cursor: pointer;
 }
 ._table_tools_button:hover {
-  color: #FFF;
+  color: #fff;
   background-color: #648563;
+}
+._button_navPages {
+  color: #648563;
+  background-color: #f7f7f7;
+  border: none;
+  padding: 10px;
+  transition: 300ms;
+  cursor: pointer;
+  font-weight: 600;
+}
+._button_navPages:hover {
+  color: #fff;
+  background-color: #648563;
+}
+._button_navPages:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+._button_navPages_icon {
+  margin: 0 10px;
+}
+._row_button_pages {
+  text-align: right;
+  margin: 1em;
 }

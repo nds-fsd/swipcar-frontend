@@ -3,17 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { CreateCarRequestAll, GetDataDashboardTable } from '../../utils/createCarRequestAll';
 
-import styles from './tableDashboard.module.css';
+import styles from './tableDashboardCarProfile.module.css';
 
-const TableDashboard = ({ stepForm }) => {
+const TableDashboardCarProfile = ({ handleModal }) => {
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
   const skip = parseInt(query.get('skip')) || 0;
   const limit = parseInt(query.get('limit')) || 5;
+  const dir = query.get('dir') || 'asc';
   const sort = query.get('sort');
 
-  const handlePage = () => {
+  const handlePagePrev = () => {
+    query.set('skip', skip - limit);
+    history.push({ search: query.toString() });
+  };
+  const handlePageNext = () => {
     query.set('skip', skip + limit);
     history.push({ search: query.toString() });
   };
@@ -23,24 +28,29 @@ const TableDashboard = ({ stepForm }) => {
   };
   const sortBy = (key) => {
     query.set('sort', key);
+    if (dir === 'asc') {
+      query.set('dir', 'desc');
+    } else {
+      query.set('dir', 'asc');
+    }
+
     history.push({ search: query.toString() });
   };
+  // const sortBy = (key) => {
+  //   query.set('sort', key);
+  //   history.push({ search: query.toString() });
+  // };
 
   const [dataTable, setDataTable] = useState([]);
 
   useEffect(() => {
-    const queryGetData = { skip, limit, sort };
+    const queryGetData = { sort, dir, skip, limit };
     GetDataDashboardTable({ queryGetData, onSuccess: setDataTable });
   }, [pathUrl]);
 
   useEffect(() => {
     GetDataDashboardTable({ onSuccess: setDataTable });
-    // GetDataDashboardTable({ onSuccess: setIncrementalData });
   }, []);
-
-  // useEffect(() => {
-  //   console.log('dataTable :', dataTable);
-  // }, [dataTable]);
 
   const formatDate = (updatedAt) => {
     let fecha = updatedAt.split('T')[0];
@@ -59,21 +69,29 @@ const TableDashboard = ({ stepForm }) => {
       <div className={styles._table_tr_info}>{version}</div>
       <div className={styles._table_tr_info}>{carCard.fuel.fueltype}</div>
       <div className={styles._table_tr_info}>{formatDate(updatedAt)}</div>
-      <button className={styles._table_tools_button} title="Herramientas de edición">
+      <button
+        className={styles._table_tools_button}
+        title="Herramientas de edición"
+        onClick={() => handleModal()}
+      >
         <FontAwesomeIcon icon="ellipsis-v" />
       </button>
     </div>
   );
 
-  const rows = dataTable && dataTable.map((rowData, index) => <Row {...rowData} key={index} />);
+  useEffect(() => {
+    console.log('dataTable :', dataTable);
+  }, [dataTable]);
 
-  // useEffect(() => {
-  //   console.log('dataTable   : ', dataTable);
-  // }, []);
+  const rows =
+    dataTable.elements &&
+    dataTable.elements.map((rowData, index) => <Row {...rowData} key={index} />);
 
   return (
     <>
       <div className={styles._table_container}>
+        {/* <Modal modalObject="editCarProfile" handleCloseModal={handleModal} /> */}
+
         <div className={styles._table_row}>
           <div className={styles._table_search}>
             <input
@@ -92,26 +110,43 @@ const TableDashboard = ({ stepForm }) => {
                 <div onClick={() => sortBy('id')} style={{ flexGrow: '0.6' }}>
                   ID
                 </div>
-                <div onClick={() => sortBy('carBrand')}>Marca</div>
-                <div onClick={() => sortBy('carModel')}>Modelo</div>
-                <div onClick={() => sortBy('carVersion')}>Versión</div>
+                <div onClick={() => sortBy('brand')}>Marca</div>
+                <div onClick={() => sortBy('model')}>Modelo</div>
+                <div onClick={() => sortBy('version')}>Versión</div>
                 <div onClick={() => sortBy('fueltype')}>Combustible</div>
-                <div onClick={() => sortBy('createAt')} style={{ paddingRight: '30px' }}>
+                <div onClick={() => sortBy('createdAt')} style={{ paddingRight: '30px' }}>
                   Creación
                 </div>
               </div>
               <div className={styles._body_data}>{rows}</div>
             </div>
           </div>
-        </div>
-        <div className={styles._table_data}></div>
-
-        <div>
-          <button onClick={handlePage}>NEXT PAGE </button>
+          <div className={styles._row_button_pages}>
+            <button
+              refs="prevButtonRef"
+              className={styles._button_navPages}
+              onClick={handlePagePrev}
+              title="Página Anterior"
+              disabled={skip === 0}
+            >
+              <FontAwesomeIcon icon="chevron-left" className={styles._button_navPages_icon} />
+              Anterior
+            </button>
+            <button
+              // ref={nextButtonRef}
+              className={styles._button_navPages}
+              onClick={handlePageNext}
+              title="Siguiente Página"
+              // disabled={skip === 0}
+            >
+              Siguiente
+              <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />
+            </button>
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default TableDashboard;
+export default TableDashboardCarProfile;

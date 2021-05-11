@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   HOME_PAGE,
@@ -7,6 +7,8 @@ import {
   AUTONOMOS_PAGE,
   NEW_CARS_LIST_PAGE,
   DASHBOARD_PAGE,
+  DASHBOARD_VENDORS_PAGE,
+  DASHBOARD_USERS_PAGE,
 } from '../../routers/routers';
 import styles from './header.module.css';
 import MenuItem from '../header/menuItem/menuItem.view';
@@ -22,13 +24,24 @@ import useWindowSize from '../../constants/useWindowSize';
 const Header = () => {
   const location = useLocation();
   const locationUrl = location.pathname;
+  const [showHeader, setShowHeader] = useState(true);
+
+  useEffect(() => {
+    if (
+      locationUrl === DASHBOARD_PAGE ||
+      locationUrl === DASHBOARD_VENDORS_PAGE ||
+      locationUrl === DASHBOARD_USERS_PAGE
+    ) {
+      setShowHeader(false);
+    }
+  }, []);
 
   const windowSize = useWindowSize();
   const [openSideBar, setOpenSideBar] = useState(false);
 
   return (
     <div>
-      {locationUrl !== DASHBOARD_PAGE && (
+      {showHeader && (
         <div>
           <SideBar openSideBar={openSideBar} closeSideBar={() => setOpenSideBar(false)} />
           <div className={styles.header}>
