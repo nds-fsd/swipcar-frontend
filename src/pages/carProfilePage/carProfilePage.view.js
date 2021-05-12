@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import BreadcrumbItem from '../../components/breadcrumbItem/breadcrumbItem.view';
 import styles from './carProfilePage.module.css';
 import useWindowSize from '../../constants/useWindowSize';
@@ -12,7 +12,7 @@ import { ReactComponent as CarDoorIcon } from '../../components/assets/carDoorIc
 import { ReactComponent as EmissionIcon } from '../../components/assets/emissionIcon.svg';
 import { ReactComponent as ChronographIcon } from '../../components/assets/chronographIcon.svg';
 import IconCarDescription from '../../components/iconCarDescription/iconCarDescription.view';
-import { newCarProfileRequest } from '../../utils/carProfiletRequest';
+import { newRequest } from '../../utils/newRequest';
 
 const CarProfilePage = () => {
   const location = useLocation();
@@ -21,10 +21,10 @@ const CarProfilePage = () => {
   let windowSize = useWindowSize();
   const [carProfile, setCarProfile] = useState();
 
-  console.log(`first log :  ${carId}`);
+  //console.log(`first log :  ${carId}`);
 
   useEffect(() => {
-    newCarProfileRequest({
+    newRequest({
       url: `/carprofile/${carId}`,
       onSuccess: setCarProfile,
     });

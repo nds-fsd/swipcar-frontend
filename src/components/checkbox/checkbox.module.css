@@ -1,0 +1,19 @@
+._checkbox_wrapper {
+  display: flex;
+  margin-bottom: 8px;
+}
+._checkbox_container {
+  display: flex;
+  flex-direction: row;
+}
+._checkbox_label {
+  display: flex;
+  position: relative;
+  font-family: Open Sans;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  margin-left: 10px;
+  color: #000000;
+  align-items: center;
+}

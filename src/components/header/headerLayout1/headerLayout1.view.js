@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { newRequest } from '../../../utils/newRequest';
+import styles from './transmision.module.css';
 import Checkbox from '../../checkbox';
-import styles from './facetContainer.module.css';
 
-const FacetContainer = ({ entity, targetData, register }) => {
-  const [entityList, setEntityList] = useState([]);
+const Transmision = ({ entity, targetData, register }) => {
+  const [transmisionList, setTransmisionList] = useState([]);
 
   useEffect(() => {
-    newRequest({ url: `/${entity}/`, onSuccess: setEntityList });
+    newRequest({ url: `/${entity}/`, onSuccess: setTransmisionList });
   }, [entity]);
 
   return (
-    <div className={styles._facet_container}>
-      {entityList.map((entity) => {
+    <div className={styles._transmission_container}>
+      {transmisionList.map((entity) => {
         return (
           <Checkbox
             key={entity._id}
-            name="brand"
+            name="transmision"
             targetdata={entity[targetData]}
             value={entity[targetData]}
             entity={entity}
@@ -27,5 +27,4 @@ const FacetContainer = ({ entity, targetData, register }) => {
     </div>
   );
 };
-
-export default FacetContainer;
+export default Transmision;

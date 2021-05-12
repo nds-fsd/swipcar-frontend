@@ -11,14 +11,15 @@ body {
   font-family: Poppins, 'Open-Sans', Roboto, sans-serif;
 }
 
-/* *::-webkit-scrollbar {@import u
-  width: 8px;
+*::-webkit-scrollbar {
+  width: 12px;
+  box-shadow: 0 0 10px -5px #444;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background-color: #e0e0e061;
+  background-color: #64856330;
   border-radius: 20px;
-  border: 1px solid #33333378;
-} */
+  border: 1px solid #fff;
+}

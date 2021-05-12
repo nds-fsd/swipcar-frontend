@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './menuItem.module.css';
 
-const MenuItem = ({ menuItemName }) => {
+const MenuItem = ({ menuItemName, activeclass }) => {
   return (
     <div className={styles._wrapper}>
       <div className={styles._container}>

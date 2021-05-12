@@ -1,46 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './filter.module.css';
-import FuelContainer from './fuelContainer/fuelContainer.view';
-import FacetContainer from './facetContainer/facetContainer.view';
-import FilterButton from './filterButton/filterButton.view';
+import FuelContainer from './fuelContainer';
+import FacetContainer from './facetContainer';
+import FilterButton from './filterButton';
+import Transmision from './transmision/transmision.view';
+import TimeOption from './timeOption/timeOption.view';
+import PriceMultirange from './priceMultirange';
+import { useForm } from 'react-hook-form';
 
-const Filter = ({ openFilter, closeFilter }) => {
+const Filter = ({ openFilter, closeFilter, setFuelSort }) => {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    const querystring = require('querystring');
+    let queryString = querystring.stringify(data);
+    console.log(queryString);
+  };
+
   if (openFilter) return null;
-
   return (
-    <div className={styles._wrapper}>
-      <div className={styles._filter_container}>
-        <div className={styles._container_title}>
-          <div className={styles._title}>Combustible</div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles._wrapper}>
+        <div className={styles._filter_container}>
+          <div className={styles._container_title}>
+            <div className={styles._title}>Combustible</div>
+          </div>
+          <FuelContainer setFuelSort={setFuelSort} />
         </div>
-        <FuelContainer />
-      </div>
-      <div className={styles._filter_container}>
-        <div className={styles._container_title}>
-          <div className={styles._title}>Marcas</div>
+        <div className={styles._filter_container}>
+          <div className={styles._container_title}>
+            <div className={styles._title}>Marcas</div>
+          </div>
+          <FacetContainer entity={'brand'} targetData={'brandname'} register={register} />
         </div>
-        <FacetContainer />
-      </div>
-      <div className={styles._filter_container}>
-        <div className={styles._container_title}>
-          <div className={styles._title}>Tiempo</div>
+        <div className={styles._filter_container}>
+          <div className={styles._container_title}>
+            <div className={styles._title}>Tiempo</div>
+          </div>
+          <TimeOption entity={'rentingOption'} targetData={'duracion'} register={register} />
+        </div>
+        <div className={styles._filter_container}>
+          <div className={styles._container_title}>
+            <div className={styles._title}>Transmisión</div>
+          </div>
+          <Transmision entity={'transmision'} targetData={'transmisiontype'} register={register} />
+        </div>
+        <div className={styles._filter_container}>
+          <div className={styles._container_title}>
+            <div className={styles._title}>Precio</div>
+          </div>
+          <PriceMultirange />
+        </div>
+        <div className={styles._filter_button_container}>
+          <FilterButton buttonText="Apply" buttonStyle="filled" type="submit" />
+          <FilterButton buttonText="Reset" buttonStyle="naked" />
         </div>
       </div>
-      <div className={styles._filter_container}>
-        <div className={styles._container_title}>
-          <div className={styles._title}>Transmisión</div>
-        </div>
-      </div>
-      <div className={styles._filter_container}>
-        <div className={styles._container_title}>
-          <div className={styles._title}>Precio</div>
-        </div>
-      </div>
-      <div className={styles._filter_button_container}>
-        <FilterButton buttonText="Apply" buttonStyle="filled" />
-        <FilterButton buttonText="Reset" buttonStyle="naked" />
-      </div>
-    </div>
+    </form>
   );
 };
 

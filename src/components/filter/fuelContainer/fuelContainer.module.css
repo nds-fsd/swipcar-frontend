@@ -1,5 +1,8 @@
-._wrapper {
+._fuel_wrapper {
   display: flex;
+  flex-direction: column;
+  height: 154px;
+  overflow: auto;
 }
 ._fuel_item_container {
   display: flex;
@@ -11,9 +14,13 @@
 ._fuel_item {
   font-family: Open sans;
   font-size: 14px;
-  line-height: 19.07px;
+  line-height: 19px;
   font-weight: 400;
   color: rgba(21, 21, 21, 1);
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
 }
 ._fuel_car_count {
   display: flex;
