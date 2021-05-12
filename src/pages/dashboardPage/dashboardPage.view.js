@@ -11,8 +11,8 @@ import TableDashboardCarProfile from '../../components/tableDashboardCarProfile'
 import TableDashboardUsers from '../../components/tableDashboardUsers';
 import useWindowSize from '../../constants/useWindowSize';
 import styles from './dashboardPage.module.css';
-import CarProfileForm from '../../components/carProfileForm';
-import UserForm from '../../components/userForm';
+import CarProfileForm from '../../components/forms/carProfileForm';
+import UserForm from '../../components/forms/userForm';
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -45,7 +45,7 @@ const DashboardPage = () => {
   return (
     <div className={styles._container}>
       {showModal && (
-        <Modal>
+        <Modal handleCloseModal={() => handleModal()}>
           {locationUrl === DASHBOARD_VENDORS_PAGE && (
             <CarProfileForm
               // modalObject={modalObject}

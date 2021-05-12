@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import useWindowSize from '../../constants/useWindowSize';
+import useWindowSize from '../../../constants/useWindowSize';
 
-import stylesPure from '../pureComponents/pureComponents.module.css';
-import SelectComponent from '../pureComponents/selectComponent';
-import ToggleButtonComponent from '../pureComponents/toggleButtonComponent';
-// import ButtonComponent from '../../../components/pureComponents/buttonComponent';
+import CarIcon from '../../assets/carEditIcon.gif';
 
-import styles from './carProfileForm.module.css';
+import stylesPure from '../../pureComponents/pureComponents.module.css';
+import SelectComponent from '../../pureComponents/selectComponent';
+import ToggleButtonComponent from '../../pureComponents/toggleButtonComponent';
+
+import styles from '../forms.module.css';
 
 import { useForm } from 'react-hook-form';
 import {
@@ -14,12 +15,12 @@ import {
   CreateCarRequestModel,
   CreateCarRequestVersion,
   GetDataCarProfile,
-} from '../../utils/createCarRequestAll';
+} from '../../../utils/createCarRequestAll';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DATADOMIE } from '../../pages/createRentingPage/dataDomie';
-import ButtonComponent from '../pureComponents/buttonComponent/buttonComponent.view';
-import InputComponent from '../pureComponents/inputComponent/index';
-import ButtonActionIconComponent from '../pureComponents/buttonActionIconComponent/buttonActionIconComponent.view';
+import { DATADOMIE } from '../../../pages/createRentingPage/dataDomie';
+import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
+import InputComponent from '../../pureComponents/inputComponent/index';
+import ButtonActionIconComponent from '../../pureComponents/buttonActionIconComponent/buttonActionIconComponent.view';
 
 const CarProfileForm = ({ toEdit, handleCloseModal }) => {
   const [dataToEDit, setDataToEDit] = useState({});
@@ -277,6 +278,11 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     }
   };
 
+  const [editData, setEditData] = useState(false);  
+  const handleEdit = () => {
+    setEditData(!editData);
+  };
+
   return (
     <div className={styles.carlist_page}>
       <div
@@ -287,10 +293,35 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
       `}
       >
         <div className={styles._wrapper}>
-          <h2 id="step-title" className={styles._tittle}>
-            <FontAwesomeIcon icon="car-alt" style={{ marginRight: '20px' }} />
-            Crea un Nuevo Renting
-          </h2>
+
+
+
+        <div className={styles._title_group}>
+            <div className={`${styles._boxElements} ${styles._title_group}`}>
+              <img src={CarIcon} className={styles._icon_title} alt="Crea un Nuevo Renting" />
+              <span className={styles._title}>
+                {editData ? 'Editar un Renting' : 'Crea un Nuevo Renting'}
+              </span>
+            </div>
+
+            <div className={styles._boxElements}>
+              <div
+                className={styles._row_buttons}
+                style={{ display: 'flex', justifyContent: 'flex-end' }}
+              >
+                {!editData && (
+                  <ButtonComponent
+                    label="Editar Perfil"
+                    alt="Editar Perfil"
+                    typeButton="ok"
+                    actionButton={() => handleEdit()}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={`${styles._toggles_list} ${styles._toggles_list_nuevoSemi}`}>
               {DATADOMIE.CarProfileDataEstate.map((value) => (
@@ -490,24 +521,22 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
 
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('cvMotor', {
-                    required: 'Número de CV requerido',
-                  })}
-                  refs={cvMotor}
-                  label="CV del Motor"
-                  placeholder="CV"
-                  name="cvMotor"
-                  defaultValue={cvMotor}
-                  id="cvMotor"
-                  type="Number"
+                <SelectComponent
+                  {...register('color', { required: 'Color requerido' })}
+                  refs={color}
+                  name="color"
+                  label="Seleciona un Color"
+                  placeholder="Color"
+                  defaultValue={color}
+                  dataget="label"
+                  dataoptions={colorOptions}
                 />
-                {errors.cvMotor && (
+                {errors.color && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.cvMotor.message}
+                    {errors.color.message}
                   </p>
                 )}
               </div>
@@ -559,22 +588,24 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('color', { required: 'Color requerido' })}
-                  refs={color}
-                  name="color"
-                  label="Seleciona un Color"
-                  placeholder="Color"
-                  defaultValue={color}
-                  dataget="label"
-                  dataoptions={colorOptions}
+                <InputComponent
+                  {...register('cvMotor', {
+                    required: 'Número de CV requerido',
+                  })}
+                  refs={cvMotor}
+                  label="CV del Motor"
+                  placeholder="CV"
+                  name="cvMotor"
+                  defaultValue={cvMotor}
+                  id="cvMotor"
+                  type="Number"
                 />
-                {errors.color && (
+                {errors.cvMotor && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.color.message}
+                    {errors.cvMotor.message}
                   </p>
                 )}
               </div>
@@ -802,15 +833,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
               <div className={`${styles._boxElements} ${styles._list_add}`}>
                 {listTecnologia.length === 0 && (
-                  <h2 className={styles._tittle_list}>
-                    <FontAwesomeIcon icon="microchip" className={styles._icon_title} />
+                  <h2 className={styles._title_list}>
+                    <FontAwesomeIcon icon="microchip" className={styles._icon_title_list} />
                     No se han añadido Tecnologías
                   </h2>
                 )}
                 {listTecnologia.length > 0 && (
                   <>
-                    <h2 className={styles._tittle_list}>
-                      <FontAwesomeIcon icon="microchip" className={styles._icon_title} />
+                    <h2 className={styles._title_list}>
+                      <FontAwesomeIcon icon="microchip" className={styles._icon_title_list} />
                       Listado de Tecnologías
                     </h2>
                     <ul>
@@ -870,15 +901,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
               <div className={`${styles._boxElements} ${styles._list_add}`}>
                 {listConfort.length === 0 && (
-                  <h2 className={styles._tittle_list}>
-                    <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title} />
+                  <h2 className={styles._title_list}>
+                    <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title_list} />
                     No se han añadido Confort
                   </h2>
                 )}
                 {listConfort.length > 0 && (
                   <>
-                    <h2 className={styles._tittle_list}>
-                      <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title} />
+                    <h2 className={styles._title_list}>
+                      <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title_list} />
                       Listado de Confort
                     </h2>
                     <ul>
@@ -938,15 +969,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
               <div className={`${styles._boxElements} ${styles._list_add}`}>
                 {listSeguridad.length === 0 && (
-                  <h2 className={styles._tittle_list}>
-                    <FontAwesomeIcon icon="shield-alt" className={styles._icon_title} />
+                  <h2 className={styles._title_list}>
+                    <FontAwesomeIcon icon="shield-alt" className={styles._icon_title_list} />
                     No se ha añadido Seguridad
                   </h2>
                 )}
                 {listSeguridad.length > 0 && (
                   <>
-                    <h2 className={styles._tittle_list}>
-                      <FontAwesomeIcon icon="shield-alt" className={styles._icon_title} />
+                    <h2 className={styles._title_list}>
+                      <FontAwesomeIcon icon="shield-alt" className={styles._icon_title_list} />
                       Listado de Seguridad
                     </h2>
                     <ul>
@@ -1006,15 +1037,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
               <div className={`${styles._boxElements} ${styles._list_add}`}>
                 {listExterior.length === 0 && (
-                  <h2 className={styles._tittle_list}>
-                    <FontAwesomeIcon icon="air-freshener" className={styles._icon_title} />
+                  <h2 className={styles._title_list}>
+                    <FontAwesomeIcon icon="air-freshener" className={styles._icon_title_list} />
                     No se ha añadido Exterior
                   </h2>
                 )}
                 {listExterior.length > 0 && (
                   <>
-                    <h2 className={styles._tittle_list}>
-                      <FontAwesomeIcon icon="air-freshener" className={styles._icon_title} />
+                    <h2 className={styles._title_list}>
+                      <FontAwesomeIcon icon="air-freshener" className={styles._icon_title_list} />
                       Listado de Exterior
                     </h2>
                     <ul>
@@ -1087,15 +1118,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
               </div>
               <div className={`${styles._boxElements} ${styles._list_add}`}>
                 {rentingOptions.length === 0 && (
-                  <h2 className={styles._tittle_list}>
-                    <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title} />
+                  <h2 className={styles._title_list}>
+                    <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title_list} />
                     No se ha añadido Opciones de Renting
                   </h2>
                 )}
                 {rentingOptions.length > 0 && (
                   <>
-                    <h2 className={styles._tittle_list}>
-                      <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title} />
+                    <h2 className={styles._title_list}>
+                      <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title_list} />
                       Opciones de Renting
                     </h2>
                     <ul>

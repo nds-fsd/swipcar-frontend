@@ -66,6 +66,12 @@
   color: #648563;
   border: 2px solid #648563;
   box-shadow: 0 0 10px -5px #333;
+  transition: 100ms ease-in-out;
+}
+._button_cancel:hover,
+._button_ok:hover {
+  box-shadow: 0 0 10px 0 #333;
+  transform: scale(0.90);
 }
 ._button_cancel {
   background-color: #ffffff;
@@ -141,4 +147,8 @@
 }
 ._error_label_icon {
   margin-right: 5px;
+}
+
+._icon_for_button {
+  margin-right: 10px;
 }
