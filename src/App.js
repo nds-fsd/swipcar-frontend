@@ -35,6 +35,7 @@ function App() {
 
   library.add(...iconList);
 
+
   return (
     <AuthContextProvider>
       <Router>
