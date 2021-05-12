@@ -16,6 +16,6 @@
   padding: 6px 0;
 }
 
-.link_item:hover {
+._item:hover {
   color: rgba(106, 152, 60, 1);
 }

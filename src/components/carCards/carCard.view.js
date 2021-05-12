@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './carCard.module.css';
 
-const CarCardXLarge = ({ brand, model, fuel, lowerprice, photocar, carprofile }) => {
+const CarCardXLarge = ({ brand, model, fuel, lowerprice, photocar, carProfile }) => {
   return (
     <div className={styles._card_wrapper}>
       <Link
         to={{
-          pathname: `/renting-car/${brand}/${model}/${carprofile}`,
-          state: { carId: carprofile },
+          pathname: `/renting-car/${brand}/${model}/${carProfile}`,
+          state: { carId: carProfile },
         }}
         style={{ textDecoration: 'none' }}
       >

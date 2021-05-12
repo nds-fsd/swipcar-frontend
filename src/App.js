@@ -70,7 +70,7 @@ function App() {
               <HeaderLayout1 />
               <CreateRentingPage />
             </Route>
-            <Route path={CAR_PROFILE_PAGE} exact>
+            <Route path={CAR_PROFILE_PAGE}>
               <HeaderLayout2 />
               <CarProfilePage />
             </Route>
@@ -81,6 +81,10 @@ function App() {
             <Route exact path="/">
               <Redirect to={HOME_PAGE} />
               <HeaderLayout1 />
+            </Route>
+            <Route path="*">
+              <HeaderLayout1 />
+              <div>404 Not Found</div>
             </Route>
           </Switch>
         </div>

@@ -12,6 +12,13 @@ const SearchBarComplete = (props) => {
           <div className={styles._categories_container}>
             <select className={styles._select} {...props}>
               <option>{props.placeholder}</option>
+              <option>Urbanita</option>
+              <option>SUV</option>
+              <option>SUV pequeño</option>
+              <option>Compacto</option>
+              <option>Berlina</option>
+              <option>7 Plazas</option>
+              <option>4x4</option>
               {/* {props.dataoptions.map((option) => (
             <option key={option._id} value={option._id}>
               {option.name}

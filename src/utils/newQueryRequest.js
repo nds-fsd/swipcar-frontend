@@ -1,7 +1,8 @@
 const PATH = 'http://localhost:3001';
 
-export const newCarProfileRequest = ({
+export const newQueryRequest = ({
   url,
+  query,
   body,
   method = 'GET',
   params,
@@ -14,6 +15,7 @@ export const newCarProfileRequest = ({
   }
   fetch(parsedUrl, {
     method,
+    query,
     body,
   })
     .then(async (response) => {
