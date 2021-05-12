@@ -1,104 +1,22 @@
-.wrapper {
-  margin-top: -98px;
+._wrapper {
   display: block;
-  min-width: 220px;
-  max-width: 220px;
-  height: 938px;
-  margin-right: 20px;
-  padding: 15px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
+  width: 100%;
+  font-family: Poppins;
 }
-.title_wrapper {
+._filter_container {
   display: flex;
   flex-direction: column;
-  margin-bottom: 21px;
+  margin-bottom: 42px;
 }
-.title_container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.title {
-  display: flex;
-  color: rgb(2, 24, 89);
-  font-weight: 600;
+._container_title {
+  height: 24px;
   font-size: 18px;
-  line-height: 24px;
-  margin-bottom: 10px;
+  font-weight: 600;
+  line-height: 27px;
+  color: rgba(21, 21, 21, 1);
+  margin-bottom: 12px;
 }
-.close_icon_container {
+._filter_button_container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  padding: 1px 6px;
-  color: rgb(255, 69, 151);
-  font-size: 12px;
-  line-height: 18px;
-  align-items: flex-end;
-}
-.close_icon {
-  display: flex;
-  width: 14px;
-  color: rgb(255, 69, 151);
-  margin: 0 0 0 5px;
-}
-.title_text {
-  color: rgb(172, 181, 198);
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-}
-.filter_wrapper {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 21px;
-}
-.filter_name {
-  color: rgb(2, 24, 89);
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 18px;
-  margin-bottom: 7px;
-}
-.filter_container {
-  max-width: 250px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.clear_container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: 20px;
-  margin: 25px 0 0;
-}
-.clear_icon {
-  display: flex;
-  width: 15px;
-  color: rgb(255, 69, 151);
-  margin-right: 10px;
-}
-.clear_text {
-  height: 20px;
-  display: flex;
-  font-size: 14px;
-  color: rgb(255, 69, 151);
-  font-weight: 500;
-  margin-top: 0px;
-  cursor: pointer;
-}
-
-/* Slider filter for md and sm sizes*/
-.slide_wrapper {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #ffffff;
 }

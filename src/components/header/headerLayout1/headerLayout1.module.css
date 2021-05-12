@@ -1,0 +1,151 @@
+._header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 50px;
+}
+
+/* Header-Top xlg, lg, md*/
+._header_top_wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1170px;
+  flex-direction: row;
+  margin: 0 50px;
+  height: 47px;
+  font-family: Open sans;
+  line-height: 16px;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.05);
+}
+._header_top_left_inner_container {
+  display: flex;
+  align-items: center;
+}
+._header_top_green_link_left {
+  font-weight: 500;
+  font-size: 12px;
+  color: rgba(106, 152, 60, 1);
+  margin-right: 20px;
+}
+._header_top_right_inner_container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+._header_top_green_link_right {
+  font-weight: 500;
+  font-size: 12px;
+  color: rgba(106, 152, 60, 1);
+  margin-left: 20px;
+}
+._header_top_link {
+  min-width: 100px;
+  font-weight: 500;
+  font-size: 12px;
+  color: rgba(21, 21, 21, 1);
+  margin-right: 20px;
+}
+
+/* Header-Top sm*/
+._header_top_wrapper_sm {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 50px;
+  height: 47px;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.05);
+}
+._menu_icon_container {
+  display: flex;
+  align-items: center;
+}
+._menu_icon {
+  width: 22px;
+  color: rgba(106, 152, 60, 1);
+}
+._logo_sm_container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+._header_logo_sm {
+  display: flex;
+  width: 90px;
+  margin-top: -26px;
+}
+._login_top_container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Header middle*/
+._header_middle_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1050px;
+  max-height: 157px;
+  align-items: center;
+}
+._header_middle_wrapper_center {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1050px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+._header_middle_wrapper_sm {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+}
+._header_middle_logo_xlg {
+  display: flex;
+  width: 231px;
+  margin: 40px 0 0 00px;
+}
+._header_middle_logo {
+  display: flex;
+  width: 182px;
+  margin: 30px 0 0 60px;
+}
+._search_container {
+  display: flex;
+  margin: 20px 0 0 0px;
+}
+._login_container {
+  display: flex;
+  margin: 20px 20px 0 0;
+}
+._login_icon {
+  width: 24px;
+  height: 24px;
+  margin: 0 00px 0 0px;
+  cursor: pointer;
+}
+._login_icon:hover {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(106, 152, 60, 1);
+  border-radius: 14px;
+}
+
+/* Header Nav */
+._nav_wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 47px;
+  justify-content: center;
+  background-color: rgba(249, 249, 249, 1);
+}
+._nav_container {
+  display: flex;
+  padding: 10px 0;
+}

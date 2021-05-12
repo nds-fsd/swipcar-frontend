@@ -1,0 +1,13 @@
+._facet_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 6px 0;
+  height: 154px;
+  overflow: auto;
+}
+._facet_fieldset {
+  border: none;
+  padding: 0px;
+  margin: 0px;
+}
