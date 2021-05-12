@@ -37,8 +37,8 @@ const Step3Form = ({ stepPagePrev, stepPageNext }) => {
   };
 
   return (
-    <div>
-      <form className={styles._form_step_animation} onSubmit={handleSubmit(onSubmit)}>
+    <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles._form_step_animation}>
           <h2 className={styles._tittle}>Renting Goodies</h2>
 

@@ -3,18 +3,8 @@ export const DATADOMIE = {
   //! "nuevo: true, seminuevo: false, furgoneta: false" en CarProfile no se puede recoger
   //! de esa forma ....???
   CarProfileDataEstate: [
-    { _id: 1, name: 'Nuevo', isChecked: false },
-    { _id: 2, name: 'Semi Nuevo', isChecked: false },
-    { _id: 3, name: 'Furgoneta', isChecked: false },
-  ],
-  CarType: [
-    { _id: 1, name: 'Urbanita' },
-    { _id: 2, name: 'Suv' },
-    { _id: 3, name: 'Suv Pequeño' },
-    { _id: 4, name: 'Compacto' },
-    { _id: 5, name: 'Berlina' },
-    { _id: 6, name: '7plazas' },
-    { _id: 7, name: '4x4' },
+    { _id: 1, label:'Nuevo', name: 'nuevo', isChecked: false },
+    { _id: 2, label:'Semi Nuevo',name: 'seminuevo', isChecked: false },
   ],
   Brand: [
     { _id: 1, name: 'Fiat' },
@@ -37,6 +27,16 @@ export const DATADOMIE = {
   Version: [
     { _id: 1, name: 'Intens Tce' },
     { _id: 2, name: 'Intens TCe Gpf MHEV' },
+  ],
+  CarType: [
+    { _id: 1, name: 'Urbanita' },
+    { _id: 2, name: 'Suv' },
+    { _id: 3, name: 'Suv Pequeño' },
+    { _id: 4, name: 'Compacto' },
+    { _id: 5, name: 'Berlina' },
+    { _id: 6, name: '7plazas' },
+    { _id: 7, name: '4x4' },
+    { _id: 8, name: 'Furgonetas' },
   ],
   Transmision: [
     { _id: 1, name: 'Manual' },

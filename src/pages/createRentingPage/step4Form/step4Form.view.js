@@ -57,22 +57,22 @@ const Step4Form = ({ stepPagePrev, stepPageNext }) => {
   };
 
   return (
-    <form className={styles._form_step_animation} onSubmit={handleSubmit(onSubmit)}>
-      <h2 className={styles._tittle}>Tecnología Incluida</h2>
+    <div className={`${styles._wrapper} ${styles._form_step_animation}`}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h2 className={styles._tittle}>Tecnología Incluida</h2>
 
-      <div
-        className={`${windowSize !== 'sm' && styles._row3_xlg}
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-      >
-        <div className={styles._boxElements}>
-          <InputComponent
+        >
+          <div className={styles._boxElements}>
+            <InputComponent
               {...register('tecnologia', { required: 'Tecnología requerida' })}
-            placeholder="Añade una tecnología"
-            name="tecnologia"
-            type="text"
-            onChange={handleInput}
-          />
+              placeholder="Añade una tecnología"
+              name="tecnologia"
+              type="text"
+            />
             {errors.tecnologia && (
               <p className={stylesPure._error_label}>
                 <span className={stylesPure._error_label_icon}>
@@ -81,26 +81,25 @@ const Step4Form = ({ stepPagePrev, stepPageNext }) => {
                 {errors.tecnologia.message}
               </p>
             )}
-          <br />
-          <ButtonActionIconComponent actionButton={addTecnology} />
+            <br />
+            <ButtonActionIconComponent actionButton={addTecnology} />
+          </div>
         </div>
-      </div>
 
-      <h2 className={styles._tittle}>Confort Incluido</h2>
+        <h2 className={styles._tittle}>Confort Incluido</h2>
 
-      <div
-        className={`${windowSize !== 'sm' && styles._row3_xlg}
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-      >
-        <div className={styles._boxElements}>
-          <InputComponent
+        >
+          <div className={styles._boxElements}>
+            <InputComponent
               {...register('confort', { required: 'Confort requerida' })}
-            placeholder="Añade un confort"
-            name="confort"
-            type="text"
-            onChange={handleInput}
-          />
+              placeholder="Añade un confort"
+              name="confort"
+              type="text"
+            />
             {errors.confort && (
               <p className={stylesPure._error_label}>
                 <span className={stylesPure._error_label_icon}>
@@ -109,26 +108,25 @@ const Step4Form = ({ stepPagePrev, stepPageNext }) => {
                 {errors.confort.message}
               </p>
             )}
-          <br />
-          <ButtonActionIconComponent actionButton={addConfort} />
+            <br />
+            <ButtonActionIconComponent actionButton={addConfort} />
+          </div>
         </div>
-      </div>
 
-      <h2 className={styles._tittle}>Seguridad Incluida</h2>
+        <h2 className={styles._tittle}>Seguridad Incluida</h2>
 
-      <div
-        className={`${windowSize !== 'sm' && styles._row3_xlg}
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-      >
-        <div className={styles._boxElements}>
-          <InputComponent
+        >
+          <div className={styles._boxElements}>
+            <InputComponent
               {...register('seguridad', { required: 'Seguridad requerida' })}
-            placeholder="Añade una seguridad"
-            name="seguridad"
-            type="text"
-            onChange={handleInput}
-          />
+              placeholder="Añade una seguridad"
+              name="seguridad"
+              type="text"
+            />
             {errors.seguridad && (
               <p className={stylesPure._error_label}>
                 <span className={stylesPure._error_label_icon}>
@@ -137,26 +135,25 @@ const Step4Form = ({ stepPagePrev, stepPageNext }) => {
                 {errors.seguridad.message}
               </p>
             )}
-          <br />
-          <ButtonActionIconComponent actionButton={addSegurity} />
+            <br />
+            <ButtonActionIconComponent actionButton={addSegurity} />
+          </div>
         </div>
-      </div>
 
-      <h2 className={styles._tittle}>Exterior Incluida</h2>
+        <h2 className={styles._tittle}>Exterior Incluida</h2>
 
-      <div
-        className={`${windowSize !== 'sm' && styles._row3_xlg}
+        <div
+          className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-      >
-        <div className={styles._boxElements}>
-          <InputComponent
+        >
+          <div className={styles._boxElements}>
+            <InputComponent
               {...register('exterior', { required: 'Exterior requerido' })}
-            placeholder="Añade un exterior"
-            name="exterior"
-            type="text"
-            onChange={handleInput}
-          />
+              placeholder="Añade un exterior"
+              name="exterior"
+              type="text"
+            />
             {errors.exterior && (
               <p className={stylesPure._error_label}>
                 <span className={stylesPure._error_label_icon}>
@@ -165,21 +162,22 @@ const Step4Form = ({ stepPagePrev, stepPageNext }) => {
                 {errors.exterior.message}
               </p>
             )}
-          <br />
-          <ButtonActionIconComponent actionButton={addExterior} />
+            <br />
+            <ButtonActionIconComponent actionButton={addExterior} />
+          </div>
         </div>
-      </div>
 
-      <div className={styles._row_buttons}>
-        <ButtonComponent
-          label="Paso Anterior"
-          alt="Paso Anterior"
-          type="cancel"
-          actionButton={stepPagePrev}
-        />
-        <ButtonComponent label="Paso Siguiente" type="submit" alt="Paso Siguiente" />
-      </div>
-    </form>
+        <div className={styles._row_buttons}>
+          <ButtonComponent
+            label="Paso Anterior"
+            alt="Paso Anterior"
+            type="cancel"
+            actionButton={stepPagePrev}
+          />
+          <ButtonComponent label="Paso Siguiente" type="submit" alt="Paso Siguiente" />
+        </div>
+      </form>
+    </div>
   );
 };
 

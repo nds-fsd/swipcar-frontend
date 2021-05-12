@@ -7,22 +7,26 @@
   margin-left: 20px;
 }
 ._toggle_box {
-  padding: 10px;
-  margin: 10px;
+  padding: 5px;
+  margin: 5px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 0 10px -9px #333;
+  box-shadow: 0 0 10px -7px #333;
 }
 ._label {
-  font-size: 1.4em;
-  color: #666;
+  font-size: 0.9em;
+  color: #777;
   text-transform: capitalize;
 }
 
 ._icon_label {
   font-size: 18px;
   color: rgb(206, 206, 206);
+  transition: 400ms;
+}
+._icon_label_check {
+  color: #648563;
 }
 
 ._circle_toggle {
@@ -41,7 +45,7 @@ input[type='checkbox'].switch + div {
   width: 40px;
   height: 20px;
   border-radius: 999px;
-  background:  rgba(2, 24, 89, 1) ;
+  background:  rgb(184, 184, 184) ;
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
   -webkit-transition-property: background-color, box-shadow;
@@ -65,26 +69,28 @@ input[type='checkbox'].switch + div span:nth-child(2) {
 }
 
 input[type='checkbox'].switch:checked + div {
-  width: 60px;
+  width: 40px;
   margin-top: 10px;
   background-position: 0 0;
-  background: rgb(255, 69, 151);
+  background: #648563;
 }
 
 input[type='checkbox'].switch + div {
   margin-top: 10px;
-  width: 60px;
-  height: 20px;
+  width: 45px;
+  height: 15px;
 }
 
 input[type='checkbox'].switch:checked + div {
-  background: rgb(255, 69, 151);
+  width: 45px;
+  height: 15px;
+  background: #648563;
 }
 
 input[type='checkbox'].switch + div > div {
   float: left;
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
   border-radius: inherit;
   background: rgb(255, 255, 255);
   background: rgb(255, 255, 255);
@@ -118,6 +124,6 @@ input[type='checkbox'].bigswitch.switch + div > div {
 }
 
 input[type='checkbox'].switch:checked + div > div {
-  -webkit-transform: translate3d(32px, 0, 0);
-  transform: translate3d(32px, 0, 0);
+  -webkit-transform: translate3d(21px, 0, 0);
+  transform: translate3d(21px, 0, 0);
 }

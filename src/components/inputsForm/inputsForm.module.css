@@ -9,7 +9,9 @@
   padding: 25px 25px 50px;
   justify-content: center;
   background-color: #fff;
-  box-shadow: 0 0 10px -5px;
+  box-shadow: 0 0 10px -8px #444;
+  max-height: 75vh;
+  overflow-y: auto;
 }
 .scene_container_lg {
   display: flex;
@@ -18,7 +20,9 @@
   padding: 25px 25px 50px;
   justify-content: center;
   background-color: #fff;
-  box-shadow: 0 0 10px -5px;
+  box-shadow: 0 0 10px -8px #444;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 .scene_container_md {
   display: flex;
@@ -27,7 +31,9 @@
   padding: 25px 25px 50px;
   justify-content: center;
   background-color: #fff;
-  box-shadow: 0 0 10px -5px;
+  box-shadow: 0 0 10px -8px #444;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 .scene_title {
   display: flex;

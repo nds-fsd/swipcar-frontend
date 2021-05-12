@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,
   EMPRESAS_PAGE,
   AUTONOMOS_PAGE,
   NEW_CARS_LIST_PAGE,
+  DASHBOARD_PAGE,
+  DASHBOARD_VENDORS_PAGE,
+  DASHBOARD_USERS_PAGE,
 } from '../../routers/routers';
 import styles from './header.module.css';
 import MenuItem from '../header/menuItem/menuItem.view';
@@ -19,77 +22,101 @@ import { ReactComponent as MenuIcon } from '../assets/menuicon.svg';
 import useWindowSize from '../../constants/useWindowSize';
 
 const Header = () => {
+  const location = useLocation();
+  const locationUrl = location.pathname;
+  const [showHeader, setShowHeader] = useState(true);
+
+  useEffect(() => {
+    if (
+      locationUrl === DASHBOARD_PAGE ||
+      locationUrl === DASHBOARD_VENDORS_PAGE ||
+      locationUrl === DASHBOARD_USERS_PAGE
+    ) {
+      setShowHeader(false);
+    }
+  }, []);
+
   const windowSize = useWindowSize();
   const [openSideBar, setOpenSideBar] = useState(false);
 
   return (
     <div>
-      <SideBar openSideBar={openSideBar} closeSideBar={() => setOpenSideBar(false)} />
-      <div className={styles.header}>
-        {windowSize === 'xlg' || windowSize === 'lg' ? (
-          <div
-            className={`${windowSize === 'xlg' && styles.container_large} || ${
-              windowSize === 'lg' && styles.container_medium
-            }`}
-          >
-            <div className={styles.logo_container}>
-              <div className={styles.logo}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
-                  <Logo />
-                </Link>
+      {showHeader && (
+        <div>
+          <SideBar openSideBar={openSideBar} closeSideBar={() => setOpenSideBar(false)} />
+          <div className={styles.header}>
+            {windowSize === 'xlg' || windowSize === 'lg' ? (
+              <div
+                className={`${windowSize === 'xlg' && styles.container_large} || ${
+                  windowSize === 'lg' && styles.container_medium
+                }`}
+              >
+                <div className={styles.logo_container}>
+                  <div className={styles.logo}>
+                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
+                      <Logo />
+                    </Link>
+                  </div>
+                </div>
+                <div className={styles.menu_container}>
+                  <div className={styles.nav_container}>
+                    <Link
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                      to={NEW_CARS_LIST_PAGE}
+                    >
+                      <MenuItem menuItemName="Coches" />
+                    </Link>
+                    <Link
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                      to={PARTICULARES_PAGE}
+                    >
+                      <MenuItem menuItemName="Particulares" />
+                    </Link>
+                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
+                      <MenuItem menuItemName="Autónomos" />
+                    </Link>
+                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
+                      <MenuItem menuItemName="Empresas" />
+                    </Link>
+                  </div>
+                </div>
+                <div className={styles.login_container}>
+                  <div className={styles.login_buttons}>
+                    <LoginButton />
+                    <SigninButton />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className={styles.menu_container}>
-              <div className={styles.nav_container}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={NEW_CARS_LIST_PAGE}>
-                  <MenuItem menuItemName="Coches" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>
-                  <MenuItem menuItemName="Particulares" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
-                  <MenuItem menuItemName="Autónomos" />
-                </Link>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
-                  <MenuItem menuItemName="Empresas" />
-                </Link>
+            ) : (
+              <div
+                className={`${windowSize === 'md' && styles.container_medium} || ${
+                  windowSize === 'sm' && styles.container_small
+                }`}
+              >
+                <div className={styles.menu_sidebar}>
+                  <MenuIcon
+                    type="button"
+                    className={styles.icon}
+                    onClick={() => setOpenSideBar(true)}
+                  />
+                </div>
+                <div className={styles.logo_container}>
+                  <div className={styles.logo}>
+                    <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
+                      <Logo />
+                    </Link>
+                  </div>
+                </div>
+                <div className={styles.login_container}>
+                  <div className={styles.login_buttons}>
+                    <LoginButton />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className={styles.login_container}>
-              <div className={styles.login_buttons}>
-                <LoginButton />
-                <SigninButton />
-              </div>
-            </div>
+            )}
           </div>
-        ) : (
-          <div
-            className={`${windowSize === 'md' && styles.container_medium} || ${
-              windowSize === 'sm' && styles.container_small
-            }`}
-          >
-            <div className={styles.menu_sidebar}>
-              <MenuIcon
-                type="button"
-                className={styles.icon}
-                onClick={() => setOpenSideBar(true)}
-              />
-            </div>
-            <div className={styles.logo_container}>
-              <div className={styles.logo}>
-                <Link style={{ textDecoration: 'none', color: 'inherit' }} to={HOME_PAGE}>
-                  <Logo />
-                </Link>
-              </div>
-            </div>
-            <div className={styles.login_container}>
-              <div className={styles.login_buttons}>
-                <LoginButton />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

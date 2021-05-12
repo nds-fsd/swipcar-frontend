@@ -4,35 +4,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import styles from '../pureComponents.module.css';
 import stylesToggle from './toggleButtonComponent.module.css';
 
-const ToggleButtonComponent = (props) => {
-  const [isChecked, setIsChecked] = useState(props.checked);
-
-  const _handleToggle = (e) => {
-    setIsChecked(!isChecked);
-    // setInputData({ ...inputData, [e.target.name]: !isChecked });
-  };
+const ToggleButtonComponent = React.forwardRef((props, ref) => {
 
   return (
     <div className={stylesToggle._toggle_box}>
       <span className={stylesToggle._label}>{props.label}</span>
       <div className={stylesToggle.switch_container}>
         <label>
-          <input
-            className={stylesToggle.switch}
-            onChange={_handleToggle}
-            {...props}
-            checked={isChecked}
-          />
+          <input className={stylesToggle.switch} {...props} ref={ref} />
           <div>
             <div className={stylesToggle._circle_toggle}>
-              <FontAwesomeIcon icon={props.iconlabel} className={stylesToggle._icon_label} />
+              {props.iconlabel && (
+                <FontAwesomeIcon
+                  icon={props.iconlabel}
+                  className={`${stylesToggle._icon_label} ${
+                    (ref && ref.current.value) && stylesToggle._icon_label_check
+                  }`}
+                />
+              )}
             </div>
           </div>
         </label>
       </div>
     </div>
   );
-};
+});
 
 export default ToggleButtonComponent;
 
