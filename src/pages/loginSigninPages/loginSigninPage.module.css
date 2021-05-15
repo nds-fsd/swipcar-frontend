@@ -67,18 +67,21 @@
   height: 100%;
   width: 40%;
   z-index: 20;
-  background-color: rgb(106, 152, 60);
+  /* background-color: rgb(106, 152, 60); */
+  background-image:url('../../components/assets/hojasVerdes.jpg');
+  background-position: center;
+  background-size: cover;
 }
 ._right_login_title_container {
   display: flex;
   flex-direction: column;
   text-align: center;
   padding: 0 20px;
-  margin-top: 60px;
-  color: rgb(255, 255, 255);
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 48px;
+  margin-top: -10px;
+  color: rgb(106 152 60);
+  font-size: 40px;
+  line-height: 55px;
+  font-weight: 300;
 }
 
 /* Inputs */
@@ -189,6 +192,15 @@
   font-weight: 500;
   font-size: 30px;
   line-height: 48px;
+}
+._bottom_login_subTitle_container {
+  margin-top: 10px;
+  text-align: center;
+  padding: 0 20px;
+  color: rgb(255, 255, 255);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
 }
 ._login_button_container_sm {
   display: flex;

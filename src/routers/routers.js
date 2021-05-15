@@ -11,3 +11,5 @@ export const DASHBOARD_PAGE = '/dashboard';
 export const DASHBOARD_CARS_PAGE = '/dashboard/cars';
 export const DASHBOARD_USERS_PAGE = '/dashboard/users';
 export const DASHBOARD_VENDORS_PAGE = '/dashboard/vendors';
+export const DASHBOARD_NEW_RENTING_PAGE = '/dashboard/newrenting';
+export const DASHBOARD_MY_RENTINGS_PAGE = '/dashboard/myrentings';

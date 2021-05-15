@@ -89,7 +89,7 @@ const LoginSigninPage = ({ props }) => {
         setUserSession(res);
         getUserToken();
         setIsSubmitting(false);
-        history.push('/user/dashboard');
+        history.push('/dashboard');
       })
       .catch((error) => {
         console.log(error);
@@ -117,7 +117,7 @@ const LoginSigninPage = ({ props }) => {
           history.push('/renting');
         }
         if (res.user.role === 'admin') {
-          history.push('/user/dashboard');
+          history.push('/dashboard');
         }
       })
       .catch((error) => {
