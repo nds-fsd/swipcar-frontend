@@ -1,9 +1,0 @@
-.car_list {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  min-height: 250px;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
