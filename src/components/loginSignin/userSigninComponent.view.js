@@ -84,7 +84,13 @@ const UserSigninComponent = ({
             </form>
           </div>
           <div className={`${styles._right_login_container} ${styles[move]}`}>
-            <div className={styles._right_login_title_container}>¡Bienvenido en Ecocars!</div>
+            <div className={styles._right_login_title_container}>
+              ¡Bienvenido en Ecocars!
+              <div className={styles._bottom_login_subTitle_container}>
+                Cree aquí su perfil como proveedor.
+              </div>
+            </div>
+
             <div className={styles._button_container}>
               <GreenButton
                 design="filled"
@@ -159,6 +165,9 @@ const UserSigninComponent = ({
           </form>
           <div className={styles._bottom_signin_container}>
             <div className={styles._bottom_login_title_container}>¡Bienvenido en Ecocars!</div>
+            <div className={styles._bottom_login_subTitle_container}>
+              Cree aquí su perfil como proveedor.
+            </div>
             <div className={styles._signin_button_container}>
               <GreenButton
                 design="filled"

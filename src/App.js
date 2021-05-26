@@ -13,7 +13,7 @@ import CarsListPage from './pages/carListPages/carsListPage.view';
 import CarProfilePage from './pages/carProfilePage';
 import CreateRentingPage from './pages/createRentingPage';
 import LoginSigninPage from './pages/loginSigninPages/loginSigninPage';
-import DashboardPage from './pages/dashboard/dashboardPage';
+import DashboardPage from './pages/dashboardPage';
 import {
   HOME_PAGE,
   PARTICULARES_PAGE,
@@ -46,8 +46,8 @@ function App() {
               <LoginSigninPage />
             </Route>
 
-            <PrivateRoute exact path={DASHBOARD_PAGE}>
-              <HeaderLayout2 />
+            <PrivateRoute path={DASHBOARD_PAGE}>
+              {/* <HeaderLayout2 /> */}
               <DashboardPage />
             </PrivateRoute>
 

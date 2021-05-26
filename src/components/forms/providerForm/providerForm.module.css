@@ -173,55 +173,11 @@
   color: #648563;
   font-size: xx-large;
   font-weight: 300;
-  width: 290px;
-}
-._title_list {
-  font-size: 1.2em;
-  font-weight: 400;
-  color: #777;
-  margin: 20px 0 5px 10px;
-  color: #648563;
-  /* display: flex;
-  justify-content: flex-start;
-  align-items: flex-start; */
 }
 ._icon_title {
   height: 110px;
-  margin-right: 10px;
+  margin-right: 20px;
 }
-._icon_title_list {
-  margin-right: 10px;
-}
-._list_add {
-  margin-top: 25px;
-}
-._list_li {
-  display: flex;
-  padding: 3px;
-  text-transform: capitalize;
-}
-._list_li_priceRenting {
-  display: flex;
-  padding: 3px;
-  justify-content: space-between;
-  font-family: system-ui;
-}
-._list_delete {
-  cursor: pointer;
-  margin-left: 5px;
-  margin-top: 2px;
-  font-size: 0.8em;
-  color: rgb(146, 146, 146);
-  background: none;
-  border: none;
-  outline: none;
-}
-._list_delete:hover {
-  color: rgb(167, 55, 55);
-}
-
-
-
 ._form_step_animation {
   animation: dropIn 500ms ease-in-out forwards;
   transform-origin: top center;
@@ -243,7 +199,7 @@
   margin: 30px 0;
   color: #648563;
   font-size: xx-large;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .nav_croll {
@@ -272,7 +228,4 @@
   font-size: x-large;
   padding: 10px 0;
   border-bottom: 1px solid #99999930;
-}
-._text_large {
-  font-size: large !important;
 }

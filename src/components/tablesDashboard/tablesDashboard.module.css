@@ -1,16 +1,20 @@
 ._table_container {
-  width: 95%;
-  max-height: 80vh;
   background-color: white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 0 10px -8px #444;
+  box-shadow: 0 0 10px -5px #444;
   position: relative;
 }
+._title_table {
+  margin: 0 0 0 10px;
+  font-size: xx-large;
+  font-weight: 300;
+  color: #648563;
+}
 ._table_search_input {
-  width: 50%;
+  width: 60%;
   padding: 7px 7px 7px 40px;
-  margin: 10px;
+  margin: 0 10px 0 10px;
   font-size: medium;
   color: #505050;
   background-image: url(../../icons/search.svg);
@@ -25,9 +29,9 @@
   font-weight: 400;
 }
 ._table_select_results {
-  width: 5%;
+  width: 50px;
   padding: 7px 0 7px 7px;
-  margin: 10px;
+  margin: 0 10px 0 10px;
   color: #777;
   font-size: medium;
   background-color: white;
@@ -44,10 +48,10 @@
   display: flex;
   flex-direction: column;
   color: #888;
-  min-width: 400px;
+  min-width: 460px;
 }
 ._body_data {
-  max-height: 50vh;
+  max-height: 54vh;
   overflow-y: auto;
 }
 .table .header,
@@ -81,7 +85,6 @@
   cursor: pointer;
 }
 ._table_tr_id_data {
-  flex-grow: 0.6;
   overflow: hidden;
   font-size: small;
   text-overflow: ellipsis;
@@ -90,6 +93,9 @@
   color: #648563;
   font-weight: 600;
   letter-spacing: 1px;
+}
+._table_tr_small_data {
+  flex-grow: 0.6 !important;
 }
 
 ._table_tools_button {
@@ -126,5 +132,20 @@
 }
 ._row_button_pages {
   text-align: right;
-  margin: 1em;
+  margin: 0 10px 0 0;
+}
+
+._title_group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+._row_buttons {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+._boxElements {
+  width: 100%;
+  margin: 5px;
 }
