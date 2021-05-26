@@ -5,19 +5,17 @@ import styles from './navDashBoard.module.css';
 import {
   DASHBOARD_CARS_PAGE,
   DASHBOARD_MY_RENTINGS_PAGE,
-  DASHBOARD_NEW_RENTING_PAGE,
+  DASHBOARD_PROVIDERS_PAGE,
   DASHBOARD_USERS_PAGE,
-  DASHBOARD_VENDORS_PAGE,
   HOME_PAGE,
 } from '../../routers/routers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactComponent as EcocarsLogo } from '../assets/ecocarsLogo.svg';
 import { removeSession } from '../../utils/auth';
-import GreenButton from '../buttons/greenButton/greenButton.view';
-import ButtonComponent from '../pureComponents/buttonComponent/buttonComponent.view';
 
 const NavDashBoard = ({ dataUser }) => {
   const { roleUser } = dataUser;
+  console.log('roleUser : ', roleUser);
 
   const history = useHistory();
   const handleCloseSession = () => {
@@ -33,14 +31,14 @@ const NavDashBoard = ({ dataUser }) => {
             <EcocarsLogo className={styles._header_logo} />
           </div>
         </Link>
-        {roleUser && roleUser === 'superadmin' && (
-          <>
+        {/* {roleUser && roleUser === 'superadmin' && (
+          <> */}
             <h4 className={styles._title}>Ádministración</h4>
             <Link type="button" className={styles._button} to={`${DASHBOARD_CARS_PAGE}`}>
               <FontAwesomeIcon icon="car" className={styles._icon} />
-              <span className={styles._titleButton}>Renting Cars</span>
+              <span className={styles._titleButton}>Vehículos</span>
             </Link>
-            <Link type="button" className={styles._button} to={`${DASHBOARD_VENDORS_PAGE}`}>
+            <Link type="button" className={styles._button} to={`${DASHBOARD_PROVIDERS_PAGE}`}>
               <FontAwesomeIcon icon="store" className={styles._icon} />
               <span className={styles._titleButton}>Proveedores</span>
             </Link>
@@ -48,22 +46,18 @@ const NavDashBoard = ({ dataUser }) => {
               <FontAwesomeIcon icon="users" className={styles._icon} />
               <span className={styles._titleButton}>Usuarios</span>
             </Link>
-          </>
-        )}
-        {roleUser && roleUser === 'admin' && (
-          <>
-            <h4 className={styles._title}>Mis Rentings</h4>
-            <Link type="button" className={styles._button} to={`${DASHBOARD_NEW_RENTING_PAGE}`}>
-              <FontAwesomeIcon icon="car" className={styles._icon} />
-              <span className={styles._titleButton}>Nuevo renting</span>
-            </Link>
+          {/* </>
+        )} */}
+        {/* {roleUser && roleUser === 'provider' && (
+          <> */}
+            <h4 className={styles._title}>Rentings</h4>
 
             <Link type="button" className={styles._button} to={`${DASHBOARD_MY_RENTINGS_PAGE}`}>
               <FontAwesomeIcon icon="store" className={styles._icon} />
               <span className={styles._titleButton}>Mis rentings</span>
             </Link>
-          </>
-        )}
+          {/* </>
+        )} */}
 
         <h4 className={styles._title}>Mi Cuenta</h4>
 

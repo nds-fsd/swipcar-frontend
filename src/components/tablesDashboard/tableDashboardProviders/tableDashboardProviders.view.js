@@ -1,16 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { GetDataDashboardTable, GetDataDashboardTableUsers } from '../../utils/createCarRequestAll';
+import {
+  GetDataDashboardTable,
+  GetDataDashboardTableUsers,
+} from '../../../utils/createCarRequestAll';
+import ButtonComponent from '../../pureComponents/buttonComponent';
 
-import styles from './tableDashboardUsers.module.css';
+import styles from '../tablesDashboard.module.css';
 
-const TableDashboardUsers = ({ handleModal }) => {
+const TableDashboardProviders = ({ handleModal }) => {
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
   const skip = parseInt(query.get('skip')) || 0;
-  const limit = parseInt(query.get('limit')) || 5;
+  const limit = parseInt(query.get('limit')) || 10;
   const dir = query.get('dir') || 'asc';
   const sort = query.get('sort');
 
@@ -59,19 +63,26 @@ const TableDashboardUsers = ({ handleModal }) => {
     return dateFormated;
   };
 
-  const Row = ({ _id, name, email, telefono, role, updatedAt }) => (
+  const Row = ({ _id, name, email, provider, updatedAt }) => (
     <div className={styles._table_body_info}>
-      <div className={`${styles._table_tr_info} ${styles._table_tr_id_data}`}>{_id}</div>
+      <div
+        className={`${styles._table_tr_info} ${styles._table_tr_id_data} ${styles._table_tr_small_data}`}
+      >
+        {_id}
+      </div>
       <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{name}</div>
-      <div className={styles._table_tr_info}>{email}</div>
-      <div className={styles._table_tr_info}>{telefono}</div>
-      <div className={styles._table_tr_info} style={{ flexGrow: '0.6' }}>{role}</div>
-      {/* {company && <div className={styles._table_tr_info}>{company}</div>} */}
-      <div className={styles._table_tr_info} style={{ flexGrow: '0.6' }}>{formatDate(updatedAt)}</div>
+      <div className={`${styles._table_tr_info}`}>{email}</div>
+      <div className={styles._table_tr_info}>{provider.phone}</div>
+      <div className={styles._table_tr_info}>
+        {provider.companyname}
+      </div>
+      <div className={`${styles._table_tr_info}`}>
+        {formatDate(updatedAt)}
+      </div>
       <button
         className={styles._table_tools_button}
         title="Herramientas de edición"
-        onClick={() => handleModal()}
+        onClick={() => handleModal(_id)}
       >
         <FontAwesomeIcon icon="ellipsis-v" />
       </button>
@@ -82,39 +93,62 @@ const TableDashboardUsers = ({ handleModal }) => {
     console.log('dataTable :', dataTable);
   }, [dataTable]);
 
-  const rows =
-    dataTable &&
-    dataTable.map((rowData, index) => <Row {...rowData} key={index} />);
+  const providers =
+    dataTable && dataTable.filter((providerData) => providerData.role === 'provider');
+  const rows = providers && providers.map((rowData, index) => <Row {...rowData} key={index} />);
 
   return (
     <>
       <div className={styles._table_container}>
-        {/* <Modal modalObject="editCarProfile" handleCloseModal={handleModal} /> */}
+        <h1 className={styles._title_table}>Gestión de Proveedores</h1>
 
         <div className={styles._table_row}>
           <div className={styles._table_search}>
-            <input
-              type="text"
-              className={styles._table_search_input}
-              placeholder="Busca un coche"
-            />
-            <select type="text" className={styles._table_select_results} onChange={limitResults}>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="50">50</option>
-            </select>
+            <div className={styles._title_group}>
+              <div className={styles._boxElements}>
+                <input
+                  type="text"
+                  className={styles._table_search_input}
+                  placeholder="Busca un proveedor"
+                />
+                <select
+                  type="text"
+                  className={styles._table_select_results}
+                  onChange={limitResults}
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+
+              <div className={styles._boxElements}>
+                <div
+                  className={styles._row_buttons}
+                  style={{ display: 'flex', justifyContent: 'flex-end' }}
+                >
+                  <ButtonComponent
+                    label="Crear Proveedor"
+                    alt="Crear Proveedor"
+                    typeButton="ok"
+                    actionButton={() => handleModal()}
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className={styles.table}>
               <div className={styles.header}>
-                <div onClick={() => sortBy('id')} style={{ flexGrow: '0.6' }}>
+                <div onClick={() => sortBy('id')} className={styles._table_tr_small_data}>
                   ID
                 </div>
                 <div onClick={() => sortBy('nombre')}>Nombre</div>
                 <div onClick={() => sortBy('email')}>Email</div>
                 <div onClick={() => sortBy('telefono')}>Teléfono</div>
-                <div onClick={() => sortBy('role')} style={{ flexGrow: '0.6' }}>Role</div>
-                {/* {company && <div className={styles._table_tr_info}>{company}</div>} */}
-                <div onClick={() => sortBy('createdAt')} style={{ paddingRight: '30px', flexGrow: '0.6' }}>
+                <div onClick={() => sortBy('companyname')}>Compañia</div>
+                <div
+                  onClick={() => sortBy('createdAt')}
+                >
                   Creación
                 </div>
               </div>
@@ -122,7 +156,7 @@ const TableDashboardUsers = ({ handleModal }) => {
             </div>
           </div>
           <div className={styles._row_button_pages}>
-            <button
+          <button
               refs="prevButtonRef"
               className={styles._button_navPages}
               onClick={handlePagePrev}
@@ -133,11 +167,10 @@ const TableDashboardUsers = ({ handleModal }) => {
               Anterior
             </button>
             <button
-              // ref={nextButtonRef}
               className={styles._button_navPages}
               onClick={handlePageNext}
-              title="Siguiente Página"
-              // disabled={skip === 0}
+              title="Página Siguiente"
+              disabled={dataTable.totalPages % limit === 0 || limit > dataTable.totalPages }
             >
               Siguiente
               <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />
@@ -149,4 +182,4 @@ const TableDashboardUsers = ({ handleModal }) => {
   );
 };
 
-export default TableDashboardUsers;
+export default TableDashboardProviders;

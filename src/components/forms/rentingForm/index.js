@@ -1,3 +1,3 @@
-import CarProfileForm from './carProfileForm.view';
+import RentingForm from './rentingForm.view';
 
-export default CarProfileForm;
+export default RentingForm;

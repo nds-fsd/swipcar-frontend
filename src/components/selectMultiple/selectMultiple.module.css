@@ -1,0 +1,18 @@
+.rmsc {
+  /* --rmsc-main: #648563 !important; */
+  --rmsc-main: #648563 !important;
+  --rmsc-border: none !important;
+  --rmsc-h: 41px !important;
+  color: #a1a1a1 !important;
+  border: solid 2px #d6dae0 !important;
+  border-radius: 4px !important; /* Radius */
+}
+._label_form {
+  margin: 0px 0 5px 5px;
+  letter-spacing: 0px;
+  display: block;
+  color: #99999990;
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1.2em;
+}

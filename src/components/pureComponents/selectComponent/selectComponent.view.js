@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styles from '../pureComponents.module.css';
 
@@ -7,7 +7,7 @@ const SelectComponent = React.forwardRef((props, ref) => {
     <div>
       <label className={styles._label_form}>{props.label}</label>
       <select className={styles._select} ref={ref} {...props}>
-        <option value="" disabled selected={!props.defaultValue}>
+        <option value="" disabled>
           {props.placeholder}
         </option>
         {props.dataoptions &&

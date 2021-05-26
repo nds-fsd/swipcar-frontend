@@ -13,7 +13,7 @@ const ButtonComponent = (props) => {
         }`}
         onClick={actionButton}
       >
-        <FontAwesomeIcon icon={iconData && `${iconData}`} className={styles._icon_for_button} />
+        {iconData && <FontAwesomeIcon icon={iconData} className={styles._icon_for_button} />}
         {label}
       </button>
     </>
