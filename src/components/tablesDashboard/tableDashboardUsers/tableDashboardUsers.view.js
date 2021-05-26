@@ -1,16 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { CreateCarRequestAll, GetDataDashboardTable } from '../../utils/createCarRequestAll';
+import {
+  GetDataDashboardTable,
+  GetDataDashboardTableUsers,
+} from '../../../utils/createCarRequestAll';
+import ButtonComponent from '../../pureComponents/buttonComponent';
 
-import styles from './tableDashboardCarProfile.module.css';
+import styles from '../tablesDashboard.module.css';
 
-const TableDashboardCarProfile = ({ handleModal }) => {
+const TableDashboardProviders = ({ handleModal }) => {
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
   const skip = parseInt(query.get('skip')) || 0;
-  const limit = parseInt(query.get('limit')) || 5;
+  const limit = parseInt(query.get('limit')) || 10;
   const dir = query.get('dir') || 'asc';
   const sort = query.get('sort');
 
@@ -43,13 +47,13 @@ const TableDashboardCarProfile = ({ handleModal }) => {
 
   const [dataTable, setDataTable] = useState([]);
 
-  useEffect(() => {
-    const queryGetData = { sort, dir, skip, limit };
-    GetDataDashboardTable({ queryGetData, onSuccess: setDataTable });
-  }, [pathUrl]);
+  // useEffect(() => {
+  //   const queryGetData = { sort, dir, skip, limit };
+  //   GetDataDashboardTable({ queryGetData, onSuccess: setDataTable });
+  // }, [pathUrl]);
 
   useEffect(() => {
-    GetDataDashboardTable({ onSuccess: setDataTable });
+    GetDataDashboardTableUsers({ onSuccess: setDataTable });
   }, []);
 
   const formatDate = (updatedAt) => {
@@ -59,20 +63,16 @@ const TableDashboardCarProfile = ({ handleModal }) => {
     return dateFormated;
   };
 
-  const Row = ({ _id, carCard, version, updatedAt }) => (
+  const Row = ({ _id, name, email, updatedAt }) => (
     <div className={styles._table_body_info}>
       <div className={`${styles._table_tr_info} ${styles._table_tr_id_data}`}>{_id}</div>
-      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>
-        {carCard.brand.brandname}
-      </div>
-      <div className={styles._table_tr_info}>{carCard.model.modelname}</div>
-      <div className={styles._table_tr_info}>{version}</div>
-      <div className={styles._table_tr_info}>{carCard.fuel.fueltype}</div>
-      <div className={styles._table_tr_info}>{formatDate(updatedAt)}</div>
+      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{name}</div>
+      <div className={`${styles._table_tr_info}`}>{email}</div>
+      <div className={`${styles._table_tr_info}`}>{formatDate(updatedAt)}</div>
       <button
         className={styles._table_tools_button}
         title="Herramientas de edición"
-        onClick={() => handleModal()}
+        onClick={() => handleModal(_id)}
       >
         <FontAwesomeIcon icon="ellipsis-v" />
       </button>
@@ -83,40 +83,57 @@ const TableDashboardCarProfile = ({ handleModal }) => {
     console.log('dataTable :', dataTable);
   }, [dataTable]);
 
-  const rows =
-    dataTable.elements &&
-    dataTable.elements.map((rowData, index) => <Row {...rowData} key={index} />);
+  const usuarios = dataTable && dataTable.filter((usersData) => usersData.role === 'user');
+  const rows = usuarios && usuarios.map((rowData, index) => <Row {...rowData} key={index} />);
 
   return (
     <>
       <div className={styles._table_container}>
-        {/* <Modal modalObject="editCarProfile" handleCloseModal={handleModal} /> */}
+        <h1 className={styles._title_table}>Gestión de Usuarios Clientes</h1>
 
         <div className={styles._table_row}>
           <div className={styles._table_search}>
-            <input
-              type="text"
-              className={styles._table_search_input}
-              placeholder="Busca un coche"
-            />
-            <select type="text" className={styles._table_select_results} onChange={limitResults}>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="50">50</option>
-            </select>
+            <div className={styles._title_group}>
+              <div className={styles._boxElements}>
+                <input
+                  type="text"
+                  className={styles._table_search_input}
+                  placeholder="Busca un usuario"
+                />
+                <select
+                  type="text"
+                  className={styles._table_select_results}
+                  onChange={limitResults}
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+
+              <div className={styles._boxElements}>
+                <div
+                  className={styles._row_buttons}
+                  style={{ display: 'flex', justifyContent: 'flex-end' }}
+                >
+                  <ButtonComponent
+                    label="Crear Usuario"
+                    alt="Crear Usuario"
+                    typeButton="ok"
+                    actionButton={() => handleModal()}
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className={styles.table}>
               <div className={styles.header}>
-                <div onClick={() => sortBy('id')} style={{ flexGrow: '0.6' }}>
+                <div onClick={() => sortBy('id')}>
                   ID
                 </div>
-                <div onClick={() => sortBy('brand')}>Marca</div>
-                <div onClick={() => sortBy('model')}>Modelo</div>
-                <div onClick={() => sortBy('version')}>Versión</div>
-                <div onClick={() => sortBy('fueltype')}>Combustible</div>
-                <div onClick={() => sortBy('createdAt')} style={{ paddingRight: '30px' }}>
-                  Creación
-                </div>
+                <div onClick={() => sortBy('nombre')}>Nombre</div>
+                <div onClick={() => sortBy('email')}>Email</div>
+                <div onClick={() => sortBy('createdAt')}>Creación</div>
               </div>
               <div className={styles._body_data}>{rows}</div>
             </div>
@@ -133,11 +150,10 @@ const TableDashboardCarProfile = ({ handleModal }) => {
               Anterior
             </button>
             <button
-              // ref={nextButtonRef}
               className={styles._button_navPages}
               onClick={handlePageNext}
-              title="Siguiente Página"
-              // disabled={skip === 0}
+              title="Página Siguiente"
+              disabled={dataTable.totalPages % limit === 0 || limit > dataTable.totalPages}
             >
               Siguiente
               <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />
@@ -149,4 +165,4 @@ const TableDashboardCarProfile = ({ handleModal }) => {
   );
 };
 
-export default TableDashboardCarProfile;
+export default TableDashboardProviders;

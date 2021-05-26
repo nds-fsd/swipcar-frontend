@@ -1,34 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './breadcrumbItem.module.css';
-import { ReactComponent as HomeIcon } from '../assets/homeIcon.svg';
+import { CARS_LIST_PAGE } from '../../routers/routers';
 
-const breadcrumbs = [
-  {
-    id: 1,
-    value: <HomeIcon className={styles.homeIcon} />,
-  },
-  {
-    id: 2,
-    value: 'Coches',
-  },
-  {
-    id: 3,
-    value: 'Brand',
-  },
-  {
-    id: 4,
-    value: 'Model',
-  },
-];
-
-const BreadcrumbItem = ({ id, value, path }) => {
+const BreadcrumbItem = ({ brand, model }) => {
   return (
-    <div className={styles.wrapper}>
-      {breadcrumbs.map(({ id, value }) => (
-        <div key={id} className={value === 'Model' ? styles.container_link : styles.container}>
-          {value}
-        </div>
-      ))}
+    <div className={styles._wrapper}>
+      <Link to={CARS_LIST_PAGE}>
+        <div className={styles._breadcrumb_item}>Coches /</div>
+      </Link>
+      <div className={styles._breadcrumb_item}>{brand} /</div>
+
+      <div className={styles._breadcrumb_item}>{model}</div>
     </div>
   );
 };

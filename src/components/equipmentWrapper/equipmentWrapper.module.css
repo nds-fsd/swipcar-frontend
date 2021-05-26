@@ -1,0 +1,52 @@
+._equipment_wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0px 20px 20px;
+}
+
+._equipment_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+._equipment_title {
+  font-family: Open Sans;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-decoration: underline;
+  color: #6a983c;
+}
+._equipment_accordion_label {
+  font-family: Open Sans;
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0 40px 20px 0;
+  font-style: italic;
+  color: #6a983c;
+}
+._tech_item_container {
+  display: flex;
+  margin-left: 20px;
+}
+
+._arrow_icon_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 20px;
+  border: 1px solid #6a983c;
+  margin-right: 10px;
+}
+._arrow_icon {
+  width: 10px;
+  height: 10px;
+}
+._tech_item {
+  font-family: Open Sans;
+  font-weight: 400;
+  font-size: 12px;
+  margin: 0 10px 10px 0;
+}

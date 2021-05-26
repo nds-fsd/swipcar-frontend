@@ -11,7 +11,13 @@ const Checkbox = ({ entity, targetdata, value, name, register }) => {
   return (
     <div className={styles._checkbox_wrapper}>
       <div className={styles._checkbox_container}>
-        <input key={entity.id} type="checkbox" value={targetdata} {...register(name)} />
+        <input
+          key={entity.id}
+          type="checkbox"
+          value={targetdata}
+          {...register(name)}
+          onClick={() => console.log(value)}
+        />
         <label className={styles._checkbox_label}>{targetdata}</label>
       </div>
     </div>

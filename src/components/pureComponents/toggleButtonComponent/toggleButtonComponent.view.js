@@ -16,7 +16,7 @@ const ToggleButtonComponent = React.forwardRef((props, ref) => {
             <div className={stylesToggle._circle_toggle}>
               {props.iconlabel && (
                 <FontAwesomeIcon
-                  icon={props.iconlabel}
+                  icon={props.iconlabel ? props.iconlabel : 'check'}
                   className={`${stylesToggle._icon_label} ${
                     (ref && ref.current.value) && stylesToggle._icon_label_check
                   }`}

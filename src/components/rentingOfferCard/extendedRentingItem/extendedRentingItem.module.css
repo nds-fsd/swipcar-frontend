@@ -1,0 +1,23 @@
+._item_container {
+  display: flex;
+  flex-direction: row;
+  height: 22px;
+}
+
+._item_container_label {
+  font-family: Open Sans;
+  font-weight: 400;
+  font-size: 12px;
+  margin-right: 10px;
+}
+._item_container_item {
+  font-family: Open Sans;
+  font-weight: 600;
+  font-size: 12px;
+}
+._item_color_circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 20px;
+  border: 1px solid rgb(216, 216, 216);
+}

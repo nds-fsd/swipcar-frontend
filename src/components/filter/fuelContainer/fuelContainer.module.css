@@ -1,7 +1,7 @@
 ._fuel_wrapper {
   display: flex;
   flex-direction: column;
-  height: 154px;
+  height: 156px;
   overflow: auto;
 }
 ._fuel_item_container {

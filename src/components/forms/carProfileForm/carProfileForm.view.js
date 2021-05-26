@@ -1,34 +1,63 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useWindowSize from '../../../constants/useWindowSize';
-
-import CarIcon from '../../assets/carEditIcon.gif';
-
-import stylesPure from '../../pureComponents/pureComponents.module.css';
-import SelectComponent from '../../pureComponents/selectComponent';
-import ToggleButtonComponent from '../../pureComponents/toggleButtonComponent';
-
-import styles from '../forms.module.css';
-
 import { useForm } from 'react-hook-form';
+
 import {
   CreateCarRequestAll,
   CreateCarRequestModel,
   CreateCarRequestVersion,
   GetDataCarProfile,
+  GetDataVersion,
 } from '../../../utils/createCarRequestAll';
+
+import stylesPure from '../../pureComponents/pureComponents.module.css';
+import styles from '../forms.module.css';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DATADOMIE } from '../../../pages/createRentingPage/dataDomie';
 import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
 import InputComponent from '../../pureComponents/inputComponent/index';
 import ButtonActionIconComponent from '../../pureComponents/buttonActionIconComponent/buttonActionIconComponent.view';
+import SelectMultiple from '../../selectMultiple/selectMultiple.view';
+import SelectComponent from '../../pureComponents/selectComponent';
+
+import CarIcon from '../../assets/carEditIcon.gif';
 
 const CarProfileForm = ({ toEdit, handleCloseModal }) => {
-  const [dataToEDit, setDataToEDit] = useState({});
+  const [dataToEdit, setDataToEdit] = useState({});
+
+  const [newCar, setNewCar] = useState(false);
+  const [editData, setEditData] = useState(false);
+  const handleEdit = () => {
+    setEditData(!editData);
+  };
+
+  const overrideStringsColors = {
+    allItemsAreSelected: 'Todos los colores seleccionados',
+    noOptions: 'Ninguna opción',
+    selectAll: 'Selecciona todos',
+    selectSomeItems: 'Selecciona un color',
+  };
+  const overrideStringsTransmision = {
+    allItemsAreSelected: 'Todas las transmisiones seleccionadas',
+    noOptions: 'Ninguna opción',
+    selectAll: 'Selecciona todas',
+    selectSomeItems: 'Selecciona una transmisión',
+  };
+  const overrideStringsFuel = {
+    allItemsAreSelected: 'Todos los combustibles seleccionados',
+    noOptions: 'Ninguna opción',
+    selectAll: 'Selecciona todos',
+    selectSomeItems: 'Selecciona un tipo de combustible',
+  };
 
   useEffect(() => {
+    CreateCarRequestAll({ toEdit, onSuccess: setDataOptionsAPI });
     if (toEdit) {
-      GetDataCarProfile({ toEdit, onSuccess: setDataToEDit });
-      // setDataToEDit()
+      GetDataVersion({ toEdit, onSuccess: setDataToEdit });
+      setNewCar(false);
+    } else {
+      setEditData(true);
+      setNewCar(true);
     }
   }, []);
 
@@ -39,248 +68,256 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm();
 
-  const [data, setData] = useState({});
+  //! setValue
+  // useEffect(() => {
+  //   if (toEdit && setValue) {
+  //     Object.keys(dataToEdit).forEach((key) => {
+  //       setValue(key, `${dataToEdit[key]}`);
+  //     });
+  //   }
+  // }, [toEdit, setValue, dataToEdit]);
 
   const [dataFly, setDataFly] = useState('');
   const [checkSave, setCheckSave] = useState(false);
+
+  const [selectedColor, setSelectedColor] = useState([]);
+  const [selectedTransmision, setSelectedTransmision] = useState([]);
+  const [selectedFuel, setSelectedFuel] = useState([]);
+  const [dataOptions, setDataOptions] = useState({});
+  const [dataOptionsAPI, setDataOptionsAPI] = useState({});
+
+  useEffect(() => {
+    setDataOptions({ ...dataOptions, ...dataOptionsAPI });
+    mountMultiples();
+  }, [dataOptionsAPI]);
+
+  const [optionsColors, setOptionsColors] = useState([]);
+  const [optionsTransmision, setOptionsTransmision] = useState([]);
+  const [optionsFuel, setOptionsFuel] = useState([]);
+
+  const mountMultiples = () => {
+    if (dataOptionsAPI && dataOptionsAPI.color) {
+      setOptionsColors(
+        dataOptionsAPI.color.map((color) => ({
+          value: color._id,
+          label: color.colorname,
+        }))
+      );
+    }
+    if (dataOptionsAPI && dataOptionsAPI.transmision) {
+      setOptionsTransmision(
+        dataOptionsAPI.transmision.map((transmision) => ({
+          value: transmision._id,
+          label: transmision.transmisiontype,
+        }))
+      );
+    }
+    if (dataOptionsAPI && dataOptionsAPI.fuel) {
+      setOptionsFuel(
+        dataOptionsAPI.fuel.map((fuel) => ({
+          value: fuel._id,
+          label: fuel.fueltype,
+        }))
+      );
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log('optionsColors : ', optionsColors);
+  //   console.log('optionsTransmision : ', optionsTransmision);
+  // }, [optionsColors, optionsTransmision]);
+
+  // useEffect(() => {
+  //   console.log('dataOptionsAPI : ', dataOptionsAPI);
+  // }, [dataOptionsAPI]);
 
   const tecnologiaRef = useRef();
   const confortRef = useRef();
   const seguridadRef = useRef();
   const exteriorRef = useRef();
-  const [listTecnologia, setListTecnologia] = useState([]);
-  const [listConfort, setListConfort] = useState([]);
-  const [listSeguridad, setListSeguridad] = useState([]);
-  const [listExterior, setListExterior] = useState([]);
+  const [technologies, setTechnologies] = useState([]);
+  const [conforts, setConforts] = useState([]);
+  const [securities, setSecurities] = useState([]);
+  const [exteriors, setExteriors] = useState([]);
 
   const handleTecnologia = (e) => {
     setDataFly(e.target.value);
   };
   const addTecnology = () => {
-    setListTecnologia([...listTecnologia, dataFly]);
+    setTechnologies([...technologies, dataFly]);
     tecnologiaRef.current.value = '';
     setDataFly('');
   };
   const deleteTecnologia = (tecnologia) => {
-    setListTecnologia(listTecnologia.filter((item) => item !== tecnologia));
+    setTechnologies(technologies.filter((item) => item !== tecnologia));
   };
 
   const handleConfort = (e) => {
     setDataFly(e.target.value);
   };
   const addConfort = () => {
-    setListConfort([...listConfort, dataFly]);
+    setConforts([...conforts, dataFly]);
     confortRef.current.value = '';
     setDataFly('');
   };
   const deleteConfort = (confort) => {
-    setListConfort(listConfort.filter((item) => item !== confort));
+    setConforts(conforts.filter((item) => item !== confort));
   };
 
   const handleSeguridad = (e) => {
     setDataFly(e.target.value);
   };
   const addSeguridad = () => {
-    setListSeguridad([...listSeguridad, dataFly]);
+    setSecurities([...securities, dataFly]);
     seguridadRef.current.value = '';
     setDataFly('');
   };
   const deleteSeguridad = (seguridad) => {
-    setListSeguridad(listSeguridad.filter((item) => item !== seguridad));
+    setSecurities(securities.filter((item) => item !== seguridad));
   };
 
   const handleExterior = (e) => {
     setDataFly(e.target.value);
   };
   const addExterior = () => {
-    setListExterior([...listExterior, dataFly]);
+    setExteriors([...exteriors, dataFly]);
     exteriorRef.current.value = '';
     setDataFly('');
   };
   const deleteExterior = (exterior) => {
-    setListExterior(listExterior.filter((item) => item !== exterior));
+    setExteriors(exteriors.filter((item) => item !== exterior));
   };
-
-  const [rentingOptions, setRentingOptions] = useState([]);
-  const kmAnualesRef = useRef();
-  const mesesRentingRef = useRef();
-  const precioRentingRef = useRef();
-
-  const addRentingOption = () => {
-    if (
-      kmAnualesRef.current.value !== '' &&
-      mesesRentingRef.current.value !== '' &&
-      precioRentingRef.current.value !== ''
-    ) {
-      setRentingOptions([
-        ...rentingOptions,
-        {
-          kmAnuales: kmAnualesRef.current.value,
-          mesesRenting: mesesRentingRef.current.value,
-          precioRenting: precioRentingRef.current.value,
-        },
-      ]);
-    }
-    kmAnualesRef.current.value = '';
-    mesesRentingRef.current.value = '';
-    precioRentingRef.current.value = '';
-  };
-  const deleteRentingOption = (optionRent) => {
-    setRentingOptions(rentingOptions.filter((item) => item !== optionRent));
-  };
-
-  const [dataOptions, setDataOptions] = useState({});
-  const [dataOptionsAPI, setDataOptionsAPI] = useState({});
-  useEffect(() => {
-    setDataOptions({ ...dataOptions, ...dataOptionsAPI });
-  }, [dataOptionsAPI]);
-  useEffect(() => {
-    CreateCarRequestAll({ onSuccess: setDataOptionsAPI });
-  }, []);
 
   //* Watches
-  const watchBrand = watch('carBrand');
-  const watchModel = watch('carModel');
+  const watchBrand = watch('brand');
   useEffect(() => {
     if (watchBrand) CreateCarRequestModel({ watchBrand, onSuccess: setDataOptionsAPI });
   }, [watchBrand]);
-  useEffect(() => {
-    if (watchModel) CreateCarRequestVersion({ watchModel, onSuccess: setDataOptionsAPI });
-  }, [watchModel]);
-  //* Watches
 
   const {
-    carBrand: carBrandOptions,
-    Model: carModelOptions,
-    carVersion: carVersionOptions,
-    carType: carTypeOptions,
-    transmision: transmisionOptions,
-    fuel: fuelOptions,
-    ecoMark: ecoMarkOptions,
-    puertas: puertasOptions,
-    color: colorOptions,
-    Goodies: goodiesOptions,
-    equipamiento: equipamientoOptions,
-  } = dataOptions;
-
-  // console.log(goodiesOptions, equipamientoOptions);
-
-  const {
-    nuevo,
-    seminuevo,
-    carBrand,
-    carModel,
-    carVersion,
-    carType,
+    brand,
+    model,
+    version,
+    cartype,
     transmision,
     fuel,
-    ecoMark,
-    cvMotor,
-    puertas,
-    emisionMotor,
     color,
-    cilindradaMotor,
-    consumo,
-    maletero,
-    dimensionesLargo,
-    dimensionesAlto,
-    dimensionesAncho,
-    goodiesData: goodies,
-    equipamientoData: equipamiento,
-    listSeguridad: seguridad,
-    listExterior: exterior,
-    listConfort: confort,
-    listTecnologia: tecnologia,
-  } = dataToEDit;
+    ecomark,
+    motor,
+    doors,
+    emission,
+    displacement,
+    comsumption,
+    trunk,
+    dimensionsheight,
+    dimensionslength,
+    dimensionswidth,
+  } = dataOptions;
 
-  const nuevoRef = useRef();
-  const seminuevoRef = useRef();
-  const [isChecked, setIsChecked] = useState({
-    nuevo: false,
-    seminuevo: false,
-  });
+  const {
+    brand: brandEdit,
+    model: modelEdit,
+    version: versionEdit,
+    cartype: cartypeEdit,
+    transmision: transmisionEdit,
+    fuel: fuelEdit,
+    ecomark: ecomarkEdit,
+    motor: motorEdit,
+    doors: doorsEdit,
+    emission: emissionEdit,
+    color: colorEdit,
+    displacement: displacementEdit,
+    comsumption: comsumptionEdit,
+    trunk: trunkEdit,
+    dimensionsheight: dimensionsheightEdit,
+    dimensionslength: dimensionslengthEdit,
+    dimensionswidth: dimensionswidthEdit,
+    securities: securitiesEdit,
+    exteriors: exteriorsEdit,
+    conforts: confortsEdit,
+    technologies: technologiesEdit,
+  } = dataToEdit;
+
+  useEffect(() => {
+    if (transmision && transmisionEdit) {
+      setSelectedTransmision(
+        transmisionEdit.map((transmisions) => ({
+          value: transmisions,
+          label: transmision.find(({ _id }) => _id === `${transmisions}`)?.transmisiontype,
+        }))
+      );
+    }
+    if (fuel && fuelEdit) {
+      setSelectedFuel(
+        fuelEdit.map((fuels) => ({
+          value: fuels,
+          label: fuel.find(({ _id }) => _id === `${fuels}`)?.fueltype,
+        }))
+      );
+    }
+    if (color && colorEdit) {
+      setSelectedColor(
+        colorEdit.map((colors) => ({
+          value: colors,
+          label: color.find(({ _id }) => _id === `${colors}`)?.colorname,
+        }))
+      );
+    }
+    if (exteriorsEdit) {
+      setExteriors(exteriorsEdit);
+    }
+    if (confortsEdit) {
+      setConforts(confortsEdit);
+    }
+    if (technologiesEdit) {
+      setTechnologies(technologiesEdit);
+    }
+    if (securitiesEdit) {
+      setSecurities(securitiesEdit);
+    }
+  }, [
+    transmision,
+    transmisionEdit,
+    fuel,
+    fuelEdit,
+    color,
+    colorEdit,
+    securitiesEdit,
+    exteriorsEdit,
+    confortsEdit,
+    technologiesEdit,
+  ]);
 
   const onSubmit = (data) => {
     // setCheckSave(true);
 
     if (
-      !errorNuevoSeminuevo &&
-      equipamientoData.length !== 0 &&
-      goodiesData.length !== 0 &&
-      listTecnologia.length !== 0 &&
-      listConfort.length !== 0 &&
-      listSeguridad.length !== 0 &&
-      listExterior.length !== 0 &&
-      rentingOptions.length !== 0
+      selectedColor.length !== 0 &&
+      selectedTransmision.length !== 0 &&
+      technologies.length !== 0 &&
+      conforts.length !== 0 &&
+      securities.length !== 0 &&
+      exteriors.length !== 0
     ) {
+      let color = selectedColor.map((color) => color.value);
+      let transmision = selectedTransmision.map((transmision) => transmision.value);
+
       const dataAPI = {
         ...data,
-        nuevo: isChecked.nuevo,
-        seminuevo: isChecked.seminuevo,
-        goodiesData,
-        equipamientoData,
-        rentingOptions,
-        listExterior,
-        listSeguridad,
-        listConfort,
-        listTecnologia,
+        color,
+        transmision,
+        exteriors,
+        securities,
+        conforts,
+        technologies,
       };
       console.log('dataAPI  : ', dataAPI);
     } else {
-      console.log('algo falta gachon!!');
+      console.log('Falta rellenar algún campo!!');
     }
-  };
-
-  const [errorNuevoSeminuevo, setErrorNuevoSeminuevo] = useState(false);
-
-  useEffect(() => {
-    if (!isChecked.nuevo && !isChecked.seminuevo) {
-      setErrorNuevoSeminuevo(true);
-    } else {
-      setErrorNuevoSeminuevo(false);
-    }
-  }, [isChecked]);
-
-  const _handleToggle = (e) => {
-    if (e.target.name === 'nuevo') {
-      if (seminuevoRef.current.checked) {
-        setIsChecked({ ...isChecked, nuevo: e.target.checked, seminuevo: false });
-        seminuevoRef.current.checked = false;
-      } else {
-        setIsChecked({ ...isChecked, nuevo: e.target.checked });
-      }
-    } else {
-      if (nuevoRef.current.checked) {
-        setIsChecked({ ...isChecked, seminuevo: e.target.checked, nuevo: false });
-        nuevoRef.current.checked = false;
-      } else {
-        setIsChecked({ ...isChecked, seminuevo: e.target.checked });
-      }
-    }
-  };
-
-  const [goodiesData, setGoodiesData] = useState([]);
-  const [equipamientoData, setEquipamientoData] = useState([]);
-  const _handleToggle_goodies = (e) => {
-    if (e.target.checked) {
-      setGoodiesData([...goodiesData, e.target.id]);
-    } else {
-      setGoodiesData(goodiesData.filter((item) => item !== e.target.id));
-    }
-  };
-  const _handleToggle_equipamiento = (e) => {
-    if (e.target.checked) {
-      setEquipamientoData([...equipamientoData, e.target.id]);
-    } else {
-      setEquipamientoData(equipamientoData.filter((item) => item !== e.target.id));
-    }
-  };
-
-  const [editData, setEditData] = useState(false);  
-  const handleEdit = () => {
-    setEditData(!editData);
   };
 
   return (
@@ -293,14 +330,13 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
       `}
       >
         <div className={styles._wrapper}>
-
-
-
-        <div className={styles._title_group}>
+          <div className={styles._title_group}>
             <div className={`${styles._boxElements} ${styles._title_group}`}>
-              <img src={CarIcon} className={styles._icon_title} alt="Crea un Nuevo Renting" />
+              <img src={CarIcon} className={styles._icon_title} alt="Renting" />
               <span className={styles._title}>
-                {editData ? 'Editar un Renting' : 'Crea un Nuevo Renting'}
+                {editData && !newCar && 'Editar vehículo'}
+                {editData && newCar && 'Crea un nuevo vehículo'}
+                {!editData && !newCar && 'Información vehículo'}
               </span>
             </div>
 
@@ -310,115 +346,112 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                 style={{ display: 'flex', justifyContent: 'flex-end' }}
               >
                 {!editData && (
-                  <ButtonComponent
-                    label="Editar Perfil"
-                    alt="Editar Perfil"
-                    typeButton="ok"
-                    actionButton={() => handleEdit()}
-                  />
+                  <>
+                    <ButtonComponent
+                      label="Editar Vehículo"
+                      alt="Editar Vehículo"
+                      typeButton="ok"
+                      actionButton={() => handleEdit()}
+                    />
+                    <ButtonComponent
+                      label="Eliminar Vehículo"
+                      alt="Eliminar Vehículo"
+                      typeButton="cancel"
+                      actionButton={() => handleEdit()}
+                    />
+                  </>
                 )}
               </div>
             </div>
           </div>
 
-
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={`${styles._toggles_list} ${styles._toggles_list_nuevoSemi}`}>
-              {DATADOMIE.CarProfileDataEstate.map((value) => (
-                <div key={value._id}>
-                  <div>
-                    <ToggleButtonComponent
-                      ref={value.name === 'nuevo' ? nuevoRef : seminuevoRef}
-                      label={value.label}
-                      name={value.name}
-                      id={value.name}
-                      type="checkbox"
-                      defaultChecked={value.name === 'nuevo' ? nuevo : seminuevo}
-                      onChange={(e) => {
-                        _handleToggle(e);
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-            {checkSave && errorNuevoSeminuevo && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Selecciona una opción
-              </p>
-            )}
             <div
               className={`${windowSize !== 'sm' && styles._row3_xlg}
       ${windowSize === 'sm' && styles._row3_sm}  
       `}
             >
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carBrand', { required: 'Marca de coche requerida' })}
-                  refs={carBrand}
-                  label="Selecciona una Marca"
-                  placeholder="Marca"
-                  name="carBrand"
-                  defaultValue={carBrand}
-                  dataoptions={carBrandOptions}
-                  dataget="brandname"
-                />
-                {errors.carBrand && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('brand', { required: 'Marca de coche requerida' })}
+                    refs={brand}
+                    label="Selecciona una Marca"
+                    placeholder="Marca"
+                    name="brand"
+                    defaultValue={brandEdit ? brandEdit : ''}
+                    dataoptions={brand}
+                    dataget="brandname"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Marca</label>
+                    <h3 className={styles._show_info}>
+                      {brandEdit && brand?.filter((value) => value._id === brandEdit)[0].brandname}
+                    </h3>
+                  </>
+                )}
+                {errors.brand && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carBrand.message}
+                    {errors.brand.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carModel', { required: 'Modelo de coche requerido' })}
-                  refs={carModel}
-                  label="Selecciona un Modelo"
-                  placeholder="Modelo"
-                  name="carModel"
-                  defaultValue={carModel}
-                  dataoptions={carModelOptions}
-                  dataget="modelname"
-                  disabled={watchBrand ? false : true}
-                />
-                {errors.carModel && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('model', { required: 'Modelo de coche requerido' })}
+                    refs={model}
+                    label="Selecciona un Modelo"
+                    placeholder="Modelo"
+                    name="model"
+                    defaultValue={modelEdit ? modelEdit._id : ''}
+                    dataoptions={model}
+                    dataget="modelname"
+                    disabled={watchBrand || modelEdit ? false : true}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Modelo</label>
+                    <h3 className={styles._show_info}>{modelEdit && modelEdit.modelname}</h3>
+                  </>
+                )}
+                {errors.model && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carModel.message}
+                    {errors.model.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carVersion', { required: 'Versión de coche requerida' })}
-                  refs={carVersion}
-                  label="Versión del Modelo"
-                  placeholder="Versión"
-                  name="carVersion"
-                  defaultValue={carVersion}
-                  dataget="carVersion"
-                  dataoptions={carVersionOptions}
-                  disabled={watchModel ? false : true}
-                />
-                {errors.carVersion && (
+                {editData ? (
+                  <InputComponent
+                    {...register('version', { required: 'Versión de coche requerida' })}
+                    refs={version}
+                    label="Versión del Modelo"
+                    placeholder="Versión"
+                    name="version"
+                    defaultValue={versionEdit}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Versión</label>
+                    <h3 className={styles._show_info}>{versionEdit}</h3>
+                  </>
+                )}
+                {errors.version && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carVersion.message}
+                    {errors.version.message}
                   </p>
                 )}
               </div>
@@ -429,64 +462,87 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
       `}
             >
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carType', { required: 'Tipo de coche requerido' })}
-                  refs={carType}
-                  label="Selecciona un tipo"
-                  placeholder="Tipo"
-                  name="carType"
-                  defaultValue={carType}
-                  dataget="carType"
-                  dataoptions={carTypeOptions}
-                />
-                {errors.carType && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('cartype', { required: 'Tipo de coche requerido' })}
+                    refs={cartype}
+                    label="Selecciona un tipo"
+                    placeholder="Tipo"
+                    name="cartype"
+                    defaultValue={modelEdit ? modelEdit.cartype._id : ''}
+                    dataget="cartype"
+                    dataoptions={cartype}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Tipo</label>
+                    <h3 className={styles._show_info}>{modelEdit && modelEdit.cartype.cartype}</h3>
+                  </>
+                )}
+                {errors.cartype && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carType.message}
+                    {errors.cartype.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('transmision', { required: 'Transmisión de coche requerida' })}
-                  refs={transmision}
-                  label="Selecciona un tipo de Transmisión"
-                  placeholder="Transmisión"
-                  name="transmision"
-                  defaultValue={carType}
-                  dataget="transmisiontype"
-                  dataoptions={transmisionOptions}
-                />
-                {errors.transmision && (
+                {editData ? (
+                  <SelectMultiple
+                    overrideStrings={overrideStringsTransmision}
+                    options={optionsTransmision.length > 0 && optionsTransmision}
+                    label="Selecciona un tipo de Transmisión"
+                    name="transmision"
+                    value={selectedTransmision}
+                    onChange={setSelectedTransmision}
+                    labelledBy="SelectTransmision"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Transmisión</label>
+                    <h3 className={styles._show_info}>
+                      {selectedTransmision && selectedTransmision.map((value) => value.label)}
+                    </h3>
+                  </>
+                )}
+                {checkSave && selectedTransmision.length === 0 && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.transmision.message}
+                    Selecciona al menos una transmisión
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('fuel', { required: 'Tipo de combustible requerido' })}
-                  refs={fuel}
-                  label="Selecciona un tipo de Combustible"
-                  placeholder="Combustible"
-                  name="fuel"
-                  defaultValue={fuel}
-                  dataget="fueltype"
-                  dataoptions={fuelOptions}
-                />
-                {errors.fuel && (
+                {editData ? (
+                  <SelectMultiple
+                    overrideStrings={overrideStringsFuel}
+                    options={optionsFuel.length > 0 && optionsFuel}
+                    label="Selecciona un tipo de Combustible"
+                    name="fuel"
+                    value={selectedFuel}
+                    onChange={setSelectedFuel}
+                    labelledBy="SelectFuel"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Combustible</label>
+                    <h3 className={styles._show_info}>
+                      {selectedFuel && selectedFuel.map((value) => value.label)}
+                    </h3>
+                  </>
+                )}
+                {checkSave && selectedFuel.length === 0 && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.fuel.message}
+                    Selecciona al menos un tipo de combustible
                   </p>
                 )}
               </div>
@@ -500,64 +556,91 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     `}
             >
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('ecoMark', { required: 'Distintivo Eco requerido' })}
-                  refs={ecoMark}
-                  label="Distintivo Eco"
-                  placeholder="Eco Mark"
-                  name="ecoMark"
-                  defaultValue={ecoMark}
-                  dataget="ecomarktype"
-                  dataoptions={ecoMarkOptions}
-                />
-                {errors.ecoMark && (
+                {editData ? (
+                  <SelectMultiple
+                    overrideStrings={overrideStringsColors}
+                    options={optionsColors.length > 0 && optionsColors}
+                    label="Colores Disponibles"
+                    name="color"
+                    value={selectedColor}
+                    onChange={setSelectedColor}
+                    labelledBy="SelectColors"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Colores</label>
+                    <h3
+                      className={`${styles._show_info} ${
+                        selectedColor.length > 5 && styles._text_large
+                      }`}
+                    >
+                      {selectedColor && selectedColor.map((value) => `${value.label} , `)}
+                    </h3>
+                  </>
+                )}
+                {checkSave && selectedColor.length === 0 && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.ecoMark.message}
+                    Selecciona al menos un color
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('color', { required: 'Color requerido' })}
-                  refs={color}
-                  name="color"
-                  label="Seleciona un Color"
-                  placeholder="Color"
-                  defaultValue={color}
-                  dataget="label"
-                  dataoptions={colorOptions}
-                />
-                {errors.color && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('ecomark', { required: 'Distintivo Eco requerido' })}
+                    refs={ecomark}
+                    label="Distintivo Eco"
+                    placeholder="Eco Mark"
+                    name="ecomark"
+                    defaultValue={ecomarkEdit ? ecomarkEdit : ''}
+                    dataget="ecomarktype"
+                    dataoptions={ecomark}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Distintivo Eco</label>
+                    <h3 className={styles._show_info}>
+                      {ecomarkEdit &&
+                        ecomark?.filter((value) => value._id === ecomarkEdit)[0].ecomarktype}
+                    </h3>
+                  </>
+                )}
+                {errors.ecomark && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.color.message}
+                    {errors.ecomark.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('puertas', { required: 'Número de puertas requerido' })}
-                  refs={puertas}
-                  name="puertas"
-                  label="Número de Puertas"
-                  placeholder="Puertas"
-                  defaultValue={puertas}
-                  dataget="label"
-                  dataoptions={puertasOptions}
-                />
-                {errors.puertas && (
+                {editData ? (
+                  <InputComponent
+                    {...register('doors', { required: 'Número de puertas requerido' })}
+                    refs={doors}
+                    name="doors"
+                    label="Número de Puertas"
+                    placeholder="Puertas"
+                    defaultValue={doorsEdit}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Puertas</label>
+                    <h3 className={styles._show_info}>{doorsEdit}</h3>
+                  </>
+                )}
+                {errors.doors && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.puertas.message}
+                    {errors.doors.message}
                   </p>
                 )}
               </div>
@@ -568,64 +651,84 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
       `}
             >
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('emisionMotor', { required: 'Emisión requerida' })}
-                  refs={emisionMotor}
-                  label="Emisión en gramos por CO2/Km"
-                  placeholder="Emisión"
-                  defaultValue={emisionMotor}
-                  name="emisionMotor"
-                  type="number"
-                />
-                {errors.emisionMotor && (
+                {editData ? (
+                  <InputComponent
+                    {...register('emission', { required: 'Emisión requerida' })}
+                    refs={emission}
+                    label="Emisión en gramos por CO2/Km"
+                    placeholder="Emisión"
+                    defaultValue={emissionEdit}
+                    name="emission"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Emisión</label>
+                    <h3 className={styles._show_info}>{`${emissionEdit} CO2/Km`}</h3>
+                  </>
+                )}
+                {errors.emission && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.emisionMotor.message}
+                    {errors.emission.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('cvMotor', {
-                    required: 'Número de CV requerido',
-                  })}
-                  refs={cvMotor}
-                  label="CV del Motor"
-                  placeholder="CV"
-                  name="cvMotor"
-                  defaultValue={cvMotor}
-                  id="cvMotor"
-                  type="Number"
-                />
-                {errors.cvMotor && (
+                {editData ? (
+                  <InputComponent
+                    {...register('motor', {
+                      required: 'Número de CV requerido',
+                    })}
+                    refs={motor}
+                    label="CV del Motor"
+                    placeholder="CV"
+                    name="motor"
+                    defaultValue={motorEdit}
+                    type="Number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Motor</label>
+                    <h3 className={styles._show_info}>{`${motorEdit} CV`}</h3>
+                  </>
+                )}
+                {errors.motor && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.cvMotor.message}
+                    {errors.motor.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('cilindradaMotor', { required: 'Cilindrada requerida' })}
-                  refs={cilindradaMotor}
-                  label="Cilindrada en cm3"
-                  placeholder="Cilindrada"
-                  defaultValue={cilindradaMotor}
-                  name="cilindradaMotor"
-                  type="number"
-                />
-                {errors.cilindradaMotor && (
+                {editData ? (
+                  <InputComponent
+                    {...register('displacement', { required: 'Cilindrada requerida' })}
+                    refs={displacement}
+                    label="Cilindrada en cm3"
+                    placeholder="Cilindrada"
+                    defaultValue={displacementEdit}
+                    name="displacement"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Cilindrada</label>
+                    <h3 className={styles._show_info}>{`${displacementEdit} cm3`}</h3>
+                  </>
+                )}
+                {errors.displacement && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.cilindradaMotor.message}
+                    {errors.displacement.message}
                   </p>
                 )}
               </div>
@@ -637,46 +740,58 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     `}
             >
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('consumo', { required: 'Consumo requerido' })}
-                  refs={consumo}
-                  label="Consumo medio litros/100km"
-                  placeholder="Consumo"
-                  defaultValue={consumo}
-                  name="consumo"
-                  type="number"
-                />
-                {errors.consumo && (
+                {editData ? (
+                  <InputComponent
+                    {...register('comsumption', { required: 'Consumo requerido' })}
+                    refs={comsumption}
+                    label="Consumo medio litros/100km"
+                    placeholder="Consumo"
+                    defaultValue={comsumptionEdit}
+                    name="comsumption"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Consumo</label>
+                    <h3 className={styles._show_info}>{`${comsumptionEdit} litros/100km`}</h3>
+                  </>
+                )}
+                {errors.comsumption && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.consumo.message}
+                    {errors.comsumption.message}
                   </p>
                 )}
               </div>
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('maletero', { required: 'Capacidad maletero requerida' })}
-                  refs={maletero}
-                  label="Capacidad de Maletero en litros"
-                  placeholder="Maletero"
-                  defaultValue={maletero}
-                  name="maletero"
-                  type="number"
-                />
-                {errors.maletero && (
+                {editData ? (
+                  <InputComponent
+                    {...register('trunk', { required: 'Capacidad maletero requerida' })}
+                    refs={trunk}
+                    label="Capacidad de Maletero en litros"
+                    placeholder="Maletero"
+                    defaultValue={trunkEdit}
+                    name="trunk"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Maletero</label>
+                    <h3 className={styles._show_info}>{`${trunkEdit} litros`}</h3>
+                  </>
+                )}
+                {errors.trunk && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.maletero.message}
+                    {errors.trunk.message}
                   </p>
                 )}
               </div>
             </div>
-
-            <h2 className={styles._tittle}>Medidas del coche</h2>
 
             <div
               className={`${windowSize !== 'sm' && styles._row3_xlg}
@@ -684,501 +799,479 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     `}
             >
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('dimensionesLargo', { required: 'Largo requerido' })}
-                  refs={dimensionesLargo}
-                  label="Largo del coche (cm)"
-                  placeholder="Largo"
-                  defaultValue={dimensionesLargo}
-                  name="dimensionesLargo"
-                  type="number"
-                />
-                {errors.dimensionesLargo && (
+                {editData ? (
+                  <InputComponent
+                    {...register('dimensionslength', { required: 'Largo requerido' })}
+                    refs={dimensionslength}
+                    label="Largo del coche (cm)"
+                    placeholder="Largo"
+                    defaultValue={dimensionslengthEdit}
+                    name="dimensionslength"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Largo</label>
+                    <h3 className={styles._show_info}>{`${dimensionslengthEdit} cm`}</h3>
+                  </>
+                )}
+                {errors.dimensionslength && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.dimensionesLargo.message}
+                    {errors.dimensionslength.message}
                   </p>
                 )}
               </div>
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('dimensionesAlto', { required: 'Alto requerido' })}
-                  refs={dimensionesAlto}
-                  label="Alto del coche (cm)"
-                  placeholder="Alto"
-                  defaultValue={dimensionesAlto}
-                  name="dimensionesAlto"
-                  type="number"
-                />
-                {errors.dimensionesAlto && (
+                {editData ? (
+                  <InputComponent
+                    {...register('dimensionsheight', { required: 'Alto requerido' })}
+                    refs={dimensionsheight}
+                    label="Alto del coche (cm)"
+                    placeholder="Alto"
+                    defaultValue={dimensionsheightEdit}
+                    name="dimensionsheight"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Alto</label>
+                    <h3 className={styles._show_info}>{`${dimensionsheightEdit} cm`}</h3>
+                  </>
+                )}
+                {errors.dimensionsheight && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.dimensionesAlto.message}
+                    {errors.dimensionsheight.message}
                   </p>
                 )}
               </div>
               <div className={styles._boxElements}>
-                <InputComponent
-                  {...register('dimensionesAncho', { required: 'Ancho requerido' })}
-                  refs={dimensionesAncho}
-                  label="Ancho del coche (cm)"
-                  placeholder="Ancho"
-                  defaultValue={dimensionesAncho}
-                  name="dimensionesAncho"
-                  type="number"
-                />
-                {errors.dimensionesAncho && (
+                {editData ? (
+                  <InputComponent
+                    {...register('dimensionswidth', { required: 'Ancho requerido' })}
+                    refs={dimensionswidth}
+                    label="Ancho del coche (cm)"
+                    placeholder="Ancho"
+                    defaultValue={dimensionswidthEdit}
+                    name="dimensionswidth"
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Ancho</label>
+                    <h3 className={styles._show_info}>{`${dimensionswidthEdit} cm`}</h3>
+                  </>
+                )}
+                {errors.dimensionswidth && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.dimensionesAncho.message}
+                    {errors.dimensionswidth.message}
                   </p>
                 )}
               </div>
             </div>
 
-            <h2 className={styles._tittle}>Este Renting incluye</h2>
-            <div className={styles._toggles_list}>
-              {goodiesOptions &&
-                goodiesOptions.map((value) => (
-                  <div key={value._id}>
-                    <div>
-                      <ToggleButtonComponent
-                        id={value._id}
-                        name={value.carGoodie}
-                        type="checkbox"
-                        checked={goodies?.filter((goodie) => goodie === value._id)}
-                        label={value.carGoodie}
-                        // checkedState={isChecked && true }
-                        iconlabel={value.iconGoodie}
-                        onChange={(e) => {
-                          _handleToggle_goodies(e);
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-            {checkSave && goodiesData.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de seleccionar al menos una opción
-              </p>
-            )}
+            <h2 className={styles._tittle}>Información del vehículo</h2>
 
-            <h2 className={styles._tittle}>Equipamiento Destacado</h2>
-
-            <div className={styles._toggles_list}>
-              {equipamientoOptions &&
-                equipamientoOptions.map((value) => (
-                  <div key={value._id}>
-                    <div>
-                      <ToggleButtonComponent
-                        id={value._id}
-                        name={value.carEquipment}
-                        type="checkbox"
-                        label={value.carEquipment}
-                        onChange={(e) => {
-                          _handleToggle_equipamiento(e);
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-            {checkSave && equipamientoData.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de seleccionar al menos una opción
-              </p>
-            )}
-
-            <h2 className={styles._tittle}>Opciones del Renting</h2>
-
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
+            {editData ? (
+              <>
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-            >
-              <div className={styles._boxElements_groups}>
-                <div className={styles._input_group}>
-                  <InputComponent
-                    ref={tecnologiaRef}
-                    name="tecnologia"
-                    label="Añade una tecnología"
-                    placeholder="Tecnología"
-                    type="text"
-                    onChange={(e) => handleTecnologia(e)}
-                  />
+                >
+                  <div className={styles._boxElements_groups}>
+                    <div className={styles._input_group}>
+                      <InputComponent
+                        ref={tecnologiaRef}
+                        name="tecnologia"
+                        label="Añade una tecnología"
+                        placeholder="Tecnología"
+                        type="text"
+                        onChange={(e) => handleTecnologia(e)}
+                      />
+                    </div>
+                    <ButtonActionIconComponent
+                      actionButton={() => addTecnology()}
+                      className={styles._button_group}
+                    />
+                  </div>
+                  <div className={`${styles._boxElements} ${styles._list_add}`}>
+                    {technologies.length === 0 && (
+                      <h2 className={styles._title_list}>
+                        <FontAwesomeIcon icon="microchip" className={styles._icon_title_list} />
+                        No se han añadido Tecnologías
+                      </h2>
+                    )}
+                    {technologies.length > 0 && (
+                      <>
+                        <h2 className={styles._title_list}>
+                          <FontAwesomeIcon icon="microchip" className={styles._icon_title_list} />
+                          Listado de Tecnologías
+                        </h2>
+                        <ul>
+                          {technologies.map((tecnologia, index) => (
+                            <li className={styles._list_li} key={index}>
+                              {tecnologia}
+                              <button
+                                className={styles._list_delete}
+                                type="button"
+                                title={`ELIMINAR: ${tecnologia}`}
+                                alt={`ELIMINAR: ${tecnologia}`}
+                                onClick={() => deleteTecnologia(tecnologia)}
+                              >
+                                <FontAwesomeIcon icon="times-circle" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <ButtonActionIconComponent
-                  actionButton={() => addTecnology()}
-                  className={styles._button_group}
-                />
-              </div>
-              <div className={`${styles._boxElements} ${styles._list_add}`}>
-                {listTecnologia.length === 0 && (
-                  <h2 className={styles._title_list}>
-                    <FontAwesomeIcon icon="microchip" className={styles._icon_title_list} />
-                    No se han añadido Tecnologías
-                  </h2>
+                {checkSave && technologies.length === 0 && (
+                  <p
+                    className={stylesPure._error_label}
+                    style={{ textAlign: 'center', marginBottom: '30px' }}
+                  >
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    Ha de seleccionar al menos una opción
+                  </p>
                 )}
-                {listTecnologia.length > 0 && (
-                  <>
+
+                <hr className={styles._hr_line} />
+
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}  
+    `}
+                >
+                  <div className={styles._boxElements_groups}>
+                    <div className={styles._input_group}>
+                      <InputComponent
+                        ref={confortRef}
+                        name="confort"
+                        label="Añade un Confort"
+                        placeholder="Confort"
+                        type="text"
+                        onChange={(e) => handleConfort(e)}
+                      />
+                    </div>
+                    <ButtonActionIconComponent
+                      actionButton={() => addConfort()}
+                      className={styles._button_group}
+                    />
+                  </div>
+                  <div className={`${styles._boxElements} ${styles._list_add}`}>
+                    {conforts.length === 0 && (
+                      <h2 className={styles._title_list}>
+                        <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title_list} />
+                        No se han añadido Confort
+                      </h2>
+                    )}
+                    {conforts.length > 0 && (
+                      <>
+                        <h2 className={styles._title_list}>
+                          <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title_list} />
+                          Listado de Confort
+                        </h2>
+                        <ul>
+                          {conforts.map((confort, index) => (
+                            <li className={styles._list_li} key={index}>
+                              {confort}
+                              <button
+                                className={styles._list_delete}
+                                type="button"
+                                title={`ELIMINAR: ${confort}`}
+                                alt={`ELIMINAR: ${confort}`}
+                                onClick={() => deleteConfort(confort)}
+                              >
+                                <FontAwesomeIcon icon="times-circle" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                </div>
+                {checkSave && conforts.length === 0 && (
+                  <p
+                    className={stylesPure._error_label}
+                    style={{ textAlign: 'center', marginBottom: '30px' }}
+                  >
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    Ha de añadir al menos una opción de confort
+                  </p>
+                )}
+
+                <hr className={styles._hr_line} />
+
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}  
+    `}
+                >
+                  <div className={styles._boxElements_groups}>
+                    <div className={styles._input_group}>
+                      <InputComponent
+                        ref={seguridadRef}
+                        name="seguridad"
+                        label="Añade una Seguridad"
+                        placeholder="Seguridad"
+                        type="text"
+                        onChange={(e) => handleSeguridad(e)}
+                      />
+                    </div>
+                    <ButtonActionIconComponent
+                      actionButton={() => addSeguridad()}
+                      className={styles._button_group}
+                    />
+                  </div>
+                  <div className={`${styles._boxElements} ${styles._list_add}`}>
+                    {securities.length === 0 && (
+                      <h2 className={styles._title_list}>
+                        <FontAwesomeIcon icon="shield-alt" className={styles._icon_title_list} />
+                        No se ha añadido Seguridad
+                      </h2>
+                    )}
+                    {securities.length > 0 && (
+                      <>
+                        <h2 className={styles._title_list}>
+                          <FontAwesomeIcon icon="shield-alt" className={styles._icon_title_list} />
+                          Listado de Seguridad
+                        </h2>
+                        <ul>
+                          {securities.map((seguridad, index) => (
+                            <li className={styles._list_li} key={index}>
+                              {seguridad}
+                              <button
+                                className={styles._list_delete}
+                                type="button"
+                                title={`ELIMINAR: ${seguridad}`}
+                                alt={`ELIMINAR: ${seguridad}`}
+                                onClick={() => deleteSeguridad(seguridad)}
+                              >
+                                <FontAwesomeIcon icon="times-circle" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                </div>
+                {checkSave && securities.length === 0 && (
+                  <p
+                    className={stylesPure._error_label}
+                    style={{ textAlign: 'center', marginBottom: '30px' }}
+                  >
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    Ha de añadir al menos una opción de seguridad
+                  </p>
+                )}
+
+                <hr className={styles._hr_line} />
+
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}  
+    `}
+                >
+                  <div className={styles._boxElements_groups}>
+                    <div className={styles._input_group}>
+                      <InputComponent
+                        ref={exteriorRef}
+                        name="exterior"
+                        label="Añade un Exterior"
+                        placeholder="Exterior"
+                        type="text"
+                        onChange={(e) => handleExterior(e)}
+                      />
+                    </div>
+                    <ButtonActionIconComponent
+                      actionButton={() => addExterior()}
+                      className={styles._button_group}
+                    />
+                  </div>
+                  <div className={`${styles._boxElements} ${styles._list_add}`}>
+                    {exteriors.length === 0 && (
+                      <h2 className={styles._title_list}>
+                        <FontAwesomeIcon icon="air-freshener" className={styles._icon_title_list} />
+                        No se ha añadido Exterior
+                      </h2>
+                    )}
+                    {exteriors.length > 0 && (
+                      <>
+                        <h2 className={styles._title_list}>
+                          <FontAwesomeIcon
+                            icon="air-freshener"
+                            className={styles._icon_title_list}
+                          />
+                          Listado de Exterior
+                        </h2>
+                        <ul>
+                          {exteriors.map((exterior, index) => (
+                            <li className={styles._list_li} key={index}>
+                              {exterior}
+                              <button
+                                className={styles._list_delete}
+                                type="button"
+                                title={`ELIMINAR: ${exterior}`}
+                                alt={`ELIMINAR: ${exterior}`}
+                                onClick={() => deleteExterior(exterior)}
+                              >
+                                <FontAwesomeIcon icon="times-circle" />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                </div>
+                {checkSave && exteriors.length === 0 && (
+                  <p
+                    className={stylesPure._error_label}
+                    style={{ textAlign: 'center', marginBottom: '30px' }}
+                  >
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    Ha de añadir al menos una opción de exterior
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}  
+    `}
+                >
+                  <div className={styles._boxElements}>
                     <h2 className={styles._title_list}>
                       <FontAwesomeIcon icon="microchip" className={styles._icon_title_list} />
                       Listado de Tecnologías
                     </h2>
                     <ul>
-                      {listTecnologia.map((tecnologia, index) => (
+                      {technologies.map((tecnologia, index) => (
                         <li className={styles._list_li} key={index}>
                           {tecnologia}
-                          <button
-                            className={styles._list_delete}
-                            type="button"
-                            title={`ELIMINAR: ${tecnologia}`}
-                            alt={`ELIMINAR: ${tecnologia}`}
-                            onClick={() => deleteTecnologia(tecnologia)}
-                          >
-                            <FontAwesomeIcon icon="times-circle" />
-                          </button>
                         </li>
                       ))}
                     </ul>
-                  </>
-                )}
-              </div>
-            </div>
-            {checkSave && listTecnologia.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de seleccionar al menos una opción
-              </p>
-            )}
-
-            <hr className={styles._hr_line} />
-
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-            >
-              <div className={styles._boxElements_groups}>
-                <div className={styles._input_group}>
-                  <InputComponent
-                    ref={confortRef}
-                    name="confort"
-                    label="Añade un Confort"
-                    placeholder="Confort"
-                    type="text"
-                    onChange={(e) => handleConfort(e)}
-                  />
-                </div>
-                <ButtonActionIconComponent
-                  actionButton={() => addConfort()}
-                  className={styles._button_group}
-                />
-              </div>
-              <div className={`${styles._boxElements} ${styles._list_add}`}>
-                {listConfort.length === 0 && (
-                  <h2 className={styles._title_list}>
-                    <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title_list} />
-                    No se han añadido Confort
-                  </h2>
-                )}
-                {listConfort.length > 0 && (
-                  <>
+                  </div>
+                  <div className={styles._boxElements}>
                     <h2 className={styles._title_list}>
                       <FontAwesomeIcon icon="thumbs-up" className={styles._icon_title_list} />
                       Listado de Confort
                     </h2>
                     <ul>
-                      {listConfort.map((confort, index) => (
+                      {conforts.map((confort, index) => (
                         <li className={styles._list_li} key={index}>
                           {confort}
-                          <button
-                            className={styles._list_delete}
-                            type="button"
-                            title={`ELIMINAR: ${confort}`}
-                            alt={`ELIMINAR: ${confort}`}
-                            onClick={() => deleteConfort(confort)}
-                          >
-                            <FontAwesomeIcon icon="times-circle" />
-                          </button>
                         </li>
                       ))}
                     </ul>
-                  </>
-                )}
-              </div>
-            </div>
-            {checkSave && listConfort.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de añadir al menos una opción de confort
-              </p>
-            )}
+                  </div>
+                </div>
 
-            <hr className={styles._hr_line} />
-
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
     `}
-            >
-              <div className={styles._boxElements_groups}>
-                <div className={styles._input_group}>
-                  <InputComponent
-                    ref={seguridadRef}
-                    name="seguridad"
-                    label="Añade una Seguridad"
-                    placeholder="Seguridad"
-                    type="text"
-                    onChange={(e) => handleSeguridad(e)}
-                  />
-                </div>
-                <ButtonActionIconComponent
-                  actionButton={() => addSeguridad()}
-                  className={styles._button_group}
-                />
-              </div>
-              <div className={`${styles._boxElements} ${styles._list_add}`}>
-                {listSeguridad.length === 0 && (
-                  <h2 className={styles._title_list}>
-                    <FontAwesomeIcon icon="shield-alt" className={styles._icon_title_list} />
-                    No se ha añadido Seguridad
-                  </h2>
-                )}
-                {listSeguridad.length > 0 && (
-                  <>
+                >
+                  <div className={styles._boxElements}>
                     <h2 className={styles._title_list}>
                       <FontAwesomeIcon icon="shield-alt" className={styles._icon_title_list} />
                       Listado de Seguridad
                     </h2>
                     <ul>
-                      {listSeguridad.map((seguridad, index) => (
+                      {securities.map((seguridad, index) => (
                         <li className={styles._list_li} key={index}>
                           {seguridad}
-                          <button
-                            className={styles._list_delete}
-                            type="button"
-                            title={`ELIMINAR: ${seguridad}`}
-                            alt={`ELIMINAR: ${seguridad}`}
-                            onClick={() => deleteSeguridad(seguridad)}
-                          >
-                            <FontAwesomeIcon icon="times-circle" />
-                          </button>
                         </li>
                       ))}
                     </ul>
-                  </>
-                )}
-              </div>
-            </div>
-            {checkSave && listSeguridad.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de añadir al menos una opción de seguridad
-              </p>
-            )}
-
-            <hr className={styles._hr_line} />
-
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-            >
-              <div className={styles._boxElements_groups}>
-                <div className={styles._input_group}>
-                  <InputComponent
-                    ref={exteriorRef}
-                    name="exterior"
-                    label="Añade un Exterior"
-                    placeholder="Exterior"
-                    type="text"
-                    onChange={(e) => handleExterior(e)}
-                  />
-                </div>
-                <ButtonActionIconComponent
-                  actionButton={() => addExterior()}
-                  className={styles._button_group}
-                />
-              </div>
-              <div className={`${styles._boxElements} ${styles._list_add}`}>
-                {listExterior.length === 0 && (
-                  <h2 className={styles._title_list}>
-                    <FontAwesomeIcon icon="air-freshener" className={styles._icon_title_list} />
-                    No se ha añadido Exterior
-                  </h2>
-                )}
-                {listExterior.length > 0 && (
-                  <>
+                  </div>
+                  <div className={styles._boxElements}>
                     <h2 className={styles._title_list}>
                       <FontAwesomeIcon icon="air-freshener" className={styles._icon_title_list} />
                       Listado de Exterior
                     </h2>
                     <ul>
-                      {listExterior.map((exterior, index) => (
+                      {exteriors.map((exterior, index) => (
                         <li className={styles._list_li} key={index}>
                           {exterior}
-                          <button
-                            className={styles._list_delete}
-                            type="button"
-                            title={`ELIMINAR: ${exterior}`}
-                            alt={`ELIMINAR: ${exterior}`}
-                            onClick={() => deleteExterior(exterior)}
-                          >
-                            <FontAwesomeIcon icon="times-circle" />
-                          </button>
                         </li>
                       ))}
                     </ul>
-                  </>
-                )}
-              </div>
-            </div>
-            {checkSave && listExterior.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de añadir al menos una opción de exterior
-              </p>
-            )}
-
-            <h2 className={styles._tittle}>Precios del Renting</h2>
-
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-            >
-              <div className={styles._boxElements_groups}>
-                <div className={styles._input_group}>
-                  <InputComponent
-                    ref={kmAnualesRef}
-                    name="kmAnuales"
-                    label="Km Anuales"
-                    placeholder="Km"
-                    type="number"
-                  />
-                  <InputComponent
-                    ref={mesesRentingRef}
-                    name="mesesRenting"
-                    label="Meses del renting"
-                    placeholder="Meses"
-                    type="number"
-                  />
-                  <InputComponent
-                    ref={precioRentingRef}
-                    name="precioRenting"
-                    label="Precio Renting"
-                    placeholder="Precio"
-                    type="number"
-                  />
+                  </div>
                 </div>
-                <ButtonActionIconComponent
-                  actionButton={() => addRentingOption()}
-                  className={styles._button_group}
-                />
-              </div>
-              <div className={`${styles._boxElements} ${styles._list_add}`}>
-                {rentingOptions.length === 0 && (
-                  <h2 className={styles._title_list}>
-                    <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title_list} />
-                    No se ha añadido Opciones de Renting
-                  </h2>
-                )}
-                {rentingOptions.length > 0 && (
-                  <>
-                    <h2 className={styles._title_list}>
-                      <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title_list} />
-                      Opciones de Renting
-                    </h2>
-                    <ul>
-                      {rentingOptions.map((optionRent, index) => (
-                        <li className={styles._list_li_priceRenting} key={index}>
-                          <b>{optionRent.kmAnuales}</b> <i> km anuales, </i> en
-                          <b>{optionRent.mesesRenting}</b> <i> meses, </i> a
-                          <b>{optionRent.precioRenting}</b> <i> € al mes. </i>
-                          <button
-                            className={styles._list_delete}
-                            type="button"
-                            title="Eliminar Opción del Renting"
-                            alt="Eliminar Opción del Renting"
-                            onClick={() => deleteRentingOption(optionRent)}
-                          >
-                            <FontAwesomeIcon icon="times-circle" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </div>
-            </div>
-            {checkSave && rentingOptions.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de añadir al menos una opción de renting
-              </p>
+              </>
             )}
 
             <div className={styles._row_buttons}>
-              <ButtonComponent
-                label="Cancelar"
-                alt="Cancelar"
-                typeButton="cancel"
-                actionButton={() => handleCloseModal()}
-              />
-              <ButtonComponent
-                label="Guardar"
-                type="submit"
-                alt="Guardar"
-                actionButton={() => {
-                  handleSubmit(onSubmit);
-                  setCheckSave(true);
-                }}
-              />
+              {editData && !newCar && (
+                <>
+                  <ButtonComponent
+                    label="Cancelar"
+                    alt="Cancelar"
+                    typeButton="cancel"
+                    actionButton={() => setEditData(false)}
+                  />
+                  <ButtonComponent
+                    label="Guardar"
+                    type="submit"
+                    alt="Guardar"
+                    actionButton={() => {
+                      handleSubmit(onSubmit);
+                      setCheckSave(true);
+                    }}
+                  />
+                </>
+              )}
+              {editData && newCar && (
+                <>
+                  <ButtonComponent
+                    label="Cancelar"
+                    alt="Cancelar"
+                    typeButton="cancel"
+                    actionButton={() => handleCloseModal()}
+                  />
+                  <ButtonComponent
+                    label="Guardar"
+                    type="submit"
+                    alt="Guardar"
+                    actionButton={() => {
+                      handleSubmit(onSubmit);
+                      setCheckSave(true);
+                    }}
+                  />
+                </>
+              )}
+              {(!editData && !newCar) && (
+                <ButtonComponent
+                  label="Cerrar"
+                  alt="Cerrar"
+                  typeButton="cancel"
+                  actionButton={() => handleCloseModal()}
+                />
+              )}
             </div>
           </form>
         </div>

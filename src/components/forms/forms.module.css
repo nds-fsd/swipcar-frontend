@@ -273,3 +273,6 @@
   padding: 10px 0;
   border-bottom: 1px solid #99999930;
 }
+._text_large {
+  font-size: large !important;
+}
