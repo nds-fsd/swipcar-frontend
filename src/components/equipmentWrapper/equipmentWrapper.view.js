@@ -15,9 +15,9 @@ const EquipmentWrapper = ({ equipmentList, equipmentCategory }) => {
       </div>
       {expanded && (
         <>
-          {equipmentList.map((techItem) => {
+          {equipmentList.map((techItem, index) => {
             return (
-              <div className={styles._tech_item_container} key={techItem._id}>
+              <div className={styles._tech_item_container} key={index}>
                 <div className={styles._arrow_icon_container}>
                   <CheckIcon className={styles._arrow_icon} />
                 </div>

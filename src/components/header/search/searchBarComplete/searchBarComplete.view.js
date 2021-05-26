@@ -15,8 +15,8 @@ const SearchBarComplete = ({ placeholder }) => {
       onSuccess: setCartypeList,
     });
   }, []);
-  console.log('cartypeList: ', cartypeList);
-  console.log('cartype: ', cartypeList.cartype);
+  /* console.log('cartypeList: ', cartypeList);
+  console.log('cartype: ', cartypeList.cartype); */
   return (
     <>
       {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
