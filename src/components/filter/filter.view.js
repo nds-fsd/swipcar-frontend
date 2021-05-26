@@ -8,17 +8,13 @@ import TimeOption from './timeOption/timeOption.view';
 import PriceMultirange from './priceMultirange';
 import { useForm } from 'react-hook-form';
 
-const Filter = ({ openFilter, closeFilter, setFuelSort }) => {
+const Filter = ({ setTabQuery }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     const querystring = require('querystring');
     let queryString = querystring.stringify(data);
-    console.log(queryString);
   };
-
-  if (openFilter) return null;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles._wrapper}>
@@ -26,7 +22,7 @@ const Filter = ({ openFilter, closeFilter, setFuelSort }) => {
           <div className={styles._container_title}>
             <div className={styles._title}>Combustible</div>
           </div>
-          <FuelContainer setFuelSort={setFuelSort} />
+          <FuelContainer setTabQuery={setTabQuery} />
         </div>
         <div className={styles._filter_container}>
           <div className={styles._container_title}>

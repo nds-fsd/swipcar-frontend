@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './searchBarComplete.module.css';
 import { ReactComponent as SearchIcon } from '../../../assets/searchIcon.svg';
 import useWindowSize from '../../../../constants/useWindowSize';
+import { newRequest } from '../../../../utils/newRequest';
 
-const SearchBarComplete = (props) => {
+const SearchBarComplete = ({ placeholder }) => {
   const windowSize = useWindowSize();
+  const [cartypeList, setCartypeList] = useState();
+
+  useEffect(() => {
+    newRequest({
+      url: '/cartype/',
+      method: 'GET',
+      onSuccess: setCartypeList,
+    });
+  }, []);
+  /* console.log('cartypeList: ', cartypeList);
+  console.log('cartype: ', cartypeList.cartype); */
   return (
     <>
       {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
         <div className={styles._wrapper}>
           <div className={styles._categories_container}>
-            <select className={styles._select} {...props}>
-              <option>{props.placeholder}</option>
-              <option>Urbanita</option>
-              <option>SUV</option>
-              <option>SUV pequeño</option>
-              <option>Compacto</option>
-              <option>Berlina</option>
-              <option>7 Plazas</option>
-              <option>4x4</option>
-              {/* {props.dataoptions.map((option) => (
-            <option key={option._id} value={option._id}>
-              {option.name}
-            </option>
-          ))} */}
+            <select className={styles._select}>
+              <option value={placeholder}>{placeholder}</option>
+              {/* {cartypeList && ({cartypeList.map((cartype) => {
+                return <option key={cartype._id} value{cartype}>{cartype.cartype} </option>;
+              })})} */}
             </select>
           </div>
           <div className={styles._search_container}>
@@ -35,8 +38,8 @@ const SearchBarComplete = (props) => {
       {windowSize === 'sm' && (
         <div className={styles._wrapper_sm}>
           <div className={styles._categories_container_sm}>
-            <select className={styles._select_sm} {...props}>
-              <option>{props.placeholder}</option>
+            <select className={styles._select_sm}>
+              <option>{placeholder}</option>
               {/* {props.dataoptions.map((option) => (
             <option key={option._id} value={option._id}>
               {option.name}

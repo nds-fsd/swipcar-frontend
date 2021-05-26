@@ -26,6 +26,13 @@
   color: rgba(21, 21, 21, 1);
   margin-bottom: 5px;
 }
+._card_version {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: rgba(106, 152, 60, 1);
+  margin-bottom: 5px;
+}
 ._card_fuel {
   display: flex;
   color: rgba(87, 87, 87, 1);
@@ -35,7 +42,7 @@
 }
 
 ._car_picture {
-  margin-top: -40px;
+  margin-top: -60px;
   width: 100%;
 }
 

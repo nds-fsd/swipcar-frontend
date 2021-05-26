@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './carCard.module.css';
 
-const CarCardXLarge = ({ brand, model, fuel, lowerprice, photocar, carProfile }) => {
+const CarCard = ({ brand, model, fuel, version, lowerprice, photocar, carProfile }) => {
   return (
     <div className={styles._card_wrapper}>
       <Link
@@ -16,6 +16,7 @@ const CarCardXLarge = ({ brand, model, fuel, lowerprice, photocar, carProfile })
           <div className={styles._card_title}>
             {brand} {model}
           </div>
+          <div className={styles._card_version}>{version}</div>
           <div className={styles._card_fuel}>{fuel}</div>
         </div>
         <img className={styles._car_picture} alt="carPicture" src={photocar} />
@@ -30,4 +31,4 @@ const CarCardXLarge = ({ brand, model, fuel, lowerprice, photocar, carProfile })
   );
 };
 
-export default CarCardXLarge;
+export default CarCard;

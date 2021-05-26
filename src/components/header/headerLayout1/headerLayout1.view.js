@@ -72,7 +72,8 @@ const HeaderLayout1 = () => {
               <div className={styles._header_top_right_inner_container}>
                 <p className={styles._header_top_green_link_right}>Nosotros</p>
                 <p className={styles._header_top_green_link_right}>Contacto</p>
-                {loggedInUser && loggedInUser.user.role === 'admin' ? (
+                {loggedInUser &&
+                (loggedInUser.user.role === 'provider' || loggedInUser.user.role === 'admin') ? (
                   <Link to={DASHBOARD_PAGE}>
                     <p className={styles._header_top_green_link_right}>Dashboard</p>
                   </Link>
