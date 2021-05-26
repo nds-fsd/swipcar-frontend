@@ -26,19 +26,6 @@ const ProviderSigninComponent = ({
             <form onSubmit={handleSubmit(onSubmitSigninProvider)}>
               <div className={styles._input_container}>
                 <LoginSigninInput
-                  label="Nombre de tu empresa"
-                  placeholder="CarRenting SL"
-                  name="companyname"
-                  type="text"
-                  autoComplete="off"
-                  {...register('companyname', { required: 'Indica tu empresa' })}
-                />
-                <div className={styles._error_message}>
-                  {errors.companyname ? errors.companyname.message : ''}
-                </div>
-              </div>
-              <div className={styles._input_container}>
-                <LoginSigninInput
                   label="Crea un nombre de usuario"
                   placeholder="usuario"
                   name="name"

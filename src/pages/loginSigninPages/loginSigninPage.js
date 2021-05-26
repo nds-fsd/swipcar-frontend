@@ -78,11 +78,10 @@ const LoginSigninPage = ({ props }) => {
     setIsSubmitting(true);
     fetchRequest('POST', 'register', {
       body: {
-        companyname: data.companyname,
         email: data.email,
         name: data.name,
         password: data.password,
-        role: 'admin',
+        role: 'provider',
       },
     })
       .then((res) => {
@@ -116,7 +115,7 @@ const LoginSigninPage = ({ props }) => {
         if (res.user.role === 'user') {
           history.push('/renting');
         }
-        if (res.user.role === 'admin') {
+        if (res.user.role === 'provider') {
           history.push('/user/dashboard');
         }
       })

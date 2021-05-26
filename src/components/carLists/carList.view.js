@@ -6,18 +6,17 @@ const CarList = ({ listOfCars }) => {
   //console.log('listOfCars:', listOfCars);
   return (
     <div className={styles.car_list}>
-      {listOfCars.map((carProfile) => {
-        // console.log('carProfile:', carProfile);
-
+      {listOfCars.map((rentingoffer) => {
         return (
           <CarCard
-            key={carProfile._id}
-            brand={carProfile.carCard.brand.brandname}
-            model={carProfile.carCard.model.modelname}
-            fuel={carProfile.carCard.fuel.fueltype}
-            lowerprice={carProfile.carCard.lowerprice.lowerprice}
-            photocar={carProfile.carCard.photocar[0].photourl}
-            carProfile={carProfile._id}
+            key={rentingoffer._id}
+            brand={rentingoffer.version.brand.brandname}
+            model={rentingoffer.version.model.modelname}
+            version={rentingoffer.version.version}
+            fuel={rentingoffer.fuel}
+            lowerprice="229"
+            photocar={rentingoffer.version.model.photocar.photourl}
+            carProfile={rentingoffer.carProfile._id}
           />
         );
       })}

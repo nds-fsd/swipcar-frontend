@@ -5,7 +5,7 @@ import { getUserSession } from '..//utils/auth/index';
 
 const PrivateRoute = ({ children, ...rest }) => {
   const userSession = getUserSession();
-  if (userSession && userSession.role === 'admin') {
+  if (userSession && (userSession.role === 'provider' || userSession.role === 'admin')) {
     return <Route {...rest}>{children}</Route>;
   } else {
     return <Redirect to={LOGIN_SIGNIN_PAGE} />;

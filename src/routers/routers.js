@@ -1,7 +1,7 @@
 //* Definimos las constantes que utilizaremos en nuestro Router
 export const HOME_PAGE = '/es';
 export const CARS_LIST_PAGE = '/renting';
-export const CAR_PROFILE_PAGE = '/renting-car/:brand/:model/:id';
+export const CAR_PROFILE_PAGE = '/renting-car';
 export const PARTICULARES_PAGE = '/renting-particulares';
 export const AUTONOMOS_PAGE = '/renting-autonomos';
 export const EMPRESAS_PAGE = '/renting-empresas';
