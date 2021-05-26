@@ -3,33 +3,27 @@ import useWindowSize from '../../../constants/useWindowSize';
 
 import stylesPure from '../../pureComponents/pureComponents.module.css';
 
-import UsersIcon from '../../assets/userIcon.gif';
+import UserIcon from '../../assets/userIcon.gif';
 
 import styles from '../forms.module.css';
 
 import { useForm } from 'react-hook-form';
-import { CreateCarRequestAll, GetDataCarProfile } from '../../../utils/createCarRequestAll';
+import {
+  CreateCarRequestAll,
+  GetDataCarProfile,
+  GetDataDashboardTableUsers,
+  GetDataDashboardTableUserProvider,
+  EditUser,
+  NewUser,
+} from '../../../utils/createCarRequestAll';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
 import InputComponent from '../../pureComponents/inputComponent/index';
 
 const UserForm = ({ toEdit, handleCloseModal }) => {
-  const [dataToEDit, setDataToEDit] = useState({
-    nameUser: 'Agustín',
-    apellidosUser: 'Gómez Campillos',
-    emailUser: 'agugoka@gmail.com',
-    telefonoUser: '123123',
-    companyUser: 'My wonderful life!!',
-  });
+  const [dataToEdit, setDataToEdit] = useState({});
 
-  // useEffect(() => {
-  //   if (toEdit) {
-  //     GetDataCarProfile({ toEdit, onSuccess: setDataToEDit });
-  //     // setDataToEDit()
-  //   }
-  // }, []);
-
-  const windowSize = useWindowSize();
+  const [newUser, setNewUser] = useState(false);
 
   const {
     register,
@@ -40,47 +34,35 @@ const UserForm = ({ toEdit, handleCloseModal }) => {
 
   const [changePass, setChangePass] = useState(false);
 
-  const [dataOptions, setDataOptions] = useState({});
-  const [dataOptionsAPI, setDataOptionsAPI] = useState({});
-
   useEffect(() => {
-    setDataOptions({ ...dataOptions, ...dataOptionsAPI });
-  }, [dataOptionsAPI]);
-
-  useEffect(() => {
-    CreateCarRequestAll({ onSuccess: setDataOptionsAPI });
+    if (toEdit) {
+      console.log('toEdit   :  ', toEdit);
+      GetDataDashboardTableUserProvider({ toEdit, onSuccess: setDataToEdit });
+      setNewUser(false);
+    } else {
+      setEditData(true);
+      setNewUser(true);
+    }
   }, []);
 
-  const {
-    role: roleOptions,
-    nameUser,
-    apellidosUser,
-    emailUser,
-    telefonoUser,
-    companyUser,
-    passOneUser,
-    passTwoUser,
-  } = dataOptions;
+  const passOneWatch = watch('passOneUser');
+  const passTwoWatch = watch('passTwoUser');
 
-  const {
-    nameUser: nameUserData,
-    apellidosUser: apellidosUserData,
-    emailUser: emailUserData,
-    telefonoUser: telefonoUserData,
-    companyUser: companyUserData,
-  } = dataToEDit;
+  const windowSize = useWindowSize();
+
+  const { name, email, passOneUser, passTwoUser } = dataToEdit;
 
   const onSubmit = (data) => {
     if (passOneWatch !== passTwoWatch) {
       alert('Las contraseñas no coinciden!!');
     }
-    // setCheckSave(true);
-    const dataAPI = { data };
-    console.log('dataAPI  : ', dataAPI);
+    const dataAPI = data;
+    if (newUser) {
+      NewUser({ dataAPI, onSuccess: () => handleCloseModal() });
+    } else {
+      EditUser({ toEdit, dataAPI, onSuccess: () => handleCloseModal() });
+    }
   };
-
-  const passOneWatch = watch('passOneUser');
-  const passTwoWatch = watch('passTwoUser');
 
   const [editData, setEditData] = useState(false);
   const handleEdit = () => {
@@ -99,13 +81,11 @@ const UserForm = ({ toEdit, handleCloseModal }) => {
         <div className={styles._wrapper}>
           <div className={styles._title_group}>
             <div className={`${styles._boxElements} ${styles._title_group}`}>
-              <img
-                src={UsersIcon}
-                className={styles._icon_title}
-                alt=""
-              />
+              <img src={UserIcon} className={styles._icon_title} alt="" />
               <span className={styles._title}>
-                {editData ? 'Editar Usuario' : 'Información de usuario'}
+                {editData && !newUser && 'Editar Usuario'}
+                {editData && newUser && 'Nuevo usuario'}
+                {!editData && !newUser && 'Información del usuario'}
               </span>
             </div>
 
@@ -127,6 +107,7 @@ const UserForm = ({ toEdit, handleCloseModal }) => {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
+
             <div
               className={`${windowSize !== 'sm' && styles._row3_xlg}
     ${windowSize === 'sm' && styles._row3_sm}  
@@ -135,152 +116,58 @@ const UserForm = ({ toEdit, handleCloseModal }) => {
               <div className={styles._boxElements}>
                 {editData ? (
                   <InputComponent
-                    {...register('nameUser', { required: 'Nombre de Usuario Requerido' })}
-                    refs={nameUser}
-                    label="Introduce un nombre"
+                    {...register('name', { required: 'Nombre requerido' })}
+                    refs={name}
+                    label="Introduce una nombre"
                     placeholder="Nombre"
-                    defaultValue={nameUserData}
-                    name="nameUser"
+                    defaultValue={name}
+                    name="name"
                     type="text"
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Nombre</label>
-                    <h3 className={styles._show_info}>{nameUserData}</h3>
+                    <h3 className={styles._show_info}>{name}</h3>
                   </>
                 )}
-                {errors.nameUser && (
-                  <>
-                    <p className={stylesPure._error_label}>
-                      <span className={stylesPure._error_label_icon}>
-                        <FontAwesomeIcon icon="exclamation-triangle" />
-                      </span>
-                      {errors.nameUser.message}
-                    </p>
-                  </>
-                )}
-              </div>
-
-              <div className={styles._boxElements}>
-                {editData ? (
-                  <InputComponent
-                    {...register('apellidosUser', { required: 'Apellidos Requeridos' })}
-                    refs={apellidosUser}
-                    label="Introduce apellidos"
-                    placeholder="Apellidos"
-                    defaultValue={apellidosUserData}
-                    name="apellidosUser"
-                    type="text"
-                  />
-                ) : (
-                  <>
-                    <label className={styles._label_show_info}>Apellidos</label>
-                    <h3 className={styles._show_info}>{apellidosUserData}</h3>
-                  </>
-                )}
-                {errors.apellidosUser && (
+                {errors.name && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.apellidosUser.message}
+                    {errors.name.message}
                   </p>
                 )}
               </div>
-            </div>
 
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-            >
               <div className={styles._boxElements}>
                 {editData ? (
                   <InputComponent
-                    {...register('emailUser', { required: 'Email de Usuario Requerido' })}
-                    refs={emailUser}
+                    {...register('email', { required: 'Email de contacto requerido' })}
+                    refs={email}
                     label="Introduce un email"
                     placeholder="Email"
-                    defaultValue={emailUserData}
-                    name="emailUser"
+                    defaultValue={email}
+                    name="email"
                     type="email"
                   />
                 ) : (
                   <>
-                    <label className={styles._label_show_info}>Email</label>
-                    <h3 className={styles._show_info}>{emailUserData}</h3>
-                  </>
-                )}
-                {errors.emailUser && (
-                  <p className={stylesPure._error_label}>
-                    <span className={stylesPure._error_label_icon}>
-                      <FontAwesomeIcon icon="exclamation-triangle" />
-                    </span>
-                    {errors.emailUser.message}
-                  </p>
-                )}
-              </div>
-
-              <div className={styles._boxElements}>
-                {editData ? (
-                  <InputComponent
-                    {...register('telefonoUser', { required: 'Teléfono Requerido' })}
-                    refs={telefonoUser}
-                    label="Introduce un teléfono"
-                    placeholder="Teléfono"
-                    defaultValue={telefonoUserData}
-                    name="telefonoUser"
-                    type="number"
-                  />
-                ) : (
-                  <>
                     <label className={styles._label_show_info}>Teléfono</label>
-                    <h3 className={styles._show_info}>{telefonoUserData}</h3>
+                    <h3 className={styles._show_info}>{email}</h3>
                   </>
                 )}
-                {errors.telefonoUser && (
+                {errors.email && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.telefonoUser.message}
+                    {errors.email.message}
                   </p>
                 )}
               </div>
             </div>
 
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-            >
-              <div className={styles._boxElements}>
-                {editData ? (
-                  <InputComponent
-                    {...register('companyUser', { required: 'Compañia Requerida' })}
-                    refs={companyUser}
-                    label="Introduce Nombre de la compañia"
-                    placeholder="Compañia"
-                    defaultValue={companyUserData}
-                    name="companyUser"
-                    type="text"
-                  />
-                ) : (
-                  <>
-                    <label className={styles._label_show_info}>Compañia</label>
-                    <h3 className={styles._show_info}>{companyUserData}</h3>
-                  </>
-                )}
-                {errors.companyUser && (
-                  <p className={stylesPure._error_label}>
-                    <span className={stylesPure._error_label_icon}>
-                      <FontAwesomeIcon icon="exclamation-triangle" />
-                    </span>
-                    {errors.companyUser.message}
-                  </p>
-                )}
-              </div>
-            </div>
 
             {editData && (
               <>
@@ -355,26 +242,51 @@ const UserForm = ({ toEdit, handleCloseModal }) => {
                 )}
               </>
             )}
-            <div className={styles._row_buttons} style={{ margin: '70px 0 0 0' }}>
-              {/* {!editData && (
-                <ButtonComponent
-                    label="Cerrar"
-                    alt="Cerrar"
-                    typeButton="cancel"
-                    actionButton={() => handleCloseModal()}
-                  />
-              )} */}
-              {editData && (
+
+            <div className={styles._row_buttons}>
+              {editData && !newUser && (
                 <>
                   <ButtonComponent
                     label="Cancelar"
                     alt="Cancelar"
                     typeButton="cancel"
                     actionButton={() => setEditData(false)}
-                    // actionButton={() => handleCloseModal()}
                   />
-                  <ButtonComponent label="Guardar" type="submit" alt="Guardar" />
+                  <ButtonComponent
+                    label="Guardar"
+                    type="submit"
+                    alt="Guardar"
+                    actionButton={() => {
+                      handleSubmit(onSubmit);
+                    }}
+                  />
                 </>
+              )}
+              {editData && newUser && (
+                <>
+                  <ButtonComponent
+                    label="Cancelar"
+                    alt="Cancelar"
+                    typeButton="cancel"
+                    actionButton={() => handleCloseModal()}
+                  />
+                  <ButtonComponent
+                    label="Guardar"
+                    type="submit"
+                    alt="Guardar"
+                    actionButton={() => {
+                      handleSubmit(onSubmit);
+                    }}
+                  />
+                </>
+              )}
+              {!editData && !newUser && (
+                <ButtonComponent
+                  label="Cerrar"
+                  alt="Cerrar"
+                  typeButton="cancel"
+                  actionButton={() => handleCloseModal()}
+                />
               )}
             </div>
           </form>
