@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { newRequest } from '../../../utils/newRequest';
 import styles from './transmision.module.css';
+import { newRequest } from '../../../utils/newRequest';
 import Checkbox from '../../checkbox';
 
 const Transmision = ({ entity, targetData, register }) => {
   const [transmisionList, setTransmisionList] = useState([]);
 
   useEffect(() => {
-    newRequest({ url: `/${entity}/`, onSuccess: setTransmisionList });
+    newRequest({ url: `${entity}/`, onSuccess: setTransmisionList });
   }, [entity]);
 
   return (

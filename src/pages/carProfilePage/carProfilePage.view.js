@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import BreadcrumbItem from '../../components/breadcrumbItem/breadcrumbItem.view';
 import styles from './carProfilePage.module.css';
 import useWindowSize from '../../constants/useWindowSize';
+import { API_DEV } from '../../utils/api.constants';
 import { ReactComponent as FuelIcon } from '../../components/assets/fuelIcon.svg';
 import { ReactComponent as GearBoxIcon } from '../../components/assets/gearBoxIcon.svg';
 import { ReactComponent as CarSizeIcon } from '../../components/assets/carSizeIcon.svg';
@@ -24,14 +25,14 @@ const CarProfilePage = () => {
 
   useEffect(() => {
     newRequest({
-      url: `/carprofile/${carId}`,
+      url: `${API_DEV.CARPROFILE}${carId}`,
       onSuccess: setCarProfile,
     });
   }, [carId]);
 
   const lowerPrice = 230;
-  console.log('versionIndex:', versionIndex);
-  console.log('carProfile:', carProfile);
+  //console.log('url:', `${API_DEV.CARPROFILE}${carId}`);
+  //console.log('carProfile:', carProfile);
 
   /* const lowerPrice = Math.min.apply(null, prices);
   console.log('min', lowerPrice); */

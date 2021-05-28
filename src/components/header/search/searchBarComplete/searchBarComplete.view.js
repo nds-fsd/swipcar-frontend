@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './searchBarComplete.module.css';
+import { API_DEV } from '../../../../utils/api.constants';
 import { ReactComponent as SearchIcon } from '../../../assets/searchIcon.svg';
 import useWindowSize from '../../../../constants/useWindowSize';
 import { newRequest } from '../../../../utils/newRequest';
@@ -8,13 +9,13 @@ const SearchBarComplete = ({ placeholder }) => {
   const windowSize = useWindowSize();
   const [cartypeList, setCartypeList] = useState();
 
-  useEffect(() => {
+  /* useEffect(() => {
     newRequest({
-      url: '/cartype/',
+      url: `${API_DEV.CARTYPE}`,
       method: 'GET',
       onSuccess: setCartypeList,
     });
-  }, []);
+  }, []); */
   /* console.log('cartypeList: ', cartypeList);
   console.log('cartype: ', cartypeList.cartype); */
   return (
