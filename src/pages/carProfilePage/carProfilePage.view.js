@@ -25,14 +25,14 @@ const CarProfilePage = () => {
 
   useEffect(() => {
     newRequest({
-      url: `${API_DEV.CARPROFILE}/${carId}`,
+      url: `${API_DEV.CARPROFILE}${carId}`,
       onSuccess: setCarProfile,
     });
   }, [carId]);
 
   const lowerPrice = 230;
-  console.log('versionIndex:', versionIndex);
-  console.log('carProfile:', carProfile);
+  //console.log('url:', `${API_DEV.CARPROFILE}${carId}`);
+  //console.log('carProfile:', carProfile);
 
   /* const lowerPrice = Math.min.apply(null, prices);
   console.log('min', lowerPrice); */
