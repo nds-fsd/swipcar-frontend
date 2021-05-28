@@ -10,7 +10,7 @@ const SearchBarComplete = ({ placeholder }) => {
 
   useEffect(() => {
     newRequest({
-      url: '/cartype/',
+      url: 'cartype/',
       method: 'GET',
       onSuccess: setCartypeList,
     });

@@ -1,4 +1,6 @@
-const PATH = 'http://localhost:3001';
+import { API_DEV } from '../utils/api.constants';
+
+const PATH = API_DEV.API;
 
 export const carsLengthRequest = ({
   url,

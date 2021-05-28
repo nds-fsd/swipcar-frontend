@@ -7,7 +7,7 @@ const FacetContainer = ({ entity, targetData, register }) => {
   const [entityList, setEntityList] = useState([]);
 
   useEffect(() => {
-    newRequest({ url: `/${entity}/`, onSuccess: setEntityList });
+    newRequest({ url: `${entity}/`, onSuccess: setEntityList });
   }, [entity]);
 
   return (
