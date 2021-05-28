@@ -9,13 +9,13 @@ const SearchBarComplete = ({ placeholder }) => {
   const windowSize = useWindowSize();
   const [cartypeList, setCartypeList] = useState();
 
-  useEffect(() => {
+  /* useEffect(() => {
     newRequest({
       url: `${API_DEV.CARTYPE}`,
       method: 'GET',
       onSuccess: setCartypeList,
     });
-  }, []);
+  }, []); */
   /* console.log('cartypeList: ', cartypeList);
   console.log('cartype: ', cartypeList.cartype); */
   return (
