@@ -7,6 +7,7 @@ import Filter from '../../components/filter/filter.view';
 //import SlideFilter from '../../components/filter/slideFilter.view';
 import Tab from '../../components/tabs/tab.view';
 import CarList from '../../components/carLists/carList.view';
+import { API_DEV } from '../../utils/api.constants';
 
 import { newRequest } from '../../utils/newRequest';
 import { carsLengthRequest } from '../../utils/carsLengthRequest';
@@ -46,21 +47,26 @@ const CarsListPage = () => {
 
   useEffect(() => {
     newRequest({
-      url: `/rentingoffer/search${tabQuery}`,
+      url: `${API_DEV.RENTING_OFFERS}search${tabQuery}`,
+      /* url: `/rentingoffer/search${tabQuery}`, */
       method: 'POST',
       onSuccess: setListOfCars,
     });
   }, [tabQuery, location]);
 
   useEffect(() => {
-    carsLengthRequest({ url: '/rentingoffer/', method: 'GET', onSuccess: setNumOfCars });
-  }, []);
-  useEffect(() => {
-    carsLengthRequest({ url: '/rentingoffer/newcars', method: 'POST', onSuccess: setNumOfNewCars });
+    carsLengthRequest({ url: `${API_DEV.RENTING_OFFERS}`, method: 'GET', onSuccess: setNumOfCars });
   }, []);
   useEffect(() => {
     carsLengthRequest({
-      url: '/rentingoffer/usedcars',
+      url: `${API_DEV.RENTING_OFFERS}newcars`,
+      method: 'POST',
+      onSuccess: setNumOfNewCars,
+    });
+  }, []);
+  useEffect(() => {
+    carsLengthRequest({
+      url: `${API_DEV.RENTING_OFFERS}usedcars`,
       method: 'POST',
       onSuccess: setNumOfUsedCars,
     });

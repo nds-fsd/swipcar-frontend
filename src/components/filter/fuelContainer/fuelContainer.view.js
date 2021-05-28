@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from './fuelContainer.module.css';
+import { API_DEV } from '../../../utils/api.constants';
 import { newRequest } from '../../../utils/newRequest';
 
 const FuelContainer = ({ setTabQuery }) => {
   const [fuelList, setFuelList] = useState([]);
 
   useEffect(() => {
-    newRequest({ url: '/fuel/', onSuccess: setFuelList });
+    newRequest({ url: API_DEV.FUEL, onSuccess: setFuelList });
   }, []);
 
   const handleClick = (value) => {
