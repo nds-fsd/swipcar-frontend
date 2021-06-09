@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" data-name="Layer 1" viewBox="0 0 100 100">
+	<circle cx="77" cy="13" r="1" fill="#f1bc19">
+	</circle>
+	<circle cx="50" cy="50" r="37" fill="#e6edb7">
+	</circle>
+	<circle cx="83" cy="15" r="4" fill="#f1bc19">
+	</circle>
+	<circle cx="87" cy="24" r="2" fill="#88ae45">
+	</circle>
+	<circle cx="81" cy="76" r="2" fill="#fbcd59">
+	</circle>
+	<circle cx="15" cy="63" r="4" fill="#fbcd59">
+	</circle>
+	<circle cx="25" cy="87" r="2" fill="#88ae45">
+	</circle>
+	<circle cx="18.5" cy="51.5" r="2.5" fill="#fff">
+	</circle>
+	<circle cx="79.5" cy="33.5" r="1.5" fill="#fff">
+	</circle>
+	<circle cx="54.242" cy="54.242" r="20.8" fill="#88ae45">
+	</circle>
+	<path fill="#472b29" d="M54.242,34.142a20.1,20.1,0,1,1-20.1,20.1,20.122,20.122,0,0,1,20.1-20.1m0-1.4a21.5,21.5,0,1,0,21.5,21.5,21.5,21.5,0,0,0-21.5-21.5Z">
+	</path>
+	<circle cx="54.242" cy="54.242" r="17.5" fill="#edf7f5">
+	</circle>
+	<path fill="#c0e5e4" d="M71.742,54.242a14.782,14.782,0,0,1-.07,1.5,17.494,17.494,0,0,1-34.86,0,14.782,14.782,0,0,1-.07-1.5,17.5,17.5,0,0,1,35,0Z">
+	</path>
+	<ellipse cx="54.242" cy="55.742" fill="#edf7f5" rx="17.43" ry="16">
+	</ellipse>
+	<path fill="#472b29" d="M54.242,34.142a20.1,20.1,0,1,1-20.1,20.1,20.122,20.122,0,0,1,20.1-20.1m0-1.4a21.5,21.5,0,1,0,21.5,21.5,21.5,21.5,0,0,0-21.5-21.5Z">
+	</path>
+	<path fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" d="M71.688,52.859c.036.456.054.918.054,1.383a17.48,17.48,0,1,1-.583-4.5">
+	</path>
+	<line x1="54.242" x2="54.242" y1="37.242" y2="39.242" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<line x1="42.222" x2="43.636" y1="42.221" y2="43.636" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<line x1="37.242" x2="39.242" y1="54.242" y2="54.242" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<line x1="42.222" x2="43.636" y1="66.263" y2="64.849" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<line x1="66.263" x2="64.849" y1="66.263" y2="64.849" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<line x1="71.242" x2="69.242" y1="54.242" y2="54.242" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<line x1="66.263" x2="64.849" y1="42.221" y2="43.636" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10">
+	</line>
+	<path fill="#c07853" fill-rule="evenodd" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" d="M56.242,54.242a2,2,0,0,1-4,0,1.7,1.7,0,0,1,.07-.51,2,2,0,0,1,1.42-1.42,1.7,1.7,0,0,1,.51-.07A2.006,2.006,0,0,1,56.242,54.242Z">
+	</path>
+	<path fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" d="M56.242,54.242a2,2,0,0,1-4,0,1.7,1.7,0,0,1,.07-.51,2,2,0,0,1,1.42-1.42,1.7,1.7,0,0,1,.51-.07A2.006,2.006,0,0,1,56.242,54.242Z">
+	</path>
+	<path fill="#c07853" stroke="#472b29" stroke-miterlimit="10" d="M53.732,52.312a2,2,0,0,0-1.42,1.42l-6.78-6.78a1,1,0,0,1,1.42-1.42Z">
+	</path>
+	<rect width="16" height="4" x="46.742" y="59.742" fill="#a8dbdb" rx="2">
+	</rect>
+	<path fill="none" stroke="#472b29" stroke-miterlimit="10" d="M53.732,52.312a2,2,0,0,0-1.42,1.42l-6.78-6.78a1,1,0,0,1,1.42-1.42Z">
+	</path>
+	<path fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".5" d="M60.742,59.742a2.006,2.006,0,0,1,2,2h0a2.006,2.006,0,0,1-2,2h-12a2.006,2.006,0,0,1-2-2h0a2.006,2.006,0,0,1,2-2h2">
+	</path>
+	<line x1="57.711" x2="58.923" y1="59.742" y2="59.742" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".5">
+	</line>
+	<line x1="53.732" x2="55.721" y1="59.742" y2="59.742" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".5">
+	</line>
+	<path fill="#88ae45" d="M24.843,24.843a2,2,0,0,1,2.828,0l5.071,5.071V27.671a2,2,0,0,1,4,0v7.071a2,2,0,0,1-2,2h-7.07a2,2,0,1,1,0-4h2.243l-5.071-5.072A2,2,0,0,1,24.843,24.843Z">
+	</path>
+	<path fill="#472b29" d="M26.257,25.658a.6.6,0,0,1,.424.175L31.752,30.9a1.4,1.4,0,0,0,2.39-.99V27.671a.6.6,0,0,1,1.2,0v7.071a.589.589,0,0,1-.045.227.609.609,0,0,1-.132.2.573.573,0,0,1-.191.128.582.582,0,0,1-.233.048h-7.07a.6.6,0,1,1,0-1.2h2.243a1.4,1.4,0,0,0,.99-2.39l-5.071-5.072a.6.6,0,0,1,.424-1.023m0-1.4a2,2,0,0,0-1.414,3.413l5.071,5.072H27.671a2,2,0,1,0,0,4h7.07a2,2,0,0,0,2-2V27.671a2,2,0,0,0-4,0v2.243l-5.071-5.071a1.993,1.993,0,0,0-1.414-.585Z">
+	</path>
+	<line x1="50.742" x2="47.242" y1="59.742" y2="63.242" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".25">
+	</line>
+	<line x1="48.742" x2="46.742" y1="59.742" y2="61.742" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".25">
+	</line>
+	<line x1="48.89" x2="51.742" y1="63.595" y2="60.742" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".25">
+	</line>
+	<line x1="50.742" x2="53.242" y1="63.742" y2="61.242" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".25">
+	</line>
+	<line x1="52.742" x2="54.742" y1="63.742" y2="61.742" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".25">
+	</line>
+	<line x1="54.742" x2="55.742" y1="63.742" y2="62.742" fill="none" stroke="#472b29" stroke-linecap="round" stroke-miterlimit="10" stroke-width=".25">
+	</line>
+</svg>

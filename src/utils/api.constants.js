@@ -14,6 +14,7 @@ export const API_DEV = {
   GOODY: 'goody/',
   EQUIPMENT: 'equipment/',
   RENTING_OFFERS: 'rentingoffer/',
+  RESERVATION: 'reservation/',
 };
 
 export default API_DEV;

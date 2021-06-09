@@ -1,3 +1,83 @@
+._home_dashboard {
+  font-family:'roboto', Arial, Helvetica, sans-serif;
+  margin:0 auto;
+}
+._home_dashboard_lg {
+  width: 80vw;
+}
+._home_dashboard_sm {
+  width: 90vw;
+}
+._tittle_welcome {
+  text-align: center;
+  margin: 30px 0;
+  color: #648563;
+  font-size: xx-large;
+  font-weight: 300;
+}
+.nav_croll {
+  max-height: 470px;
+  overflow-y: auto;
+  background: linear-gradient(transparent, rgba(84, 234, 91, 0)),
+    linear-gradient(rgba(84, 234, 91, 0), transparent) 0 100%,
+    radial-gradient(farthest-side at 50% 0, rgba(80, 78, 78, 0.5), rgba(0, 0, 0, 0)),
+    radial-gradient(farthest-side at 50% 100%, rgba(80, 78, 78, 0.5), rgba(0, 0, 0, 0)) 0 100%;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+  background-size: 100% 33px, 100% 33px, 100% 11px, 100% 11px;
+}
+
+._button {
+  position: relative;
+  color: #999;
+  font-size: x-large;
+  font-weight: 300;
+  width: 100%;
+  padding: 10px 10px 10px 20px;
+  background-color: transparent;
+  border: 0;
+  outline: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  width: auto;
+  font-family:'roboto', Arial, Helvetica, sans-serif;
+}
+._button:hover,
+._active {
+  color: #648563;
+  background-color: #64856340 !important;
+  outline: none;
+}
+._icon {
+  padding: 0;
+  margin: 0;
+  color: #648563;
+}
+._icon_svg{
+  height: 45px;
+  width: 45px;
+  margin-right: 10px;
+}
+
+._titleButton {
+  padding-left: 10px;
+  text-align: left;
+  font-family:'roboto', Arial, Helvetica, sans-serif;
+  font-weight: 300;
+}
+._logo_container {
+  width: 140px;
+  /* margin: 0 auto; */
+  padding-left: 20px;
+}
+._header_logo {
+  width: 100%;
+  min-width: 120px;
+}
+
 .carlist_page {
   display: flex;
   justify-content: center;
@@ -176,13 +256,11 @@
   width: 290px;
 }
 ._title_confirm {
-  color: #c53131;
+  color: #648563;
   font-size: x-large;
   font-weight: 300;
-  margin: 3px 0 0 0;
+  margin: 0;
   padding: 0;
-  display: flex;
-  align-items: center;
 }
 ._title_list {
   font-size: 1.2em;
@@ -190,6 +268,9 @@
   color: #777;
   margin: 20px 0 5px 10px;
   color: #648563;
+  /* display: flex;
+  justify-content: flex-start;
+  align-items: flex-start; */
 }
 ._icon_title {
   height: 110px;
@@ -197,11 +278,6 @@
 }
 ._icon_title_list {
   margin-right: 10px;
-}
-._icon_svg{
-  height: 40px;
-  width: 40px;
-  margin-right: 20px;
 }
 ._list_add {
   margin-top: 25px;
@@ -247,12 +323,14 @@
   }
 }
 
-._tittle {
-  text-align: center;
-  margin: 30px 0;
+._tittle_section {
+  margin: 5px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f2f2f2;
+  text-transform: uppercase;
   color: #648563;
-  font-size: xx-large;
-  font-weight: 300;
+  font-size: large;
+  font-weight: 400;
 }
 
 .nav_croll {
@@ -268,73 +346,4 @@
 ._hr_line {
   border: 1px dotted #ccc;
   margin: 20px;
-}
-
-._label_newcar {
-  text-align: center;
-  margin: 0;
-  font-size: small;
-  color: #648563;
-  font-weight: 500;
-}
-._label_show_info {
-  font-size: small;
-  color: #648563;
-  font-weight: 500;
-}
-._show_info {
-  margin: 0;
-  font-weight: 300;
-  font-size: x-large;
-  padding: 10px 0;
-  color: #828282 !important;
-  border-bottom: 1px solid #99999930;
-}
-._many_colors {
-  font-size: large !important;
-  padding: 13px 0 !important;
-}
-._units {
-  font-size: 14px;
-  font-weight: 500;
-}
-._renting_options {
-  padding: 5px;
-  background-color: #64856320;
-  border-radius: 10px;
-}
-
-._item_color_circle {
-  width: 25px;
-  height: 25px;
-  border-radius: 20px;
-  border: 2px solid #dedede;
-}
-._no_shadow {
-  box-shadow: none !important;
-}
-
-._confirm_delete {
-  background-color: #ff00004a;
-  border-radius: 3px;
-  padding: 20px;
-  margin: 20px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  transform-origin: top center;
-  animation: scaleZ 500ms ease-in-out forwards;
-}
-@keyframes scaleZ {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  80% {
-    transform: scale(1.07);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
 }

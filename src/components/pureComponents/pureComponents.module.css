@@ -62,16 +62,18 @@
   align-items: center;
   text-decoration: none;
   outline: none;
-  font-weight: bold;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: #648563;
   border: 2px solid #648563;
   box-shadow: 0 0 10px -5px #333;
   transition: 100ms ease-in-out;
+  font-family:'roboto', Arial, Helvetica, sans-serif;
 }
 ._button_cancel:hover,
 ._button_ok:hover {
   box-shadow: 0 0 10px 0 #333;
-  transform: scale(0.90);
+  transform: scale(0.95);
 }
 ._button_cancel {
   background-color: #ffffff;
@@ -80,28 +82,42 @@
   color: #FFF;
   background-color: #648563;
 }
-/* ._button_cancel, ._button_ok {
+._button_cancel_warning,
+._button_ok_warning {
   padding: 0 10px;
-  height: 50px;
-  border-radius: 24px;
-  font-size: 20px;
+  margin: 0 5px;
+  height: 36px;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  outline: none;  
-} */
-/* ._button_cancel {  
-  background-color: #ffffff;
-  color: #ff4597;
-  border: 2px solid #ff4597;
+  outline: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #e22b2b;
+  border: 2px solid #e22b2b;
+  box-shadow: 0 0 10px -5px #333;
+  transition: 100ms ease-in-out;
+  font-family:'roboto', Arial, Helvetica, sans-serif;
 }
-._button_ok {
-  background-color: #ff4597;
-  color: #ffffff;
-  border: none;
-} */
+._button_cancel_warning:hover,
+._button_ok_warning:hover {
+  box-shadow: 0 0 10px 0 #333;
+  transform: scale(0.95);
+}
+._button_cancel_warning {
+  background-color: #ffffff;
+}
+._button_ok_warning {
+  color: #FFF;
+  background-color: #e22b2b;
+}
+
+
+
 
 ._button_action_icon {
   background-color: #d6d6d6;

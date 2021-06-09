@@ -2,14 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import {
+  GetAllRentingsOffers,
   GetDataDashboardTable,
   GetDataDashboardTableUsers,
-} from '../../../utils/createCarRequestAll';
-import ButtonComponent from '../../pureComponents/buttonComponent';
+  GetDataVersionTable,
+  GetMyRentingsOffers,
+} from '../../../utils/dashBoardCalls';
 
 import styles from '../tablesDashboard.module.css';
 
-const TableDashboardProviders = ({ handleModal }) => {
+const TableDashboardAllRentings = ({ dataUser, handleModal, update }) => {
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
@@ -46,35 +48,36 @@ const TableDashboardProviders = ({ handleModal }) => {
   // };
 
   const [dataTable, setDataTable] = useState([]);
-
-  // useEffect(() => {
-  //   const queryGetData = { sort, dir, skip, limit };
-  //   GetDataDashboardTable({ queryGetData, onSuccess: setDataTable });
-  // }, [pathUrl]);
+  
+  useEffect(() => {
+    console.log('dataTable  => ', dataTable);
+  }, [dataTable]);
 
   useEffect(() => {
-    GetDataDashboardTableUsers({ onSuccess: setDataTable });
+    const queryGetData = { sort, dir, skip, limit };
+    GetAllRentingsOffers({ queryGetData, onSuccess: setDataTable });
+  }, [pathUrl]);
+
+  useEffect(() => {
+    GetAllRentingsOffers({ onSuccess: setDataTable });
   }, []);
+  useEffect(() => {
+    GetAllRentingsOffers({ onSuccess: setDataTable });
+  }, [update]);
 
-  const formatDate = (updatedAt) => {
-    let fecha = updatedAt.split('T')[0];
-    fecha = fecha.split('-');
-    const dateFormated = fecha.reverse().join(' - ');
-    return dateFormated;
-  };
-
-  const Row = ({ _id, name, email, provider, updatedAt, position }) => (
+  const Row = ({ _id, version, time, km, price, provider, position }) => (
     <div className={`${styles._table_body_info} ${position % 2 !== 0 && styles._table_row_back}`}>
-      <div
-        className={`${styles._table_tr_info} ${styles._table_tr_id_data} ${styles._table_tr_small_data}`}
-      >
-        {provider._id}
+      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>
+        {version?.brand.brandname}
       </div>
-      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{name}</div>
-      <div className={`${styles._table_tr_info}`}>{email}</div>
-      <div className={styles._table_tr_info}>{provider.phone}</div>
-      <div className={styles._table_tr_info}>{provider.companyname}</div>
-      <div className={`${styles._table_tr_info}`}>{formatDate(updatedAt)}</div>
+      <div className={`${styles._table_tr_info}`}>{version?.model.modelname}</div>
+      <div className={`${styles._table_tr_info}`}>
+        {version?.version}
+      </div>
+      <div className={`${styles._table_tr_info}`}>{time}</div>
+      <div className={`${styles._table_tr_info}`}>{km}</div>
+      <div className={`${styles._table_tr_info}`}>{price}</div>
+      <div className={`${styles._table_tr_info}`}>{provider?.companyname}</div>
       <button
         className={styles._table_tools_button}
         title="Herramientas de edición"
@@ -85,15 +88,9 @@ const TableDashboardProviders = ({ handleModal }) => {
     </div>
   );
 
-  // useEffect(() => {
-  //   console.log('dataTable :', dataTable);
-  // }, [dataTable]);
-
-  const providers =
-    dataTable && dataTable.filter((providerData) => providerData.role === 'provider');
   const rows =
-    providers &&
-    providers.map((rowData, index) => {
+    dataTable &&
+    dataTable.elements?.map((rowData, index) => {
       let totalRowData = { ...rowData, position: index };
       return <Row {...totalRowData} key={index} />;
     });
@@ -101,7 +98,7 @@ const TableDashboardProviders = ({ handleModal }) => {
   return (
     <>
       <div className={styles._table_container}>
-        <h1 className={styles._title_table}>Gestión de Proveedores</h1>
+        <h1 className={styles._title_table}>Gestión de Rentings</h1>
 
         <div className={styles._table_row}>
           <div className={styles._table_search}>
@@ -110,7 +107,7 @@ const TableDashboardProviders = ({ handleModal }) => {
                 <input
                   type="text"
                   className={styles._table_search_input}
-                  placeholder="Busca un proveedor"
+                  placeholder="Busca un renting"
                 />
                 <select
                   type="text"
@@ -129,8 +126,8 @@ const TableDashboardProviders = ({ handleModal }) => {
                   style={{ display: 'flex', justifyContent: 'flex-end' }}
                 >
                   {/* <ButtonComponent
-                    label="Crear Proveedor"
-                    alt="Crear Proveedor"
+                    label="Crear renting"
+                    alt="Crear renting"
                     typeButton="ok"
                     actionButton={() => handleModal()}
                   /> */}
@@ -140,14 +137,13 @@ const TableDashboardProviders = ({ handleModal }) => {
 
             <div className={styles.table}>
               <div className={styles.header}>
-                <div onClick={() => sortBy('id')} className={styles._table_tr_small_data}>
-                  ID
-                </div>
-                <div onClick={() => sortBy('nombre')}>Nombre</div>
-                <div onClick={() => sortBy('email')}>Email</div>
-                <div onClick={() => sortBy('telefono')}>Teléfono</div>
+                <div onClick={() => sortBy('brandname')}>Marca</div>
+                <div onClick={() => sortBy('modelname')}>Modelo</div>
+                <div onClick={() => sortBy('version')}>Versión</div>
+                <div onClick={() => sortBy('time')}>Duración</div>
+                <div onClick={() => sortBy('km')}>Km</div>
+                <div onClick={() => sortBy('price')}>Precio</div>
                 <div onClick={() => sortBy('companyname')}>Compañia</div>
-                <div onClick={() => sortBy('createdAt')}>Creación</div>
               </div>
               <div className={styles._body_data}>{rows}</div>
             </div>
@@ -179,4 +175,4 @@ const TableDashboardProviders = ({ handleModal }) => {
   );
 };
 
-export default TableDashboardProviders;
+export default TableDashboardAllRentings;
