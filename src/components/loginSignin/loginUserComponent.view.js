@@ -49,14 +49,15 @@ const LoginComponent = ({
               </div>
               <div className={styles._error_message}>{errors.password && 'Password requerido'}</div>
               <div className={styles._button_container}>
-                <GreenButton design="outline" label="Login" />
+                <GreenButton design="outline" label="Entrar" />
               </div>
             </form>
           </div>
           <div className={`${styles._right_login_container} ${styles[move]}`}>
+            <div className={styles._right_login_title_container}>¡Estimado usuario!</div>
             <div className={styles._right_login_title_container}>¡Bienvenido de nuevo!</div>
             <div className={styles._button_container}>
-              <GreenButton design="filled" label="Sign in" onClick={() => handleForm()} />
+              <GreenButton design="filled" label="Registrarse" onClick={() => handleForm()} />
             </div>
           </div>
         </>
@@ -92,13 +93,14 @@ const LoginComponent = ({
             </div>
             <div className={styles._error_message}>{errors.password && 'Password requerido'}</div>
             <div className={styles._button_container}>
-              <GreenButton design="outline" label="Login" />
+              <GreenButton design="outline" label="Entrar" />
             </div>
           </form>
           <div className={styles._bottom_container}>
             <div className={styles._bottom_login_title_container}>¡Bienvenido de nuevo!</div>
+
             <div className={styles._login_button_container_sm}>
-              <GreenButton design="filled" label="Sign in" onClick={() => handleForm()} />
+              <GreenButton design="filled" label="Registrarse" onClick={() => handleForm()} />
             </div>
           </div>
         </>

@@ -2,12 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import {
   HOME_PAGE,
-  PARTICULARES_PAGE,
-  EMPRESAS_PAGE,
-  AUTONOMOS_PAGE,
   CARS_LIST_PAGE,
   LOGIN_SIGNIN_PAGE,
   DASHBOARD_PAGE,
+  ABOUT_US_PAGE,
 } from '../../../routers/routers';
 import styles from './headerLayout1.module.css';
 import SearchBarComplete from '../search/searchBarComplete/searchBarComplete.view';
@@ -21,7 +19,7 @@ import useWindowSize from '../../../constants/useWindowSize';
 import { removeSession } from '../../../utils/auth';
 import { AuthContextProvider } from '../../../store/authContext';
 
-const HeaderLayout1 = () => {
+const HeaderLayout1 = ({ setCategoryFilter, setSearchValue }) => {
   const user = useContext(AuthContextProvider);
   const history = useHistory();
   const windowSize = useWindowSize();
@@ -70,7 +68,9 @@ const HeaderLayout1 = () => {
               )}
 
               <div className={styles._header_top_right_inner_container}>
-                <p className={styles._header_top_green_link_right}>Nosotros</p>
+                <Link to={ABOUT_US_PAGE}>
+                  <p className={styles._header_top_green_link_right}>Nosotros</p>
+                </Link>
                 <p className={styles._header_top_green_link_right}>Contacto</p>
                 {loggedInUser &&
                 (loggedInUser.user.role === 'provider' || loggedInUser.user.role === 'admin') ? (
@@ -127,38 +127,39 @@ const HeaderLayout1 = () => {
             )}
           </Link>
           <div className={styles._search_container}>
-            <SearchBarComplete placeholder="Todas las categorias" />
+            <SearchBarComplete
+              placeholder="Todas las categorias"
+              setCategoryFilter={setCategoryFilter}
+              setSearchValue={setSearchValue}
+            />
           </div>
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
-            <div className={styles._login_container}>
+            <>
               {loggedInUser && loggedInUser.user.role === 'user' ? (
-                <SignoutIcon
-                  type="button"
-                  className={styles._login_icon}
-                  onClick={() => handleCloseSession()}
-                />
+                <div className={styles._login_container}>
+                  <SignoutIcon
+                    type="button"
+                    className={styles._login_icon}
+                    onClick={() => handleCloseSession()}
+                  />
+                  <div className={styles._login_container_text}>Cerrar sesión</div>
+                </div>
               ) : (
                 <Link to={LOGIN_SIGNIN_PAGE}>
-                  <LoginIcon className={styles._login_icon} />
+                  <div className={styles._login_container}>
+                    <LoginIcon className={styles._login_icon} />
+                    <div className={styles._login_container_text}>Login / Registro</div>
+                  </div>
                 </Link>
               )}
-            </div>
+            </>
           )}
         </div>
         {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
           <div className={styles._nav_wrapper}>
             <div className={styles._nav_container}>
-              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={CARS_LIST_PAGE}>
-                <MenuItem menuItemName="Coches" />
-              </Link>
-              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>
-                <MenuItem menuItemName="Particulares" />
-              </Link>
-              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
-                <MenuItem menuItemName="Autónomos" />
-              </Link>
-              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
-                <MenuItem menuItemName="Empresas" />
+              <Link to={CARS_LIST_PAGE}>
+                <div className={styles._title}>Renting de coches Ecosostenibles</div>
               </Link>
             </div>
           </div>

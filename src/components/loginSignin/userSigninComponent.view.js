@@ -20,6 +20,9 @@ const UserSigninComponent = ({
       {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
         <>
           <div className={`${styles._left_login_container} ${styles[moveForm]}`}>
+            <div className={styles._left_login_title_container}>
+              ¿Quieres aprovecharte de las mejores ofertas?
+            </div>
             <div className={styles._left_login_title_container}>¡Registrate ahora!</div>
             <form onSubmit={handleSubmit(onSubmitSigninUser)}>
               <div className={styles._input_container}>
@@ -79,23 +82,19 @@ const UserSigninComponent = ({
                 </div>
               </div>
               <div className={styles._button_container}>
-                <GreenButton type="submit" design="outline" label="Sign in" />
+                <GreenButton type="submit" design="outline" label="Registrarse" />
               </div>
             </form>
           </div>
           <div className={`${styles._right_login_container} ${styles[move]}`}>
-            <div className={styles._right_login_title_container}>
-              ¡Bienvenido en Ecocars!
-              <div className={styles._bottom_login_subTitle_container}>
-                Cree aquí su perfil como proveedor.
-              </div>
-            </div>
+            <div className={styles._right_login_title_container}>¡Bienvenido en Ecocars!</div>
 
             <div className={styles._button_container}>
+              <div className={styles._right_login_subtitle_container}>¿Ya registrado?</div>
               <GreenButton
                 design="filled"
                 type="button"
-                label="Login"
+                label="Entrar"
                 onClick={() => handleForm()}
               />
             </div>
@@ -160,19 +159,16 @@ const UserSigninComponent = ({
               </div>
             </div>
             <div className={styles._button_container}>
-              <GreenButton type="submit" design="outline" label="Sign in" />
+              <GreenButton type="submit" design="outline" label="Registrarse" />
             </div>
           </form>
           <div className={styles._bottom_signin_container}>
             <div className={styles._bottom_login_title_container}>¡Bienvenido en Ecocars!</div>
-            <div className={styles._bottom_login_subTitle_container}>
-              Cree aquí su perfil como proveedor.
-            </div>
             <div className={styles._signin_button_container}>
               <GreenButton
                 design="filled"
                 type="button"
-                label="Login"
+                label="Entrar"
                 onClick={() => handleForm()}
               />
             </div>

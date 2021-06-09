@@ -1,0 +1,59 @@
+._range_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+._values_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+._value_box {
+  display: flex;
+  width: 90px;
+  height: 30px;
+  border: 1px solid #d1d1d1;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+}
+
+._filter_container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+._container_title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+._title {
+  height: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  color: rgba(21, 21, 21, 1);
+  margin-bottom: 12px;
+}
+._filter_cancelation {
+  font-family: Open Sans;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 27px;
+  color: #6a983c;
+  cursor: pointer;
+}
+._filter_cancelation:hover,
+._all_filters_cancelation:hover {
+  font-weight: 600;
+}

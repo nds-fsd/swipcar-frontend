@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useLocation } from 'react-router-dom';
-import LoginComponent from '../../components/loginSignin/loginComponent.view';
+import LoginUserComponent from '../../components/loginSignin/loginUserComponent.view';
+import LoginProviderComponent from '../../components/loginSignin/loginProviderComponent.view';
 import UserSigninComponent from '../../components/loginSignin/userSigninComponent.view';
 import ProviderSigninComponent from '../../components/loginSignin/providerSigninComponent.view';
 import styles from './loginSigninPage.module.css';
@@ -48,7 +49,7 @@ const LoginSigninPage = ({ props }) => {
   } = useForm();
 
   const onSubmitSigninUser = (data) => {
-    console.log('submitting');
+    //console.log('submitting');
     clearErrors();
     setIsSubmitting(true);
     fetchRequest('POST', 'register', {
@@ -73,7 +74,7 @@ const LoginSigninPage = ({ props }) => {
   };
 
   const onSubmitSigninProvider = (data) => {
-    console.log('submitting');
+    //console.log('submitting');
     clearErrors();
     setIsSubmitting(true);
     fetchRequest('POST', 'register', {
@@ -110,18 +111,17 @@ const LoginSigninPage = ({ props }) => {
     })
       .then((res) => {
         setUserSession(res);
-        console.log(res);
+        //console.log(res);
         setIsSubmitting(false);
         if (res.user.role === 'user') {
           history.push('/renting');
         }
 
         if (res.user.role === 'provider') {
-          history.push('/user/dashboard');
+          history.push('/dashboard');
           //Pull Request
-//        if (res.user.role === 'admin') {
-//          history.push('/dashboard');
-
+          //        if (res.user.role === 'admin') {
+          //          history.push('/dashboard');
         }
       })
       .catch((error) => {
@@ -164,15 +164,27 @@ const LoginSigninPage = ({ props }) => {
           </>
         ) : (
           <>
-            <LoginComponent
-              move={move}
-              moveForm={moveForm}
-              handleForm={handleForm}
-              handleSubmit={handleSubmit}
-              onSubmitLogin={onSubmitLogin}
-              register={register}
-              errors={errors}
-            />
+            {fromHeaderProvider ? (
+              <LoginProviderComponent
+                move={move}
+                moveForm={moveForm}
+                handleForm={handleForm}
+                handleSubmit={handleSubmit}
+                onSubmitLogin={onSubmitLogin}
+                register={register}
+                errors={errors}
+              />
+            ) : (
+              <LoginUserComponent
+                move={move}
+                moveForm={moveForm}
+                handleForm={handleForm}
+                handleSubmit={handleSubmit}
+                onSubmitLogin={onSubmitLogin}
+                register={register}
+                errors={errors}
+              />
+            )}
           </>
         )}
       </div>

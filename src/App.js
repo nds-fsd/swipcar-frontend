@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import * as Icons from '@fortawesome/free-solid-svg-icons';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+  useLocation,
+  withRouter,
+} from 'react-router-dom';
 import HeaderLayout1 from './components/header/headerLayout1/headerLayout1.view';
 import HeaderLayout2 from './components/header/headerLayout2/headerLayout2.view';
 import HomePage from './pages/homePage';
-import ParticularesPage from './pages/particularesPage';
-import AutonomosPage from './pages/autonomosPage';
-import EmpresasPage from './pages/empresasPage';
+import AboutUsPage from './pages/aboutUsPage';
 import CarsListPage from './pages/carListPages/carsListPage.view';
 import CarProfilePage from './pages/carProfilePage';
 import CreateRentingPage from './pages/createRentingPage';
@@ -16,9 +21,7 @@ import LoginSigninPage from './pages/loginSigninPages/loginSigninPage';
 import DashboardPage from './pages/dashboardPage';
 import {
   HOME_PAGE,
-  PARTICULARES_PAGE,
-  AUTONOMOS_PAGE,
-  EMPRESAS_PAGE,
+  ABOUT_US_PAGE,
   CARS_LIST_PAGE,
   CAR_PROFILE_PAGE,
   FORM_PAGE,
@@ -27,22 +30,33 @@ import {
 } from './routers/routers';
 import PrivateRoute from './routers/privateRoute';
 import { AuthContextProvider } from './store/authContext';
+import Footer from './components/footer';
 
 function App() {
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+
   const iconList = Object.keys(Icons)
     .filter((key) => key !== 'fas' && key !== 'prefix')
     .map((icon) => Icons[icon]);
-
   library.add(...iconList);
 
+  function _ScrollToTop(props) {
+    const { pathname } = useLocation();
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+    return props.children;
+  }
 
+  const ScrollToTop = withRouter(_ScrollToTop);
   return (
     <AuthContextProvider>
       <Router>
         <div>
           <Switch>
             <Route path={LOGIN_SIGNIN_PAGE}>
-              <HeaderLayout2 />
+              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
               <LoginSigninPage />
             </Route>
 
@@ -52,40 +66,40 @@ function App() {
             </PrivateRoute>
 
             <Route path={CARS_LIST_PAGE}>
-              <HeaderLayout1 />
-              <CarsListPage />
+              <ScrollToTop>
+                <HeaderLayout1
+                  setCategoryFilter={setCategoryFilter}
+                  setSearchValue={setSearchValue}
+                />
+                <CarsListPage categoryFilter={categoryFilter} searchValue={searchValue} />
+                <Footer />
+              </ScrollToTop>
             </Route>
-            <Route path={PARTICULARES_PAGE}>
-              <HeaderLayout1 />
-              <ParticularesPage />
-            </Route>
-            <Route path={AUTONOMOS_PAGE}>
-              <HeaderLayout1 />
-              <AutonomosPage />
-            </Route>
-            <Route path={EMPRESAS_PAGE}>
-              <HeaderLayout1 />
-              <EmpresasPage />
-            </Route>
-            <Route path={FORM_PAGE}>
-              <HeaderLayout1 />
-              <CreateRentingPage />
-            </Route>
+
             <Route path={CAR_PROFILE_PAGE}>
-              <HeaderLayout2 />
+              <HeaderLayout2 setCategoryFilter={setCategoryFilter} />
               <CarProfilePage />
             </Route>
+            <Route path={ABOUT_US_PAGE}>
+              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
+              <AboutUsPage />
+            </Route>
+            <Route path={FORM_PAGE}>
+              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
+              <CreateRentingPage />
+            </Route>
             <Route path={HOME_PAGE}>
-              <HeaderLayout1 />
+              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
               <HomePage />
+              <Footer />
             </Route>
             <Route exact path="/">
               <Redirect to={HOME_PAGE} />
-              <HeaderLayout1 />
             </Route>
             <Route path="*">
-              <HeaderLayout1 />
+              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
               <div>404 Not Found</div>
+              <Footer />
             </Route>
           </Switch>
         </div>

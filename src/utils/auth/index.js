@@ -17,7 +17,7 @@ export const getUserSession = () => {
 };
 
 export const setUserSession = (sessionData) => {
-  console.log(sessionData);
+  //console.log(sessionData);
   setStorageObject('user-session', sessionData);
 };
 

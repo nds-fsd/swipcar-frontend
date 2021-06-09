@@ -2,9 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
   HOME_PAGE,
-  PARTICULARES_PAGE,
-  EMPRESAS_PAGE,
-  AUTONOMOS_PAGE,
   CARS_LIST_PAGE,
   LOGIN_SIGNIN_PAGE,
   DASHBOARD_PAGE,
@@ -17,11 +14,12 @@ import { ReactComponent as EcocarsLogo } from '../../assets/ecocarsLogo.svg';
 import { ReactComponent as MenuIcon } from '../../assets/menuicon.svg';
 import { ReactComponent as LoginIcon } from '../../assets/loginIcon.svg';
 import { ReactComponent as SignoutIcon } from '../../assets/signoutIcon.svg';
+import { ReactComponent as ArrowLeftIcon } from '../../assets/arrowLeftIcon.svg';
 import useWindowSize from '../../../constants/useWindowSize';
 import { removeSession } from '../../../utils/auth';
 import { AuthContextProvider } from '../../../store/authContext';
 
-const HeaderLayout2 = () => {
+const HeaderLayout2 = ({ setCategoryFilter }) => {
   const user = useContext(AuthContextProvider);
   const history = useHistory();
   const windowSize = useWindowSize();
@@ -59,23 +57,26 @@ const HeaderLayout2 = () => {
                 </div>
               </Link>
               <div className={styles._header_top_container}>
-                <div className={styles._header_top_left_container}>
-                  {windowSize === 'md' ? (
-                    <p className={styles._header_top_green_link_left}>Chat</p>
-                  ) : (
+                {windowSize === 'md' ? (
+                  ''
+                ) : (
+                  <div className={styles._header_top_left_container}>
                     <p className={styles._header_top_green_link_left}>Chatea con nosotros</p>
-                  )}
-                  {windowSize === 'md' ? (
-                    ''
-                  ) : (
-                    <>
-                      <p className={styles._header_top_link}>+34 931 160 669</p>
-                      <p className={styles._header_top_link}>info@ecocars.com</p>
-                    </>
-                  )}
-                </div>
+                  </div>
+                )}
+                {windowSize === 'md' ? (
+                  ''
+                ) : (
+                  <div className={styles._header_top_left_container}>
+                    <p className={styles._header_top_link}>+34 931 160 669</p>
+                    <p className={styles._header_top_link}>info@ecocars.com</p>
+                  </div>
+                )}
                 <div className={styles._search_container}>
-                  <SearchBarShort placeholder="Todas las categorias" />
+                  <SearchBarShort
+                    placeholder="Todas las categorias"
+                    setCategoryFilter={setCategoryFilter}
+                  />
                 </div>
                 <div className={styles._header_top_right_container}>
                   <div className={styles._header_top_right_inner_container}>
@@ -103,19 +104,25 @@ const HeaderLayout2 = () => {
                       )}
                     </div>
                   </div>
-                  <div className={styles._login_container}>
-                    {loggedInUser && loggedInUser.user.role === 'user' ? (
+                  {loggedInUser && loggedInUser.user.role === 'user' ? (
+                    <div className={styles._login_container}>
                       <SignoutIcon
                         type="button"
                         className={styles._login_icon}
                         onClick={() => handleCloseSession()}
                       />
-                    ) : (
-                      <Link to={LOGIN_SIGNIN_PAGE}>
-                        <LoginIcon className={styles._login_icon} />
+                      <div className={styles._login_container_text}>Cerrar sesión</div>
+                    </div>
+                  ) : (
+                    <>
+                      <Link className={styles._link_login_style} to={LOGIN_SIGNIN_PAGE}>
+                        <div className={styles._login_container}>
+                          <LoginIcon className={styles._login_icon} />
+                          <div className={styles._login_container_text}>Login / Registro</div>
+                        </div>
                       </Link>
-                    )}
-                  </div>
+                    </>
+                  )}
                 </div>
               </div>
             </>
@@ -145,26 +152,23 @@ const HeaderLayout2 = () => {
       </div>
       {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
         <div className={styles._nav_wrapper}>
-          <div className={styles._nav_container}>
-            <Link style={{ textDecoration: 'none', color: 'inherit' }} to={CARS_LIST_PAGE}>
-              <MenuItem menuItemName="Coches" />
-            </Link>
-            <Link style={{ textDecoration: 'none', color: 'inherit' }} to={PARTICULARES_PAGE}>
-              <MenuItem menuItemName="Particulares" />
-            </Link>
-            <Link style={{ textDecoration: 'none', color: 'inherit' }} to={AUTONOMOS_PAGE}>
-              <MenuItem menuItemName="Autónomos" />
-            </Link>
-            <Link style={{ textDecoration: 'none', color: 'inherit' }} to={EMPRESAS_PAGE}>
-              <MenuItem menuItemName="Empresas" />
-            </Link>
-          </div>
+          <Link to={CARS_LIST_PAGE}>
+            <div className={styles._nav_container}>
+              <ArrowLeftIcon className={styles._nav_arrow_left_icon} />
+              <div className={styles._back_to_list_page}>Volver a la lista de coches</div>
+            </div>
+          </Link>
         </div>
       )}
       {windowSize === 'sm' && (
         <>
-          <div className={styles._search_container_sm}>
-            <SearchBarShort placeholder="Todas las categorias" />
+          <div className={styles._nav_wrapper}>
+            <Link to={CARS_LIST_PAGE}>
+              <div className={styles._nav_container}>
+                <ArrowLeftIcon className={styles._nav_arrow_left_icon} />
+                <div className={styles._back_to_list_page}>Volver a la lista de coches</div>
+              </div>
+            </Link>
           </div>
         </>
       )}

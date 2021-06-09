@@ -27,12 +27,18 @@
   background: none;
   font-family: Open sans;
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 16.34px;
   color: rgba(169, 169, 169, 1);
   cursor: pointer;
 }
 ._tab:hover {
-  color: rgba(106, 152, 60);
-  font-weight: 500;
+  background-color: rgba(106, 152, 60);
+  border-radius: 4px;
+  color: #ffffff;
+}
+._active_tab {
+  background-color: rgba(106, 152, 60);
+  border-radius: 4px;
+  color: #ffffff;
 }

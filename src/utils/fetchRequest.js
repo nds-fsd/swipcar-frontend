@@ -44,7 +44,7 @@ const fetchRequest = (method = 'GET', path, userOptions = {}) => {
     },
   };
 
-  const url = `${API_URL}/${path}`;
+  const url = `${API_URL}${path}`;
 
   const isFile = options.body instanceof File;
 

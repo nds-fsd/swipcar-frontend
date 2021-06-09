@@ -6,7 +6,6 @@ import { ReactComponent as CheckIcon } from '../assets/checkIcon.svg';
 
 const RentingOfferCard = ({ rentingOffer, car, photocar }) => {
   const [expanded, setExpanded] = useState(false);
-  // TODO:console.log('rentingoffer : ', rentingOffer);
 
   const handleClick = () => {
     setExpanded(!expanded);
