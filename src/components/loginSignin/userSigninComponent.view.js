@@ -163,7 +163,6 @@ const UserSigninComponent = ({
             </div>
           </form>
           <div className={styles._bottom_signin_container}>
-            <div className={styles._bottom_login_title_container}>¡Bienvenido en Ecocars!</div>
             <div className={styles._signin_button_container}>
               <GreenButton
                 design="filled"

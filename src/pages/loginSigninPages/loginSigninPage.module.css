@@ -94,6 +94,7 @@
 }
 
 /* Inputs */
+
 ._input_container {
   display: flex;
   flex-direction: row;
@@ -185,39 +186,42 @@
   }
 }
 /* windowSize Small*/
-._bottom_container {
+._login_wrapper_sm {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+._top_container_sm {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgb(106, 152, 60);
-  height: 40%;
-  align-items: center;
+  align-content: center;
+  height: 80%;
 }
-._bottom_login_title_container {
+._login_title_container_sm {
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding: 0 20px;
-  margin-bottom: 20px;
-  color: rgb(255, 255, 255);
+  margin-top: 20px;
+  color: rgba(21, 21, 21, 1);
   font-weight: 500;
   font-size: 24px;
   line-height: 36px;
 }
-._bottom_login_subTitle_container {
-  margin-top: 10px;
-  text-align: center;
-  padding: 0 20px;
-  color: rgb(255, 255, 255);
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 27px;
+._bottom_container_sm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  background-color: rgb(106, 152, 60);
+  height: 100%;
 }
-._login_button_container_sm {
+._bottom_button_container_sm {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  margin: 36px 0;
 }
+
 ._bottom_signin_container {
   display: flex;
   flex-direction: column;
@@ -230,26 +234,5 @@
 ._signin_button_container {
   display: flex;
   justify-content: center;
-}
-._proveedores_bottom_signin_container {
-  display: flex;
-  flex-direction: row;
-  background-color: rgb(106, 152, 60);
-  height: 20%;
-  align-items: center;
-}
-._proveedores_bottom_signin_title_container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-
   margin-bottom: 30px;
-  color: rgb(255, 255, 255);
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 30px;
-}
-._proveedores_signin_button_container {
-  display: flex;
-  margin: -30px 20px 0 0;
 }

@@ -221,3 +221,25 @@
   background-color: #ffffff;
   color: rgb(106, 152, 60);
 }
+._filled_button_reservation_created {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 50px;
+  border: none;
+  border-radius: 12px;
+  border: 1px solid rgb(106, 152, 60);
+  background-color: #ffffff;
+  color: rgb(106, 152, 60);
+  font-family: poppins, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 36px;
+  outline: none;
+}
+._filled_button_reservation_created:hover {
+  border: 1px solid rgb(106, 152, 60);
+  color: #ffffff;
+  background-color: rgb(106, 152, 60);
+}

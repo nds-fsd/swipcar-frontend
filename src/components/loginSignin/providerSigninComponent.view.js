@@ -105,20 +105,7 @@ const ProviderSigninComponent = ({
           <form onSubmit={handleSubmit(onSubmitSigninProvider)}>
             <div className={styles._input_container}>
               <LoginSigninInput
-                label="Nombre de tu empresa"
-                placeholder="CarRenting SL"
-                name="companyname"
-                type="text"
-                autoComplete="off"
-                {...register('companyname', { required: 'Indica tu empresa' })}
-              />
-              <div className={styles._error_message}>
-                {errors.companyname ? errors.companyname.message : ''}
-              </div>
-            </div>
-            <div className={styles._input_container}>
-              <LoginSigninInput
-                label="Crea un nombre de usuario"
+                label="Crea tu nombre de usuario"
                 placeholder="usuario"
                 name="name"
                 type="text"
@@ -174,11 +161,8 @@ const ProviderSigninComponent = ({
               <GreenButton type="submit" design="outline" label="Registrarse" />
             </div>
           </form>
-          <div className={styles._proveedores_bottom_signin_container}>
-            <div className={styles._proveedores_bottom_signin_title_container}>
-              ¡Bienvenido en Ecocars!
-            </div>
-            <div className={styles._proveedores_signin_button_container}>
+          <div className={styles._bottom_signin_container}>
+            <div className={styles._signin_button_container}>
               <GreenButton
                 design="filled"
                 type="button"

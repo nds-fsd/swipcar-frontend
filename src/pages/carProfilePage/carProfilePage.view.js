@@ -16,15 +16,26 @@ import SpecItemWrapper from '../../components/specItemWrapper';
 import EquipmentWrapper from '../../components/equipmentWrapper/equipmentWrapper.view';
 import RentingOfferCard from '../../components/rentingOfferCard/rentingOfferCard.view';
 import GreenButton from '../../components/buttons/greenButton';
+import SystemMessage from '../../components/systemMessage/systemMessage.view';
 
 const CarProfilePage = () => {
   const location = useLocation();
+
   const params = useParams();
-  const carId = location.state?.carId;
-  console.log('carId: ', carId);
   const [versionId, setVersionId] = useState(0);
   const [activeVersion, setActiveVersion] = useState(versionId[0]);
-
+  const [showSystemMessage, setShowSystemMessage] = useState(false);
+  const [systemMessageData, setSystemMessageData] = useState({
+    message: '',
+    typeAlert: '',
+  });
+  const systemMessage = (value) => {
+    setSystemMessageData(value);
+    setShowSystemMessage(!showSystemMessage);
+    setTimeout(() => {
+      setShowSystemMessage(false);
+    }, 3000);
+  };
   let windowSize = useWindowSize();
   const [carProfile, setCarProfile] = useState();
 
@@ -32,19 +43,22 @@ const CarProfilePage = () => {
 
   useEffect(() => {
     newRequest({
-      url: `${API_DEV.CARPROFILE}${carId}`,
+      url: `${API_DEV.CARPROFILE}${params.carId}`,
+      method: 'GET',
       onSuccess: setCarProfile,
     });
-  }, [carId]);
+  }, [params.carId]);
 
   const lowerPrice = 230;
 
-  const handleSelectVersion = (version, id) => {
+  const handleSelectVersion = (id) => {
     setActiveVersion(id);
     setVersionId(id);
   };
+
   return (
     <div className={styles._carprofile_scene}>
+      {showSystemMessage && <SystemMessage alertValue={systemMessageData} />}
       {carProfile && (
         <>
           <div className={styles.breadcrumb_row}>
@@ -225,6 +239,7 @@ const CarProfilePage = () => {
                           rentingOffer={{ rentingOffer }}
                           car={`${carProfile.brand.brandname} ${carProfile.model.modelname}`}
                           photocar={carProfile.model.photocar.photourl}
+                          systemMessage={systemMessage}
                         />
                       );
                     })}
@@ -234,7 +249,12 @@ const CarProfilePage = () => {
                     <div className={styles._login_container_title}>
                       Entra con tu cuenta para ver las ofertas
                     </div>
-                    <Link to={{ pathname: LOGIN_SIGNIN_PAGE, from: location.state.carId }}>
+                    <Link
+                      to={{
+                        pathname: LOGIN_SIGNIN_PAGE,
+                        state: { fromCarProfile: true, carProfile: params },
+                      }}
+                    >
                       <GreenButton label="Login" />
                     </Link>
                   </div>

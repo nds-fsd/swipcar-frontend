@@ -9,7 +9,7 @@ import { API_DEV } from '../../utils/api.constants';
 import { newRequest } from '../../utils/newRequest';
 import { carsLengthRequest } from '../../utils/carsLengthRequest';
 
-const CarsListPage = ({ categoryFilter, searchValue }) => {
+const CarsListPage = ({ categoryFilter, searchValue, setSearchValue, setCategoryFilter }) => {
   const windowSize = useWindowSize();
 
   const location = useLocation();
@@ -49,12 +49,14 @@ const CarsListPage = ({ categoryFilter, searchValue }) => {
   ];
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const handleTabSort = (tab) => {
-    /* setFuelFilter('');
+    setFuelFilter('');
     setBrandFilter('');
     setTimeFilter('');
     setTransmisionFilter('');
     setMinPriceFilter('');
-    setMaxPriceFilter(''); */
+    setMaxPriceFilter('');
+    setSearchValue('');
+    setCategoryFilter('');
     switch (tab) {
       case 'todas':
         setActiveTab('1');

@@ -31,6 +31,7 @@ import {
 import PrivateRoute from './routers/privateRoute';
 import { AuthContextProvider } from './store/authContext';
 import Footer from './components/footer';
+import Page404 from './pages/page404/page404.view';
 
 function App() {
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -56,12 +57,11 @@ function App() {
         <div>
           <Switch>
             <Route path={LOGIN_SIGNIN_PAGE}>
-              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
+              <HeaderLayout1 />
               <LoginSigninPage />
             </Route>
 
             <PrivateRoute path={DASHBOARD_PAGE}>
-              {/* <HeaderLayout2 /> */}
               <DashboardPage />
             </PrivateRoute>
 
@@ -71,35 +71,40 @@ function App() {
                   setCategoryFilter={setCategoryFilter}
                   setSearchValue={setSearchValue}
                 />
-                <CarsListPage categoryFilter={categoryFilter} searchValue={searchValue} />
+                <CarsListPage
+                  categoryFilter={categoryFilter}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  setCategoryFilter={setCategoryFilter}
+                />
                 <Footer />
               </ScrollToTop>
             </Route>
 
             <Route path={CAR_PROFILE_PAGE}>
-              <HeaderLayout2 setCategoryFilter={setCategoryFilter} />
+              <HeaderLayout2 />
               <CarProfilePage />
             </Route>
             <Route path={ABOUT_US_PAGE}>
-              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
+              <HeaderLayout1 />
               <AboutUsPage />
             </Route>
             <Route path={FORM_PAGE}>
-              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
+              <HeaderLayout1 />
               <CreateRentingPage />
             </Route>
-            <Route path={HOME_PAGE}>
-              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
+            <Route exact path={HOME_PAGE}>
+              <HeaderLayout1 />
               <HomePage />
+              <Footer />
+            </Route>
+            <Route exact path="*">
+              <HeaderLayout1 />
+              <Page404 />
               <Footer />
             </Route>
             <Route exact path="/">
               <Redirect to={HOME_PAGE} />
-            </Route>
-            <Route path="*">
-              <HeaderLayout1 setCategoryFilter={setCategoryFilter} />
-              <div>404 Not Found</div>
-              <Footer />
             </Route>
           </Switch>
         </div>

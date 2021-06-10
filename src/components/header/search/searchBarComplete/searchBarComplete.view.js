@@ -20,6 +20,7 @@ const SearchBarComplete = ({ placeholder, setCategoryFilter, setSearchValue }) =
       return setCategoryFilter(value);
     }
   };
+
   const handleSearch = (event) => {
     const timeout = setTimeout(() => {
       let value = event.target.value.toLowerCase();
@@ -33,7 +34,7 @@ const SearchBarComplete = ({ placeholder, setCategoryFilter, setSearchValue }) =
       } else {
         setSearchValue(searchValue);
       }
-    }, 3000);
+    }, 2000);
   };
   return (
     <>

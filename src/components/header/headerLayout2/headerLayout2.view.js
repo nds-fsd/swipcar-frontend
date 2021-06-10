@@ -86,9 +86,7 @@ const HeaderLayout2 = ({ setCategoryFilter }) => {
                       {windowSize === 'md' && (
                         <div className={styles._header_top_green_link_right}>Contacto</div>
                       )}
-                      {loggedInUser &&
-                      (loggedInUser.user.role === 'provider' ||
-                        loggedInUser.user.role === 'admin') ? (
+                      {loggedInUser ? (
                         <Link to={DASHBOARD_PAGE}>
                           <p className={styles._header_top_green_link_right}>Dashboard</p>
                         </Link>

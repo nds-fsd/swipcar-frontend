@@ -17,7 +17,10 @@ const LoginSigninPage = ({ props }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const location = useLocation();
+
   const fromHeaderProvider = location.state?.fromHeaderProvider;
+  const fromCarProfile = location.state?.fromCarProfile;
+  const carProfile = location.state?.carProfile;
 
   const handleForm = () => {
     setChangeForm(!changeForm);
@@ -114,14 +117,15 @@ const LoginSigninPage = ({ props }) => {
         //console.log(res);
         setIsSubmitting(false);
         if (res.user.role === 'user') {
-          history.push('/renting');
+          if (fromCarProfile) {
+            return history.push(
+              `/renting-car/${carProfile.brand}/${carProfile.model}/${carProfile.carId}`
+            );
+          }
         }
 
-        if (res.user.role === 'provider') {
+        if (res.user.role === 'provider' || 'admin') {
           history.push('/dashboard');
-          //Pull Request
-          //        if (res.user.role === 'admin') {
-          //          history.push('/dashboard');
         }
       })
       .catch((error) => {
