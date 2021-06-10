@@ -15,6 +15,7 @@ export const API_DEV = {
   EQUIPMENT: 'equipment/',
   RENTING_OFFERS: 'rentingoffer/',
   RESERVATION: 'reservation/',
+  CARTYPE: 'cartype/',
 };
 
 export default API_DEV;

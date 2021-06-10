@@ -1,6 +1,7 @@
 import { getUserToken, removeSession } from './auth/index';
+import API_DEV from '../utils/api.constants';
 
-export const API_URL = 'http://localhost:3001';
+export const API_URL = API_DEV.API;
 
 function ApiError(message, data, status) {
   let response = null;
