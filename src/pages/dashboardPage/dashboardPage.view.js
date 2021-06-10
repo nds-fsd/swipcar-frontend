@@ -8,6 +8,8 @@ import {
   DASHBOARD_CARS_PAGE,
   DASHBOARD_PROVIDERS_PAGE,
   DASHBOARD_MY_PROFILE_PAGE,
+  DASHBOARD_RESERVATIONS_PAGE,
+  DASHBOARD_MY_RESERVATIONS_PAGE
 } from '../../routers/routers';
 import Modal from '../../components/modal/modal.view';
 import NavDashBoard from '../../components/navDashBoard';
@@ -26,6 +28,10 @@ import MyProfile from '../../components/tablesDashboard/myProfile/myProfile.view
 import UserEditForm from '../../components/forms/userEditForm/userEditForm.view';
 import { GetDataUser } from '../../utils/dashBoardCalls';
 import HomeDashBoard from '../../components/homeDashBoard/homeDashBoard.view';
+import TableDashboardReservationsProvider from '../../components/tablesDashboard/tableDashboardReservationsProvider';
+import ReservationForm from '../../components/forms/reservationForm/reservationForm.view';
+import TableDashboardReservationsUser from '../../components/tablesDashboard/tableDashboardReservationsUser';
+import ReservationUserForm from '../../components/forms/reservationUserForm';
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -134,6 +140,22 @@ const DashboardPage = () => {
               systemMessage={systemMessage}
             />
           )}
+          {locationUrl === DASHBOARD_RESERVATIONS_PAGE && (
+            <ReservationForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={systemMessage}
+            />
+          )}
+          {locationUrl === DASHBOARD_MY_RESERVATIONS_PAGE && (
+            <ReservationUserForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={systemMessage}
+            />
+          )}
         </Modal>
       )}
 
@@ -170,12 +192,6 @@ const DashboardPage = () => {
             <MyProfile dataUser={dataUser} systemMessage={(res) => systemMessage(res)} />
           </>
         )}
-        {/* All Rentings */}
-        {/* {locationUrl === DASHBOARD_MY_RENTINGS_PAGE && (
-          <>
-            <TableDashboardMyRentings handleModal={handleModal} />
-          </>
-        )} */}
         {/* MyRentings ADMINS */}
         {locationUrl === DASHBOARD_ALL_RENTINGS_PAGE && (
           <>
@@ -189,6 +205,28 @@ const DashboardPage = () => {
               dataProvider={dataProvider?.provider}
               handleModal={handleModal}
               update={update}
+            />
+          </>
+        )}
+        {/* MyReservations for providers */}
+        {locationUrl === DASHBOARD_RESERVATIONS_PAGE && (
+          <>
+            <TableDashboardReservationsProvider
+              dataProvider={dataProvider?.provider}
+              handleModal={handleModal}
+              update={update}
+              systemMessage={(res) => systemMessage(res)}
+            />
+          </>
+        )}
+        {/* MyReservations for Users */}
+        {locationUrl === DASHBOARD_MY_RESERVATIONS_PAGE && (
+          <>
+            <TableDashboardReservationsUser
+              dataUser={dataUser}
+              handleModal={handleModal}
+              update={update}
+              systemMessage={(res) => systemMessage(res)}
             />
           </>
         )}

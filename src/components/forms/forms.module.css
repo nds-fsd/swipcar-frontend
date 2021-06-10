@@ -167,7 +167,8 @@
 ._title_group {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
+  margin-bottom: 20px;
 }
 ._title {
   color: #648563;
@@ -192,13 +193,13 @@
   color: #648563;
 }
 ._icon_title {
-  height: 110px;
-  margin-right: 10px;
+  height: 100px;
+  margin-right: 30px;
 }
 ._icon_title_list {
   margin-right: 10px;
 }
-._icon_svg{
+._icon_svg {
   height: 40px;
   width: 40px;
   margin-right: 20px;
@@ -318,7 +319,7 @@
   background-color: #ff00004a;
   border-radius: 3px;
   padding: 20px;
-  margin: 20px 0;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -337,4 +338,14 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+._icon_form_button {
+  float: right;
+  height: 35px;
+  width: 35px;
+  transition: 100ms ease-in-out;
+}
+._icon_form_button:hover {
+  transform: scale(0.80);
 }

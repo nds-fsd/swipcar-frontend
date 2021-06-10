@@ -767,7 +767,6 @@ export const DeleteRentingOffer = ({
         .map((rentingOffer) => rentingOffer)
         .filter((val) => val._id !== rentingOfferId);
       if (resToUpdateRentingOfferVersion === undefined) {
-        //!Siguiente paso
         _handleProviderRentingsDelete();
       } else {
         let toUpdate = versionRentingoffers.filter((value) => value !== rentingOfferId);
@@ -1105,14 +1104,13 @@ export const CreateVersion = async ({ versionData, onSuccess = () => {}, onError
 
 //! Datos Necesarios: userId, rentingOfferId, providerId
 export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError = () => {} }) => {
+  const { user: userId, rentingoffer: rentingOfferId, provider: providerId } = queryPutData;
 
-  const {userId, rentingOfferId, providerId } = queryPutData
-
-  //*Find CarProfile by model
+  //* Fetch Create Reservation
   let bodyReservation = {
     user: userId,
-    rentingoffer: rentingOfferId
-  }
+    rentingoffer: rentingOfferId,
+  };
   const options = {
     method: 'POST',
     headers: new Headers({
@@ -1130,8 +1128,8 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
       return Promise.reject();
     })
     .then((res) => {
-      let completData = { ...queryPutData, carProfile: res._id };
       _handleUserReservations(res._id);
+      console.log('Nueva reserva creada es el id => : ', res._id);
     })
     .catch((err) => {
       console.log('FETCH CreateReservation ERROR : ', err);
@@ -1139,9 +1137,8 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
   //*END Fetch Create REservation
 
   const _handleUserReservations = (newReservationId) => {
-    const { provider, _id, version } = newReservationId;
-    //*GetProviderData
-    fetch(API_DEV.API + API_DEV.PROVIDERS + provider)
+    //*Get Array reservations
+    fetch(API_DEV.API + API_DEV.USERS + userId)
       .then((res) => {
         if (res.status === 200) {
           return res.json();
@@ -1149,25 +1146,23 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
         return Promise.reject();
       })
       .then((res) => {
-        _handleProviderRentings(provider, _id, version, res.rentingoffers);
-        // console.log('_handleProviderRentings  => ', provider, _id, version, res.rentingoffers);
+        console.log('Array reservation USER  => ', res.reservation);
+        _updateUserReservations(res.reservation, newReservationId);
       })
       .catch((err) => {
         console.log('GetDataUser ERROR : ', err);
       });
-    const _handleProviderRentings = (
-      providerId,
-      newRentingOfferId,
-      version,
-      providerRentingOffers
-    ) => {
-      const resToUpdateRentingOfferProvider = providerRentingOffers?.find(
-        (rentingOffer) => rentingOffer === newRentingOfferId
+    const _updateUserReservations = (userReservations, newReservationId) => {
+      const resToUpdateUserReservations = userReservations?.find(
+        (reservation) => reservation === newReservationId
       );
-      if (resToUpdateRentingOfferProvider === undefined) {
-        let toUpdate = [...providerRentingOffers, newRentingOfferId];
-        toUpdate = { rentingoffers: toUpdate };
-        const url = API_DEV.API + API_DEV.PROVIDERS + providerId;
+
+      console.log('resToUpdateUserReservations  => ', resToUpdateUserReservations);
+
+      if (resToUpdateUserReservations === undefined) {
+        let toUpdate = [...userReservations, newReservationId];
+        toUpdate = { reservation: toUpdate };
+        const url = API_DEV.API + API_DEV.USERS + userId;
         const options = {
           method: 'PUT',
           headers: new Headers({
@@ -1185,21 +1180,20 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
             return Promise.reject();
           })
           .then(() => {
-            _handleVersionRentings(newRentingOfferId, version);
+            _handleProviderReservations(newReservationId, providerId);
           })
           .catch((err) => {
-            console.log('_handleProviderRentings   ERROR!! : ', err);
+            console.log('_updateUserReservations   ERROR!! : ', err);
             onError(err);
           });
       } else {
-        //!Pasa al siguiente paso sin actualizar ya que existe la renting offer en el array
-        _handleVersionRentings(newRentingOfferId, version);
+        _handleProviderReservations(newReservationId, providerId);
       }
     };
 
-    const _handleVersionRentings = (newRentingOfferId, version) => {
-      //*GetVersion
-      fetch(API_DEV.API + API_DEV.VERSION + version)
+    const _handleProviderReservations = (newReservationId, providerId) => {
+      //*GetProvider
+      fetch(API_DEV.API + API_DEV.PROVIDERS + providerId)
         .then((res) => {
           if (res.status === 200) {
             return res.json();
@@ -1207,20 +1201,23 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
           return Promise.reject();
         })
         .then((res) => {
-          _handleUpdateRentings(newRentingOfferId, version, res.rentingoffers);
+          _handleUpdateProviderReservations(res.reservations, newReservationId);
+          console.log('Array Reservations Provider  => ', res.reservations);
         })
         .catch((err) => {
-          console.log('GetDataUser ERROR : ', err);
+          console.log('_handleProviderReservations ERROR : ', err);
         });
 
-      const _handleUpdateRentings = (newRentingOfferId, version, versionRentingoffers) => {
-        const resToUpdateRentingOfferVersion = versionRentingoffers?.find(
-          (rentingOffer) => rentingOffer === newRentingOfferId
+      const _handleUpdateProviderReservations = (providerReservations, newReservationId) => {
+        const resToUpdateReservationsProvider = providerReservations?.find(
+          (reservation) => reservation === newReservationId
         );
-        if (resToUpdateRentingOfferVersion === undefined) {
-          let toUpdate = [...versionRentingoffers, newRentingOfferId];
-          toUpdate = { rentingoffers: toUpdate };
-          const url = API_DEV.API + API_DEV.VERSION + version;
+        console.log('resToUpdateReservationsProvider  => ', resToUpdateReservationsProvider);
+
+        if (resToUpdateReservationsProvider === undefined) {
+          let toUpdate = [...providerReservations, newReservationId];
+          toUpdate = { reservations: toUpdate };
+          const url = API_DEV.API + API_DEV.PROVIDERS + providerId;
           const options = {
             method: 'PUT',
             headers: new Headers({
@@ -1241,11 +1238,240 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
               onSuccess(res);
             })
             .catch((err) => {
-              console.log('_handleVersionRentings   ERROR!! : ', err);
+              console.log('_handleUpdateProviderReservations   ERROR!! : ', err);
               onError(err);
             });
         } else {
-          onSuccess(version);
+          onSuccess(userId);
+        }
+      };
+    };
+  };
+};
+
+export const GetReservationsProvider = ({ dataProviderID, onSuccess = () => {} }) => {
+  console.log('dataProviderID  => ', dataProviderID);
+
+  fetch(API_DEV.API + API_DEV.PROVIDERS + '/reservations/' + dataProviderID)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
+    })
+    .then((res) => {
+      console.log('Array reservation PROVIDER  => ', res.reservations);
+      _getReservations(res.reservations);
+    })
+    .catch((err) => {
+      console.log('Array reservation PROVIDER ERROR : ', err);
+    });
+
+  const _getReservations = async (reservations) => {
+    const fetchDataReservations = await reservations.map((dataToFetch) => {
+      return fetch(API_DEV.API + API_DEV.RESERVATION + dataToFetch).then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+        return Promise.reject();
+      });
+    });
+    let totalArr = [];
+    const handlePair = (arrayDatas) => {
+      totalArr = [...totalArr, arrayDatas];
+      onSuccess(totalArr);
+    };
+    Promise.all(fetchDataReservations)
+      .then((values) => values.map((res) => handlePair(res)))
+      .catch(console.log('fetchDataReservations error!'));
+  };
+};
+
+
+export const GetReservationsUser = ({ dataUserID, onSuccess = () => {} }) => {
+  console.log('dataProviderID  => ', dataUserID);
+
+  fetch(API_DEV.API + API_DEV.USERS + dataUserID)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
+    })
+    .then((res) => {
+      console.log('Array reservation USER  => ', res.reservation);
+      _getReservations(res.reservation);
+    })
+    .catch((err) => {
+      console.log('Array reservation PROVIDER ERROR : ', err);
+    });
+
+  const _getReservations = async (reservations) => {
+    const fetchDataReservations = await reservations.map((dataToFetch) => {
+      return fetch(API_DEV.API + API_DEV.RESERVATION + dataToFetch).then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+        return Promise.reject();
+      });
+    });
+    let totalArr = [];
+    const handlePair = (arrayDatas) => {
+      totalArr = [...totalArr, arrayDatas];
+      console.log('totalArr user TO TABLE : ', totalArr);
+
+      onSuccess(totalArr);
+    };
+    Promise.all(fetchDataReservations)
+      .then((values) => values.map((res) => handlePair(res)))
+      .catch(console.log('fetchDataReservations error!'));
+  };
+};
+
+export const GetReservation = ({ toEdit, onSuccess = () => {} }) => {
+  fetch(API_DEV.API + API_DEV.RESERVATION + toEdit)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
+    })
+    .then((res) => {
+      onSuccess(res);
+    })
+    .catch((err) => {
+      console.log('GetReservation ERROR!! : ', err);
+    });
+};
+
+export const DeleteReservation = ({
+  reservationId,
+  userId,
+  providerId,
+  onSuccess = () => {},
+  onError = () => {},
+}) => {
+  const options = {
+    method: 'DELETE',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    }),
+    mode: 'cors',
+  };
+  fetch(API_DEV.API + API_DEV.RESERVATION + reservationId, options)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
+    })
+    .then((res) => {
+      _handleUserReservationsDelete();
+    })
+    .catch((err) => {
+      console.log('DELETE Reservation ERROR : ', err);
+    });
+  const _handleUserReservationsDelete = () => {
+    //*Get Array reservations
+    fetch(API_DEV.API + API_DEV.USERS + userId)
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+        return Promise.reject();
+      })
+      .then((res) => {
+        _userReservationsDelete(res.reservation);
+      })
+      .catch((err) => {
+        console.log('GetDataUser ERROR : ', err);
+      });
+    const _userReservationsDelete = (userReservations) => {
+      const resToUpdateUserReservations = userReservations
+        .map((reservation) => reservation)
+        .filter((val) => val._id !== reservationId);
+
+      if (resToUpdateUserReservations === undefined) {
+        _handleProviderReservationsDelete();
+      } else {
+        let toUpdate = userReservations.filter((value) => value !== reservationId);
+        toUpdate = { reservation: toUpdate };
+        const url = API_DEV.API + API_DEV.USERS + userId;
+        const options = {
+          method: 'PUT',
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          }),
+          mode: 'cors',
+          body: JSON.stringify(toUpdate),
+        };
+        fetch(url, options)
+          .then((res) => {
+            if (res.status === 200) {
+              return res.json();
+            }
+            return Promise.reject();
+          })
+          .then((res) => {
+            _handleProviderReservationsDelete();
+          })
+          .catch((err) => {
+            console.log('_handleVersionRentings   ERROR!! : ', err);
+            onError(err);
+          });
+      }
+    };
+    const _handleProviderReservationsDelete = () => {
+      //*GetProvider
+      fetch(API_DEV.API + API_DEV.PROVIDERS + providerId)
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          }
+          return Promise.reject();
+        })
+        .then((res) => {
+          _providerReservationsDelete(res.reservations);
+        })
+        .catch((err) => {
+          console.log('_handleUpdateProviderReservationsDelete ERROR : ', err);
+        });
+
+      const _providerReservationsDelete = (providerReservations) => {
+        const resToUpdateProviderReservations = providerReservations
+          .map((reservation) => reservation)
+          .filter((val) => val._id !== reservationId);
+
+        if (resToUpdateProviderReservations === undefined) {
+          onSuccess(reservationId);
+        } else {
+          let toUpdate = providerReservations.filter((value) => value !== reservationId);
+          toUpdate = { reservations: toUpdate };
+          const url = API_DEV.API + API_DEV.PROVIDERS + providerId;
+          const options = {
+            method: 'PUT',
+            headers: new Headers({
+              Accept: 'application/json',
+              'Content-type': 'application/json',
+            }),
+            mode: 'cors',
+            body: JSON.stringify(toUpdate),
+          };
+          fetch(url, options)
+            .then((res) => {
+              if (res.status === 200) {
+                return res.json();
+              }
+              return Promise.reject();
+            })
+            .then((res) => {
+              onSuccess(res);
+            })
+            .catch((err) => {
+              onError(err);
+            });
         }
       };
     };

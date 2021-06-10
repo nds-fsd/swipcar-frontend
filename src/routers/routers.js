@@ -14,3 +14,5 @@ export const DASHBOARD_USERS_PAGE = '/dashboard/users';//*   Usuarios
 export const DASHBOARD_PROVIDERS_PAGE = '/dashboard/providers';//*   Proveedores
 export const DASHBOARD_ALL_RENTINGS_PAGE = '/dashboard/allrentings';//*   All Rentings
 export const DASHBOARD_MY_RENTINGS_PAGE = '/dashboard/myrentings';//*   Rentings de cada proveedor
+export const DASHBOARD_RESERVATIONS_PAGE = '/dashboard/reservations';//*   Reservations del proveedor
+export const DASHBOARD_MY_RESERVATIONS_PAGE = '/dashboard/myreservations';//*   Reservations del usuario
