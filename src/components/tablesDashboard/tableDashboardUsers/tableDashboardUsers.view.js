@@ -1,15 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import {
-  GetDataDashboardTable,
-  GetDataDashboardTableUsers,
-} from '../../../utils/createCarRequestAll';
-import ButtonComponent from '../../pureComponents/buttonComponent';
+import { GetDataDashboardTableUsers } from '../../../utils/createCarRequestAll';
 
 import styles from '../tablesDashboard.module.css';
 
-const TableDashboardProviders = ({ handleModal }) => {
+const TableDashboardUsers = ({ handleModal, update }) => {
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
@@ -55,6 +51,9 @@ const TableDashboardProviders = ({ handleModal }) => {
   useEffect(() => {
     GetDataDashboardTableUsers({ onSuccess: setDataTable });
   }, []);
+  useEffect(() => {
+    GetDataDashboardTableUsers({ onSuccess: setDataTable });
+  }, [update]);
 
   const formatDate = (updatedAt) => {
     let fecha = updatedAt.split('T')[0];
@@ -63,8 +62,8 @@ const TableDashboardProviders = ({ handleModal }) => {
     return dateFormated;
   };
 
-  const Row = ({ _id, name, email, updatedAt }) => (
-    <div className={styles._table_body_info}>
+  const Row = ({ _id, name, email, updatedAt, position }) => (
+    <div className={`${styles._table_body_info} ${position % 2 !== 0 && styles._table_row_back}`}>
       <div className={`${styles._table_tr_info} ${styles._table_tr_id_data}`}>{_id}</div>
       <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{name}</div>
       <div className={`${styles._table_tr_info}`}>{email}</div>
@@ -79,17 +78,22 @@ const TableDashboardProviders = ({ handleModal }) => {
     </div>
   );
 
-  useEffect(() => {
-    console.log('dataTable :', dataTable);
-  }, [dataTable]);
+  // useEffect(() => {
+  //   console.log('dataTable :', dataTable);
+  // }, [dataTable]);
 
   const usuarios = dataTable && dataTable.filter((usersData) => usersData.role === 'user');
-  const rows = usuarios && usuarios.map((rowData, index) => <Row {...rowData} key={index} />);
+  const rows =
+    usuarios &&
+    usuarios.map((rowData, index) => {
+      let totalRowData = { ...rowData, position: index };
+      return <Row {...totalRowData} key={index} />;
+    });
 
   return (
     <>
       <div className={styles._table_container}>
-        <h1 className={styles._title_table}>Gestión de Usuarios Clientes</h1>
+        <h1 className={styles._title_table}>Gestión de Usuarios</h1>
 
         <div className={styles._table_row}>
           <div className={styles._table_search}>
@@ -116,21 +120,19 @@ const TableDashboardProviders = ({ handleModal }) => {
                   className={styles._row_buttons}
                   style={{ display: 'flex', justifyContent: 'flex-end' }}
                 >
-                  <ButtonComponent
+                  {/* <ButtonComponent
                     label="Crear Usuario"
                     alt="Crear Usuario"
                     typeButton="ok"
                     actionButton={() => handleModal()}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
 
             <div className={styles.table}>
               <div className={styles.header}>
-                <div onClick={() => sortBy('id')}>
-                  ID
-                </div>
+                <div onClick={() => sortBy('id')}>ID</div>
                 <div onClick={() => sortBy('nombre')}>Nombre</div>
                 <div onClick={() => sortBy('email')}>Email</div>
                 <div onClick={() => sortBy('createdAt')}>Creación</div>
@@ -153,7 +155,7 @@ const TableDashboardProviders = ({ handleModal }) => {
               className={styles._button_navPages}
               onClick={handlePageNext}
               title="Página Siguiente"
-              disabled={dataTable.totalPages % limit === 0 || limit > dataTable.totalPages}
+              disabled={dataTable.totalElements - skip < limit}
             >
               Siguiente
               <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />
@@ -165,4 +167,4 @@ const TableDashboardProviders = ({ handleModal }) => {
   );
 };
 
-export default TableDashboardProviders;
+export default TableDashboardUsers;

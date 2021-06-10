@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './modal.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Modal = ({ handleCloseModal, children }) => {
+const Modal = ({ handleModal, children }) => {
 
   return (
     <>
@@ -13,7 +13,7 @@ const Modal = ({ handleCloseModal, children }) => {
             id="closeModal"
             type="button"
             className={styles._close}
-            onClick={() => handleCloseModal()}
+            onClick={() => handleModal()}
           >
             <FontAwesomeIcon icon="times" />
           </button>

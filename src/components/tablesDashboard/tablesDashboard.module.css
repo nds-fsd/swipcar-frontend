@@ -5,8 +5,15 @@
   box-shadow: 0 0 10px -5px #444;
   position: relative;
 }
+._table_container_no_padding {
+  background-color: white;
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 0 10px -5px #444;
+  position: relative;
+}
 ._title_table {
-  margin: 0 0 0 10px;
+  margin: 0 0 10px 10px;
   font-size: xx-large;
   font-weight: 300;
   color: #648563;
@@ -91,11 +98,14 @@
 }
 ._table_tr_principal_data {
   color: #648563;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 1px;
 }
 ._table_tr_small_data {
   flex-grow: 0.6 !important;
+}
+._table_tr_big_data {
+  flex-grow: 1.8 !important;
 }
 
 ._table_tools_button {
@@ -148,4 +158,8 @@
 ._boxElements {
   width: 100%;
   margin: 5px;
+}
+
+._table_row_back {
+  background-color: #64856340 !important
 }
