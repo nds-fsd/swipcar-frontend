@@ -1,12 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { CreateCarRequestAll, GetDataDashboardTable } from '../../../utils/createCarRequestAll';
+import {
+  CreateCarRequestAll,
+  GetDataDashboardTable,
+  GetDataVersionTable,
+} from '../../../utils/dashBoardCalls';
 import ButtonComponent from '../../pureComponents/buttonComponent';
 
 import styles from '../tablesDashboard.module.css';
 
-const TableDashboardCarProfile = ({ handleModal }) => {
+const TableDashboardCarProfile = ({ handleModal, update }) => {
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
@@ -46,12 +50,15 @@ const TableDashboardCarProfile = ({ handleModal }) => {
 
   useEffect(() => {
     const queryGetData = { sort, dir, skip, limit };
-    GetDataDashboardTable({ queryGetData, onSuccess: setDataTable });
+    GetDataVersionTable({ queryGetData, onSuccess: setDataTable });
   }, [pathUrl]);
 
   useEffect(() => {
-    GetDataDashboardTable({ onSuccess: setDataTable });
+    GetDataVersionTable({ onSuccess: setDataTable });
   }, []);
+  useEffect(() => {
+    GetDataVersionTable({ onSuccess: setDataTable });
+  }, [update]);
 
   const formatDate = (updatedAt) => {
     let fecha = updatedAt.split('T')[0];
@@ -60,8 +67,8 @@ const TableDashboardCarProfile = ({ handleModal }) => {
     return dateFormated;
   };
 
-  const Row = ({ _id, brand, model, version, updatedAt }) => (
-    <div className={styles._table_body_info}>
+  const Row = ({ _id, brand, model, version, updatedAt, position }) => (
+    <div className={`${styles._table_body_info} ${position % 2 !== 0 && styles._table_row_back}`}>
       <div
         className={`${styles._table_tr_info} ${styles._table_tr_id_data} ${styles._table_tr_small_data}`}
       >
@@ -70,30 +77,33 @@ const TableDashboardCarProfile = ({ handleModal }) => {
       <div
         className={`${styles._table_tr_info} ${styles._table_tr_principal_data} ${styles._table_tr_small_data}`}
       >
-        {brand.brandname}
+        {brand && brand.brandname}
       </div>
       <div className={`${styles._table_tr_info} ${styles._table_tr_small_data}`}>
         {model.modelname}
       </div>
-      <div className={styles._table_tr_info}>{version.version}</div>
+      <div className={styles._table_tr_info}>{version}</div>
       <div className={styles._table_tr_info}>{formatDate(updatedAt)}</div>
       <button
         className={styles._table_tools_button}
         title="Herramientas de edición"
-        onClick={() => handleModal(version._id)}
+        onClick={() => handleModal(_id)}
       >
         <FontAwesomeIcon icon="ellipsis-v" />
       </button>
     </div>
   );
 
-  useEffect(() => {
-    console.log('dataTable :', dataTable);
-  }, [dataTable]);
+  // useEffect(() => {
+  //   console.log('dataTable :', dataTable);
+  // }, [dataTable]);
 
   const rows =
-    dataTable.elements &&
-    dataTable.elements.map((rowData, index) => <Row {...rowData} key={index} />);
+    dataTable &&
+    dataTable.elements?.map((rowData, index) => {
+      let totalRowData = { ...rowData, position: index };
+      return <Row {...totalRowData} key={index} />;
+    });
 
   return (
     <>
@@ -169,7 +179,7 @@ const TableDashboardCarProfile = ({ handleModal }) => {
               className={styles._button_navPages}
               onClick={handlePageNext}
               title="Página Siguiente"
-              disabled={dataTable.totalPages % limit === 0 || limit > dataTable.totalPages }
+              disabled={dataTable.totalElements - skip < limit}
             >
               Siguiente
               <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />

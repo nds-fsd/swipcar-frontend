@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import {
+  DASHBOARD_PAGE,
   DASHBOARD_USERS_PAGE,
+  DASHBOARD_ALL_RENTINGS_PAGE,
   DASHBOARD_MY_RENTINGS_PAGE,
   DASHBOARD_CARS_PAGE,
   DASHBOARD_PROVIDERS_PAGE,
+  DASHBOARD_MY_PROFILE_PAGE,
+  DASHBOARD_RESERVATIONS_PAGE,
+  DASHBOARD_MY_RESERVATIONS_PAGE
 } from '../../routers/routers';
 import Modal from '../../components/modal/modal.view';
 import NavDashBoard from '../../components/navDashBoard';
@@ -13,11 +18,20 @@ import TableDashboardUsers from '../../components/tablesDashboard/tableDashboard
 import useWindowSize from '../../constants/useWindowSize';
 import styles from './dashboardPage.module.css';
 import CarProfileForm from '../../components/forms/carProfileForm';
-import UserForm from '../../components/forms/userForm';
 import RentingForm from '../../components/forms/rentingForm/rentingForm.view';
 import TableDashboardProviders from '../../components/tablesDashboard/tableDashboardProviders';
 import TableDashboardMyRentings from '../../components/tablesDashboard/tableDashboardMyRentings';
+import TableDashboardAllRentings from '../../components/tablesDashboard/tableDashboardAllRentings';
 import ProviderForm from '../../components/forms/providerForm';
+import SystemMessage from '../../components/systemMessage/systemMessage.view';
+import MyProfile from '../../components/tablesDashboard/myProfile/myProfile.view';
+import UserEditForm from '../../components/forms/userEditForm/userEditForm.view';
+import { GetDataUser } from '../../utils/dashBoardCalls';
+import HomeDashBoard from '../../components/homeDashBoard/homeDashBoard.view';
+import TableDashboardReservationsProvider from '../../components/tablesDashboard/tableDashboardReservationsProvider';
+import ReservationForm from '../../components/forms/reservationForm/reservationForm.view';
+import TableDashboardReservationsUser from '../../components/tablesDashboard/tableDashboardReservationsUser';
+import ReservationUserForm from '../../components/forms/reservationUserForm';
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -25,6 +39,7 @@ const DashboardPage = () => {
   const windowSize = useWindowSize();
   const [loggedInUser, setLoggedInUser] = useState();
   const [dataUser, setDataUser] = useState({});
+  const [dataProvider, setDataProvider] = useState({});
 
   useEffect(() => {
     const authorizedUser = localStorage.getItem('user-session');
@@ -40,6 +55,17 @@ const DashboardPage = () => {
     }
   }, [loggedInUser]);
 
+  useEffect(() => {
+    if (dataUser?.roleUser === 'provider') {
+      const toEdit = dataUser?.idUser;
+      GetDataUser({ toEdit, onSuccess: setDataProvider });
+    }
+  }, [dataUser]);
+
+  useEffect(() => {
+    console.log('providerId  =>', dataProvider?.provider?._id);
+  }, [dataProvider]);
+
   //?MODAL
   const [showModal, setShowModal] = useState(false);
   const [editModal, setEditModal] = useState('');
@@ -53,56 +79,155 @@ const DashboardPage = () => {
   };
   //?MODAL
 
+  //?SYSTEMMESSAGE
+  const [showSystemMessage, setShowSystemMessage] = useState(false);
+  const [systemMessageData, setSystemMessageData] = useState({
+    message: '',
+    typeAlert: '',
+  });
+  const systemMessage = (value) => {
+    setSystemMessageData(value);
+    setShowSystemMessage(!showSystemMessage);
+    setTimeout(() => {
+      setShowSystemMessage(false);
+    }, 3000);
+  };
+  //?SYSTEMMESSAGE
+
+  //?SYSTEMMESSAGE
+  const [update, setUpdate] = useState();
+  const updateSuccess = (value) => {
+    setUpdate(value);
+  };
+  //?SYSTEMMESSAGE
+
   return (
     <div className={styles._container}>
+      {showSystemMessage && <SystemMessage alertValue={systemMessageData} />}
+
       {showModal && (
-        <Modal handleCloseModal={() => handleModal()}>
+        <Modal handleModal={() => handleModal()}>
           {locationUrl === DASHBOARD_CARS_PAGE && (
-            <CarProfileForm toEdit={editModal} handleCloseModal={() => handleModal()} />
+            <CarProfileForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={(res) => systemMessage(res)}
+            />
           )}
-          {locationUrl === DASHBOARD_MY_RENTINGS_PAGE && (
-            <RentingForm toEdit={editModal} handleCloseModal={() => handleModal()} />
+          {(locationUrl === DASHBOARD_ALL_RENTINGS_PAGE ||
+            locationUrl === DASHBOARD_MY_RENTINGS_PAGE) && (
+            <RentingForm
+              toEdit={editModal}
+              dataProvider={dataProvider?.provider}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={(res) => systemMessage(res)}
+            />
           )}
           {locationUrl === DASHBOARD_PROVIDERS_PAGE && (
-            <ProviderForm toEdit={editModal} handleCloseModal={() => handleModal()} />
+            <ProviderForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              systemMessage={(res) => systemMessage(res)}
+            />
           )}
           {locationUrl === DASHBOARD_USERS_PAGE && (
-            <UserForm toEdit={editModal} handleCloseModal={() => handleModal()} />
+            <UserEditForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={systemMessage}
+            />
+          )}
+          {locationUrl === DASHBOARD_RESERVATIONS_PAGE && (
+            <ReservationForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={systemMessage}
+            />
+          )}
+          {locationUrl === DASHBOARD_MY_RESERVATIONS_PAGE && (
+            <ReservationUserForm
+              toEdit={editModal}
+              handleModal={() => handleModal()}
+              updateSuccess={(value) => updateSuccess(value)}
+              systemMessage={systemMessage}
+            />
           )}
         </Modal>
       )}
 
-      <NavDashBoard dataUser={dataUser} />
+      <NavDashBoard dataUser={dataUser} locationUrl={locationUrl} />
 
       <div className={styles._table_container}>
+        {/* Home DashBoard*/}
+        {locationUrl === DASHBOARD_PAGE && (
+          <>
+            <HomeDashBoard dataUser={dataUser} locationUrl={locationUrl} />
+          </>
+        )}
         {/* CarProfiles  for SuperAdmin*/}
         {locationUrl === DASHBOARD_CARS_PAGE && (
           <>
-            <TableDashboardCarProfile handleModal={(value) => handleModal(value)} />
+            <TableDashboardCarProfile handleModal={(value) => handleModal(value)} update={update} />
           </>
         )}
         {/* Providers for SuperAdmin */}
         {locationUrl === DASHBOARD_PROVIDERS_PAGE && (
           <>
-            <TableDashboardProviders  handleModal={(value) => handleModal(value)}/>
+            <TableDashboardProviders handleModal={(value) => handleModal(value)} update={update} />
           </>
         )}
         {/* Users for SuperAdmin */}
         {locationUrl === DASHBOARD_USERS_PAGE && (
           <>
-            <TableDashboardUsers handleModal={handleModal} />
+            <TableDashboardUsers handleModal={(value) => handleModal(value)} update={update} />
           </>
         )}
-        {/* All Rentings */}
-        {/* {locationUrl === DASHBOARD_MY_RENTINGS_PAGE && (
+        {/* My Profile for user and provider */}
+        {locationUrl === DASHBOARD_MY_PROFILE_PAGE && (
           <>
-            <TableDashboardMyRentings handleModal={handleModal} />
+            <MyProfile dataUser={dataUser} systemMessage={(res) => systemMessage(res)} />
           </>
-        )} */}
+        )}
+        {/* MyRentings ADMINS */}
+        {locationUrl === DASHBOARD_ALL_RENTINGS_PAGE && (
+          <>
+            <TableDashboardAllRentings handleModal={handleModal} update={update} />
+          </>
+        )}
         {/* MyRentings for providers */}
         {locationUrl === DASHBOARD_MY_RENTINGS_PAGE && (
           <>
-            <TableDashboardMyRentings dataUser='60a778f2d04a7109cb497a65' handleModal={handleModal} />
+            <TableDashboardMyRentings
+              dataProvider={dataProvider?.provider}
+              handleModal={handleModal}
+              update={update}
+            />
+          </>
+        )}
+        {/* MyReservations for providers */}
+        {locationUrl === DASHBOARD_RESERVATIONS_PAGE && (
+          <>
+            <TableDashboardReservationsProvider
+              dataProvider={dataProvider?.provider}
+              handleModal={handleModal}
+              update={update}
+              systemMessage={(res) => systemMessage(res)}
+            />
+          </>
+        )}
+        {/* MyReservations for Users */}
+        {locationUrl === DASHBOARD_MY_RESERVATIONS_PAGE && (
+          <>
+            <TableDashboardReservationsUser
+              dataUser={dataUser}
+              handleModal={handleModal}
+              update={update}
+              systemMessage={(res) => systemMessage(res)}
+            />
           </>
         )}
       </div>

@@ -63,22 +63,18 @@ const TableDashboardProviders = ({ handleModal }) => {
     return dateFormated;
   };
 
-  const Row = ({ _id, name, email, provider, updatedAt }) => (
-    <div className={styles._table_body_info}>
+  const Row = ({ _id, name, email, provider, updatedAt, position }) => (
+    <div className={`${styles._table_body_info} ${position % 2 !== 0 && styles._table_row_back}`}>
       <div
         className={`${styles._table_tr_info} ${styles._table_tr_id_data} ${styles._table_tr_small_data}`}
       >
-        {_id}
+        {provider._id}
       </div>
       <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{name}</div>
       <div className={`${styles._table_tr_info}`}>{email}</div>
       <div className={styles._table_tr_info}>{provider.phone}</div>
-      <div className={styles._table_tr_info}>
-        {provider.companyname}
-      </div>
-      <div className={`${styles._table_tr_info}`}>
-        {formatDate(updatedAt)}
-      </div>
+      <div className={styles._table_tr_info}>{provider.companyname}</div>
+      <div className={`${styles._table_tr_info}`}>{formatDate(updatedAt)}</div>
       <button
         className={styles._table_tools_button}
         title="Herramientas de edición"
@@ -89,13 +85,18 @@ const TableDashboardProviders = ({ handleModal }) => {
     </div>
   );
 
-  useEffect(() => {
-    console.log('dataTable :', dataTable);
-  }, [dataTable]);
+  // useEffect(() => {
+  //   console.log('dataTable :', dataTable);
+  // }, [dataTable]);
 
   const providers =
     dataTable && dataTable.filter((providerData) => providerData.role === 'provider');
-  const rows = providers && providers.map((rowData, index) => <Row {...rowData} key={index} />);
+  const rows =
+    providers &&
+    providers.map((rowData, index) => {
+      let totalRowData = { ...rowData, position: index };
+      return <Row {...totalRowData} key={index} />;
+    });
 
   return (
     <>
@@ -127,12 +128,12 @@ const TableDashboardProviders = ({ handleModal }) => {
                   className={styles._row_buttons}
                   style={{ display: 'flex', justifyContent: 'flex-end' }}
                 >
-                  <ButtonComponent
+                  {/* <ButtonComponent
                     label="Crear Proveedor"
                     alt="Crear Proveedor"
                     typeButton="ok"
                     actionButton={() => handleModal()}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -146,17 +147,13 @@ const TableDashboardProviders = ({ handleModal }) => {
                 <div onClick={() => sortBy('email')}>Email</div>
                 <div onClick={() => sortBy('telefono')}>Teléfono</div>
                 <div onClick={() => sortBy('companyname')}>Compañia</div>
-                <div
-                  onClick={() => sortBy('createdAt')}
-                >
-                  Creación
-                </div>
+                <div onClick={() => sortBy('createdAt')}>Creación</div>
               </div>
               <div className={styles._body_data}>{rows}</div>
             </div>
           </div>
           <div className={styles._row_button_pages}>
-          <button
+            <button
               refs="prevButtonRef"
               className={styles._button_navPages}
               onClick={handlePagePrev}
@@ -170,7 +167,7 @@ const TableDashboardProviders = ({ handleModal }) => {
               className={styles._button_navPages}
               onClick={handlePageNext}
               title="Página Siguiente"
-              disabled={dataTable.totalPages % limit === 0 || limit > dataTable.totalPages }
+              disabled={dataTable.totalElements - skip < limit}
             >
               Siguiente
               <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />
