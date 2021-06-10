@@ -9,7 +9,7 @@ import {
   DASHBOARD_PROVIDERS_PAGE,
   DASHBOARD_MY_PROFILE_PAGE,
   DASHBOARD_RESERVATIONS_PAGE,
-  DASHBOARD_MY_RESERVATIONS_PAGE
+  DASHBOARD_MY_RESERVATIONS_PAGE,
 } from '../../routers/routers';
 import Modal from '../../components/modal/modal.view';
 import NavDashBoard from '../../components/navDashBoard';
@@ -46,9 +46,9 @@ const DashboardPage = () => {
     if (authorizedUser) {
       const activeUser = JSON.parse(authorizedUser);
       setLoggedInUser(activeUser);
+      console.log('activeUser:', activeUser);
     }
   }, []);
-
   useEffect(() => {
     if (loggedInUser) {
       setDataUser({ idUser: loggedInUser.user.id, roleUser: loggedInUser.user.role });

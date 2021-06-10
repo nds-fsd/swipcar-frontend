@@ -134,7 +134,7 @@ const HeaderLayout1 = ({ setCategoryFilter, setSearchValue }) => {
           </div>
           {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
             <>
-              {loggedInUser && loggedInUser.user.role === 'user' ? (
+              {loggedInUser ? (
                 <div className={styles._login_container}>
                   <SignoutIcon
                     type="button"

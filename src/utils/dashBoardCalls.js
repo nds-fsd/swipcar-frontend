@@ -1284,7 +1284,6 @@ export const GetReservationsProvider = ({ dataProviderID, onSuccess = () => {} }
   };
 };
 
-
 export const GetReservationsUser = ({ dataUserID, onSuccess = () => {} }) => {
   console.log('dataProviderID  => ', dataUserID);
 
