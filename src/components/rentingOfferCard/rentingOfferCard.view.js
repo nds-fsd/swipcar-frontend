@@ -1,16 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GreenButtonSmall from '../buttons/greenButtonSmall/greenButtonSmall.view';
 import ExtendedRentingItem from './extendedRentingItem';
 import styles from './rentingOfferCard.module.css';
 import { ReactComponent as CheckIcon } from '../assets/checkIcon.svg';
+import { newRequest } from '../../utils/newRequest';
+import { API_DEV } from '../../utils/api.constants';
+import { CreateReservation } from './../../utils/dashBoardCalls.js';
 
-const RentingOfferCard = ({ rentingOffer, car, photocar }) => {
+const RentingOfferCard = ({ rentingOffer, car, photocar, systemMessage }) => {
   const [expanded, setExpanded] = useState(false);
-  // TODO:console.log('rentingoffer : ', rentingOffer);
+  const [createReservation, setCreateReservation] = useState(false);
 
   const handleClick = () => {
     setExpanded(!expanded);
   };
+
+  const userData = localStorage.getItem('user-session');
+  const user = JSON.parse(userData);
+
+  const queryPutData = {
+    rentingoffer: rentingOffer.rentingOffer._id,
+    user: user.user.email,
+    provider: rentingOffer.rentingOffer.provider._id,
+  };
+  /* console.log('rentingOffer.id: ', rentingOffer.rentingOffer._id);
+  console.log('user email: ', user.user.email);
+  console.log('rentingOffer.provider.id: ', rentingOffer.rentingOffer.provider._id);
+  console.log('create resa: ', createReservation); */
+
+  const _handleShowReservation = () => {
+    setCreateReservation(!createReservation);
+  };
+
+  const _handleSuccessReservation = (res) => {
+    _handleShowReservation();
+    systemMessage({
+      message: 'Reserva creada correctamente',
+      typeAlert: 'ok',
+    });
+  };
+
+  const HandleReservation = () => {
+    _handleSuccessReservation();
+    CreateReservation({
+      queryPutData,
+      onSuccess: (res) => _handleSuccessReservation(res),
+      onError: () =>
+        systemMessage({
+          message: 'No se ha podido eliminar esta reserva',
+          typeAlert: 'error',
+        }),
+    });
+  };
+
   return (
     <>
       {!expanded && (
@@ -169,7 +211,18 @@ const RentingOfferCard = ({ rentingOffer, car, photocar }) => {
             <ExtendedRentingItem label="Web:" item={rentingOffer.rentingOffer.provider.web} />
           </div>
           <div className={styles._button_container}>
-            <button className={styles._filled_button}>"¡Resérvalo ya!"</button>
+            {createReservation ? (
+              <button
+                className={styles._filled_button_reservation_created}
+                onClick={HandleReservation}
+              >
+                ¡Ya has reservado este coche!
+              </button>
+            ) : (
+              <button className={styles._filled_button} onClick={HandleReservation}>
+                ¡Resérvalo ya!
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -3,31 +3,49 @@ import styles from './fuelContainer.module.css';
 import { API_DEV } from '../../../utils/api.constants';
 import { newRequest } from '../../../utils/newRequest';
 
-const FuelContainer = ({ setTabQuery }) => {
+const FuelContainer = ({ setFuelFilter }) => {
   const [fuelList, setFuelList] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+  const [activeFuel, setActiveFuel] = useState(fuelList[0]);
 
   useEffect(() => {
     newRequest({ url: API_DEV.FUEL, onSuccess: setFuelList });
   }, []);
 
-  const handleClick = (value) => {
-    setTabQuery(`?fuel=${value}`);
+  const handleSelectFuel = (fuel, id) => {
+    setActiveFuel(id);
+    setIsChecked(!isChecked);
+    setFuelFilter(fuel.fueltype);
   };
 
-  const fuelCount = '50';
+  const handleCancelFuelFilter = () => {
+    setFuelFilter('');
+    setActiveFuel('');
+  };
   return (
     <>
       <div className={styles._fuel_wrapper}>
-        {fuelList.map((fuel) => {
+        <div className={styles._container_title}>
+          <div className={styles._title}>Combustible</div>
+          <div className={styles._filter_cancelation} onClick={handleCancelFuelFilter}>
+            borrar
+          </div>
+        </div>
+        {fuelList.map((fuel, id) => {
           return (
             <div
-              className={styles._fuel_item_container}
               key={fuel._id}
+              id={fuel._id}
+              className={
+                activeFuel === id
+                  ? `${styles._fuel_item_container} ${styles.fuel_item_active}`
+                  : `${styles._fuel_item_container}`
+              }
+              type="text"
               value={fuel.fueltype}
-              onClick={() => handleClick(fuel.fueltype)}
+              onClick={() => handleSelectFuel(fuel, id)}
             >
-              <input type="text" disabled className={styles._fuel_item} value={fuel.fueltype} />
-              <div className={styles._fuel_car_count}>{fuelCount}</div>
+              <div className={styles._fuel_item}>{fuel.fueltype}</div>
             </div>
           );
         })}

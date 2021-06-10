@@ -1,0 +1,18 @@
+._alert_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 340px;
+  height: 200px;
+  background-color: #6a983c;
+  border-radius: 12px;
+}
+._alert_title {
+  display: flex;
+  text-align: center;
+  margin: 0 15px;
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 18px;
+  color: #ffffff;
+}

@@ -20,8 +20,9 @@ const ProviderSigninComponent = ({
       {(windowSize === 'xlg' || windowSize === 'lg' || windowSize === 'md') && (
         <>
           <div className={`${styles._left_login_container} ${styles[moveForm]}`}>
+            <div className={styles._left_login_title_container}>¿Eres proveedor de rentings?</div>
             <div className={styles._provider_left_login_title_container}>
-              ¿¡Publica tus ofertas!
+              ¿¡Publica ahora tus ofertas!
             </div>
             <form onSubmit={handleSubmit(onSubmitSigninProvider)}>
               <div className={styles._input_container}>
@@ -81,17 +82,18 @@ const ProviderSigninComponent = ({
                 </div>
               </div>
               <div className={styles._button_container}>
-                <GreenButton type="submit" design="outline" label="Sign in" />
+                <GreenButton type="submit" design="outline" label="Registrarse" />
               </div>
             </form>
           </div>
           <div className={`${styles._right_login_container} ${styles[move]}`}>
             <div className={styles._right_login_title_container}>¡Bienvenido en Ecocars!</div>
             <div className={styles._button_container}>
+              <div className={styles._right_login_subtitle_container}>¿Ya registrado?</div>
               <GreenButton
                 design="filled"
                 type="button"
-                label="Login"
+                label="Entrar"
                 onClick={() => handleForm()}
               />
             </div>
@@ -103,20 +105,7 @@ const ProviderSigninComponent = ({
           <form onSubmit={handleSubmit(onSubmitSigninProvider)}>
             <div className={styles._input_container}>
               <LoginSigninInput
-                label="Nombre de tu empresa"
-                placeholder="CarRenting SL"
-                name="companyname"
-                type="text"
-                autoComplete="off"
-                {...register('companyname', { required: 'Indica tu empresa' })}
-              />
-              <div className={styles._error_message}>
-                {errors.companyname ? errors.companyname.message : ''}
-              </div>
-            </div>
-            <div className={styles._input_container}>
-              <LoginSigninInput
-                label="Crea un nombre de usuario"
+                label="Crea tu nombre de usuario"
                 placeholder="usuario"
                 name="name"
                 type="text"
@@ -169,18 +158,15 @@ const ProviderSigninComponent = ({
               </div>
             </div>
             <div className={styles._button_container}>
-              <GreenButton type="submit" design="outline" label="Sign in" />
+              <GreenButton type="submit" design="outline" label="Registrarse" />
             </div>
           </form>
-          <div className={styles._proveedores_bottom_signin_container}>
-            <div className={styles._proveedores_bottom_signin_title_container}>
-              ¡Bienvenido en Ecocars!
-            </div>
-            <div className={styles._proveedores_signin_button_container}>
+          <div className={styles._bottom_signin_container}>
+            <div className={styles._signin_button_container}>
               <GreenButton
                 design="filled"
                 type="button"
-                label="Login"
+                label="Entrar"
                 onClick={() => handleForm()}
               />
             </div>
