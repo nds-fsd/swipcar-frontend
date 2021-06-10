@@ -1156,9 +1156,6 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
       const resToUpdateUserReservations = userReservations?.find(
         (reservation) => reservation === newReservationId
       );
-
-      console.log('resToUpdateUserReservations  => ', resToUpdateUserReservations);
-
       if (resToUpdateUserReservations === undefined) {
         let toUpdate = [...userReservations, newReservationId];
         toUpdate = { reservation: toUpdate };
