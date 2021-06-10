@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import styles from './systemMessage.module.css';
 
 import { ReactComponent as Correct } from '../assets/correct.svg';
@@ -15,9 +13,9 @@ const SystemMessage = ({ alertValue }) => (
       }`}
     >
       {alertValue.typeAlert === 'ok' ? (
-          <Correct className={styles._icon_svg}/>
+        <Correct className={styles._icon_svg} />
       ) : (
-          <Exclamation className={styles._icon_svg}/>
+        <Exclamation className={styles._icon_svg} />
       )}
       {alertValue.message}
     </div>

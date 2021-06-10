@@ -121,6 +121,8 @@ const LoginSigninPage = ({ props }) => {
             return history.push(
               `/renting-car/${carProfile.brand}/${carProfile.model}/${carProfile.carId}`
             );
+          } else {
+            return history.push('/renting');
           }
         }
 

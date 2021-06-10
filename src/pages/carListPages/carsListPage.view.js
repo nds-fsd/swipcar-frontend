@@ -9,17 +9,18 @@ import { API_DEV } from '../../utils/api.constants';
 import { newRequest } from '../../utils/newRequest';
 import { carsLengthRequest } from '../../utils/carsLengthRequest';
 
-const CarsListPage = ({ categoryFilter, searchValue, setSearchValue, setCategoryFilter }) => {
+const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearchValue }) => {
   const windowSize = useWindowSize();
 
   const location = useLocation();
 
   const [tabQuery, setTabQuery] = useState(location.search);
   const [rawListOfOffers, setRawListOfOffers] = useState([]);
+
   const [numOfCars, setNumOfCars] = useState([]);
   const [numOfNewCars, setNumOfNewCars] = useState([]);
   const [numOfUsedCars, setNumOfUsedCars] = useState([]);
-  const [fuelFilter, setFuelFilter] = useState('');
+  const [fuelFilter, setFuelFilter] = useState([]);
   const [brandFilter, setBrandFilter] = useState([]);
   const [timeFilter, setTimeFilter] = useState([]);
   const [transmisionFilter, setTransmisionFilter] = useState([]);
@@ -101,7 +102,7 @@ const CarsListPage = ({ categoryFilter, searchValue, setSearchValue, setCategory
       method: 'POST',
       onSuccess: setRawListOfOffers,
     });
-  }, [tabQuery, location]);
+  }, [tabQuery]);
 
   // Filter by Search from header
 
@@ -128,10 +129,15 @@ const CarsListPage = ({ categoryFilter, searchValue, setSearchValue, setCategory
   );
 
   // Filter list of Offers per time
-  const filteredListInter3 = filteredListInter2.filter((offer) => offer.time.includes(timeFilter));
+  let filteredListInter3 = [];
+  timeFilter > 0
+    ? (filteredListInter3 = filteredListInter2.filter((offer) => offer.time === timeFilter))
+    : (filteredListInter3 = filteredListInter2);
+
+  //.filter((offer) => offer.time.includes(timeFilter));
 
   // Filter list of Offers per transmission
-  const filteredListInter4 = filteredListInter3.filter((offer) =>
+  const filteredListInter4 = filteredListInter2.filter((offer) =>
     offer.transmision.includes(transmisionFilter)
   );
 
@@ -145,6 +151,7 @@ const CarsListPage = ({ categoryFilter, searchValue, setSearchValue, setCategory
     return [...new Map(filteredListInter5.map((car) => [car.version.model[key], car])).values()];
   }
   const listOfOffers = getUniqueOfferByModel(filteredListInter5, 'modelname');
+  //console.log('listOf Offers: ', listOfOffers);
   //const listOfOffers = filteredListInter5;
   return (
     <div className={styles._carlist_page}>

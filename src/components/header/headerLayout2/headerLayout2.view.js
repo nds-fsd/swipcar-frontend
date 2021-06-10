@@ -102,7 +102,7 @@ const HeaderLayout2 = ({ setCategoryFilter }) => {
                       )}
                     </div>
                   </div>
-                  {loggedInUser && loggedInUser.user.role === 'user' ? (
+                  {loggedInUser ? (
                     <div className={styles._login_container}>
                       <SignoutIcon
                         type="button"
