@@ -103,7 +103,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
       onSuccess: setRawListOfOffers,
     });
   }, [tabQuery]);
-  console.log('setRawListOfOffers', rawListOfOffers);
+  // console.log('setRawListOfOffers', rawListOfOffers);
   // Filter by Search from header
 
   const searchFilterList = rawListOfOffers.filter((offer) => {
@@ -204,7 +204,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
             </div>
           )}
           <div className={styles._right_list_container}>
-            <CarList listOfCars={rawListOfOffers} />
+            <CarList listOfCars={listOfOffers} />
           </div>
         </div>
       </div>
