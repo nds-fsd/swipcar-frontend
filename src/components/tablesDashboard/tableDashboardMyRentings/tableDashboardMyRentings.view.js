@@ -1,16 +1,40 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import {
-  GetDataDashboardTable,
-  GetDataDashboardTableUsers,
-  GetMyRentings
-} from '../../../utils/createCarRequestAll';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonComponent from '../../pureComponents/buttonComponent';
-
 import styles from '../tablesDashboard.module.css';
 
-const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
+import { GetDataUser, GetMyRentingsOffers } from '../../../utils/dashBoardCalls';
+
+const TableDashboardMyRentings = ({ handleModal, update }) => {
+  const [loggedInUser, setLoggedInUser] = useState();
+  const [dataUser, setDataUser] = useState({});
+  const [dataToEdit, setDataToEdit] = useState({});
+  const [dataTable, setDataTable] = useState([]);
+
+  useEffect(() => {
+    const authorizedUser = localStorage.getItem('user-session');
+    if (authorizedUser) {
+      const activeUser = JSON.parse(authorizedUser);
+      setLoggedInUser(activeUser);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setDataUser({ idUser: loggedInUser.user.id, roleUser: loggedInUser.user.role });
+    }
+  }, [loggedInUser]);
+  useEffect(() => {
+    if (idUser !== undefined) {
+      GetDataUser({ idUser, onSuccess: setDataToEdit });
+    }
+  }, [dataUser]);
+
+  const { idUser } = dataUser || {};
+
+  const _id = dataToEdit?.provider?._id;
+
   const pathUrl = useLocation();
   const history = useHistory();
   const query = new URLSearchParams(pathUrl.search);
@@ -18,6 +42,28 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
   const limit = parseInt(query.get('limit')) || 10;
   const dir = query.get('dir') || 'asc';
   const sort = query.get('sort');
+
+  useEffect(() => {
+    if (_id !== undefined) {
+      let dataProviderID = _id;
+      const queryGetData = { sort, dir, skip, limit };
+      GetMyRentingsOffers({ queryGetData, dataProviderID, onSuccess: setDataTable });
+    }
+  }, [pathUrl]);
+
+  useEffect(() => {
+    if (_id !== undefined) {
+      let dataProviderID = _id;
+      GetMyRentingsOffers({ dataProviderID, onSuccess: setDataTable });
+    }
+  }, [_id]);
+
+  useEffect(() => {
+    if (_id !== undefined) {
+      let dataProviderID = _id;
+      GetMyRentingsOffers({ dataProviderID, onSuccess: setDataTable });
+    }
+  }, [update]);
 
   const handlePagePrev = () => {
     query.set('skip', skip - limit);
@@ -41,48 +87,20 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
 
     history.push({ search: query.toString() });
   };
-  // const sortBy = (key) => {
-  //   query.set('sort', key);
-  //   history.push({ search: query.toString() });
-  // };
 
-  const [dataTable, setDataTable] = useState([]);
-
-  // useEffect(() => {
-  //   const queryGetData = { sort, dir, skip, limit };
-  //   GetDataDashboardTable({ queryGetData, onSuccess: setDataTable });
-  // }, [pathUrl]);
-
-  useEffect(() => {
-    GetMyRentings({ dataUser,  onSuccess: setDataTable });
-  }, []);
-
-  const formatDate = (updatedAt) => {
-    let fecha = updatedAt.split('T')[0];
-    fecha = fecha.split('-');
-    const dateFormated = fecha.reverse().join(' - ');
-    return dateFormated;
-  };
-
-  const Row = ({ _id, provider, time, km, price, updatedAt }) => (
-    <div className={styles._table_body_info}>
-      {/* <div
-        className={`${styles._table_tr_info} ${styles._table_tr_id_data} ${styles._table_tr_small_data}`}
-      >
-        {_id}
-      </div> */}
-      {/* <div className={styles._table_tr_info}>
-        {provider.companyname}
-      </div> */}
-      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{time}</div>
-      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{time}</div>
-      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{time}</div>
-      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>{time}</div>
+  const Row = ({ _id, version, time, km, price, provider, position }) => (
+    <div className={`${styles._table_body_info} ${position % 2 !== 0 && styles._table_row_back}`}>
+      <div className={`${styles._table_tr_info} ${styles._table_tr_principal_data}`}>
+        {version?.brand.brandname}
+      </div>
+      <div className={`${styles._table_tr_info}`}>{version?.model.modelname}</div>
+      <div className={`${styles._table_tr_info}`}>
+        {/* <div className={`${styles._table_tr_info} ${styles._table_tr_big_data}`}> */}
+        {version?.version}
+      </div>
+      <div className={`${styles._table_tr_info}`}>{time}</div>
       <div className={`${styles._table_tr_info}`}>{km}</div>
       <div className={`${styles._table_tr_info}`}>{price}</div>
-      <div className={`${styles._table_tr_info}`}>
-        {formatDate(updatedAt)}
-      </div>
       <button
         className={styles._table_tools_button}
         title="Herramientas de edición"
@@ -93,16 +111,17 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
     </div>
   );
 
-  useEffect(() => {
-    console.log('dataTable :', dataTable);
-  }, [dataTable]);
-
-  const rows = dataTable && dataTable.map((rowData, index) => <Row {...rowData} key={index} />);
+  const rows =
+    dataTable &&
+    dataTable.elements?.map((rowData, index) => {
+      let totalRowData = { ...rowData, position: index };
+      return <Row {...totalRowData} key={index} />;
+    });
 
   return (
     <>
       <div className={styles._table_container}>
-        <h1 className={styles._title_table}>Gestión de Proveedores</h1>
+        <h1 className={styles._title_table}>Gestión de Rentings</h1>
 
         <div className={styles._table_row}>
           <div className={styles._table_search}>
@@ -111,7 +130,7 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
                 <input
                   type="text"
                   className={styles._table_search_input}
-                  placeholder="Busca un proveedor"
+                  placeholder="Busca un renting"
                 />
                 <select
                   type="text"
@@ -130,8 +149,8 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
                   style={{ display: 'flex', justifyContent: 'flex-end' }}
                 >
                   <ButtonComponent
-                    label="Crear Proveedor"
-                    alt="Crear Proveedor"
+                    label="Crear renting"
+                    alt="Crear renting"
                     typeButton="ok"
                     actionButton={() => handleModal()}
                   />
@@ -141,22 +160,18 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
 
             <div className={styles.table}>
               <div className={styles.header}>
-                {/* <div onClick={() => sortBy('id')} className={styles._table_tr_small_data}>
-                  ID
-                </div> */}
-                <div onClick={() => sortBy('nombre')}>Marca</div>
-                <div onClick={() => sortBy('nombre')}>Modelo</div>
-                <div onClick={() => sortBy('nombre')}>Versión</div>
-                <div onClick={() => sortBy('nombre')} className={styles._table_tr_small_data}>Duración</div>
-                <div onClick={() => sortBy('email')} className={styles._table_tr_small_data}>Km</div>
-                <div onClick={() => sortBy('telefono')} className={styles._table_tr_small_data}>Precio</div>
-                <div onClick={() => sortBy('companyname')}>Compañia</div>
+                <div onClick={() => sortBy('brandname')}>Marca</div>
+                <div onClick={() => sortBy('modelname')}>Modelo</div>
+                <div onClick={() => sortBy('version')}>Versión</div>
+                <div onClick={() => sortBy('time')}>Duración</div>
+                <div onClick={() => sortBy('km')}>Km</div>
+                <div onClick={() => sortBy('price')}>Precio</div>
               </div>
               <div className={styles._body_data}>{rows}</div>
             </div>
           </div>
           <div className={styles._row_button_pages}>
-          <button
+            <button
               refs="prevButtonRef"
               className={styles._button_navPages}
               onClick={handlePagePrev}
@@ -170,7 +185,7 @@ const TableDashboardMyRentings = ({ dataUser, handleModal }) => {
               className={styles._button_navPages}
               onClick={handlePageNext}
               title="Página Siguiente"
-              // disabled={dataTable.totalPages % limit === 0 || limit > dataTable.totalPages }
+              disabled={dataTable.totalElements - skip < limit}
             >
               Siguiente
               <FontAwesomeIcon icon="chevron-right" className={styles._button_navPages_icon} />

@@ -3,7 +3,7 @@ import styles from './searchBarShort.module.css';
 import { ReactComponent as SearchIcon } from '../../../assets/searchIcon.svg';
 import useWindowSize from '../../../../constants/useWindowSize';
 
-const SearchBarShort = (props) => {
+const SearchBarShort = ({ props }) => {
   const windowSize = useWindowSize();
   return (
     <>

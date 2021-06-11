@@ -3,7 +3,6 @@ import React from 'react';
 import styles from './stepBar.module.css';
 
 const StepBar = ({ stepForm }) => {
-  // console.log('stepForm', stepForm);
 
   return (
     <div style={{ textAlign: 'center', marginBottom: '40px' }}>

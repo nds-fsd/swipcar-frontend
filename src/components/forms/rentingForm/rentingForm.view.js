@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useWindowSize from '../../../constants/useWindowSize';
 
-import CarIcon from '../../assets/carEditIcon.gif';
+import GearIcon from '../../assets/gears.gif';
 
 import stylesPure from '../../pureComponents/pureComponents.module.css';
 import SelectComponent from '../../pureComponents/selectComponent';
@@ -9,186 +9,278 @@ import ToggleButtonComponent from '../../pureComponents/toggleButtonComponent';
 
 import styles from '../forms.module.css';
 
+import { ReactComponent as Exclamation } from '../../assets/engineExclamation.svg';
+
 import { useForm } from 'react-hook-form';
 import {
-  CreateCarRequestAll,
+  RentingGetDataOptions,
+  GetDataRenting,
   CreateCarRequestModel,
   CreateCarRequestVersion,
-  GetDataCarProfile,
-} from '../../../utils/createCarRequestAll';
+  GetModelVersion,
+  RentingGetOwnOptionsTransmision,
+  RentingGetOwnOptionsFuel,
+  RentingGetOwnOptionsColor,
+  UpdateDataRentingOffer,
+  CreateRentingOptionsVersion,
+  CreateRentingOffer,
+  DeleteRentingOffer,
+} from '../../../utils/dashBoardCalls';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DATADOMIE } from '../../../pages/createRentingPage/dataDomie';
 import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
 import InputComponent from '../../pureComponents/inputComponent/index';
-import ButtonActionIconComponent from '../../pureComponents/buttonActionIconComponent/buttonActionIconComponent.view';
-import SelectMultiple from '../../selectMultiple/selectMultiple.view';
+import { API_DEV } from '../../../utils/api.constants';
+import SelectComponentRentingOffer from '../../pureComponents/selectComponentRentingOffer/selectComponentRentingOffer.view';
 
-const RentingForm = ({ toEdit, handleCloseModal }) => {
-  const [dataToEDit, setDataToEDit] = useState({});
-
-  const {
-    carBrand: carBrandOptions,
-    Model: carModelOptions,
-    carVersion: carVersionOptions,
-    carType: carTypeOptions,
-    transmision: transmisionOptions,
-    fuel: fuelOptions,
-    ecoMark: ecoMarkOptions,
-    puertas: puertasOptions,
-    color: colorOptions,
-    Goodies: goodiesOptions,
-    equipamiento: equipamientoOptions,
-  } = dataOptions;
-
-  const {
-    nuevo,
-    seminuevo,
-    carBrand,
-    carModel,
-    carVersion,
-    carType,
-    transmision,
-    fuel,
-    ecoMark,
-    cvMotor,
-    puertas,
-    emisionMotor,
-    color,
-    cilindradaMotor,
-    consumo,
-    maletero,
-    dimensionesLargo,
-    dimensionesAlto,
-    dimensionesAncho,
-    goodiesData: goodies,
-    equipamientoData: equipamiento,
-    listSeguridad: seguridad,
-    listExterior: exterior,
-    listConfort: confort,
-    listTecnologia: tecnologia,
-  } = dataToEDit;
-
-  // useEffect(() => {
-  //   if (toEdit) {
-  //     GetDataCarProfile({ toEdit, onSuccess: setDataToEDit });
-  //     // setDataToEDit()
-  //   }
-  // }, []);
-
-  const windowSize = useWindowSize();
-
+const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateSuccess }) => {
+  const [dataToEdit, setDataToEdit] = useState({});
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
     watch,
   } = useForm();
 
-  const [data, setData] = useState({});
-
-  const [dataFly, setDataFly] = useState('');
   const [checkSave, setCheckSave] = useState(false);
-
-  const [rentingOptions, setRentingOptions] = useState([]);
-  const kmAnualesRef = useRef();
-  const mesesRentingRef = useRef();
-  const precioRentingRef = useRef();
-
-  const addRentingOption = () => {
-    if (
-      kmAnualesRef.current.value !== '' &&
-      mesesRentingRef.current.value !== '' &&
-      precioRentingRef.current.value !== ''
-    ) {
-      setRentingOptions([
-        ...rentingOptions,
-        {
-          kmAnuales: kmAnualesRef.current.value,
-          mesesRenting: mesesRentingRef.current.value,
-          precioRenting: precioRentingRef.current.value,
-        },
-      ]);
-    }
-    kmAnualesRef.current.value = '';
-    mesesRentingRef.cursetValuerent.value = '';
-    precioRentingRef.current.value = '';
-  };
-  const deleteRentingOption = (optionRent) => {
-    setRentingOptions(rentingOptions.filter((item) => item !== optionRent));
-  };
-
+  const [deleteRenting, setDeleteRenting] = useState(false);
   const [dataOptions, setDataOptions] = useState({});
   const [dataOptionsAPI, setDataOptionsAPI] = useState({});
-  useEffect(() => {
-    setDataOptions({ ...dataOptions, ...dataOptionsAPI });
-  }, [dataOptionsAPI]);
-
-  // useEffect(() => {
-  //   CreateCarRequestAll({ onSuccess: setDataOptionsAPI });
-  // }, []);
-
-  //* Watches
-  const watchBrand = watch('carBrand');
-  const watchModel = watch('carModel');
-  useEffect(() => {
-    if (watchBrand) CreateCarRequestModel({ watchBrand, onSuccess: setDataOptionsAPI });
-  }, [watchBrand]);
-  useEffect(() => {
-    if (watchModel) CreateCarRequestVersion({ watchModel, onSuccess: setDataOptionsAPI });
-  }, [watchModel]);
-  //* Watches
-
-  // console.log(goodiesOptions, equipamientoOptions);
-
-  // const { newcar, carBrand, carModel, carVersion } = dataToEDit;
-
+  const [transmisionOptions, setTransmisionOptions] = useState([]);
+  const [fuelOptions, setFuelOptions] = useState([]);
+  const [colorOptions, setColorOptions] = useState([]);
+  const [errorNuevoSeminuevo, setErrorNuevoSeminuevo] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const nuevoRef = useRef();
   const seminuevoRef = useRef();
-  const [isChecked, setIsChecked] = useState({
-    nuevo: false,
-    seminuevo: false,
-  });
 
-  const onSubmit = (data) => {
-    // setCheckSave(true);
-
-    const dataAPI = {
-      data,
-    };
-    console.log('dataAPI  : ', dataAPI);
+  const [newRenting, setNewRenting] = useState(false);
+  const [editData, setEditData] = useState(false);
+  const handleEdit = () => {
+    setEditData(!editData);
   };
 
-  const [errorNuevoSeminuevo, setErrorNuevoSeminuevo] = useState(false);
+  const {
+    brand,
+    transmision,
+    fuel,
+    color,
+    model,
+    version,
+    km,
+    price,
+    time,
+    goody,
+    equipment,
+  } = dataOptions;
+
+  const {
+    _id: rentingOfferId,
+    newcar,
+    version: versionEdit,
+    km: kmEdit,
+    price: priceEdit,
+    time: timeEdit,
+    transmision: transmisionEdit,
+    fuel: fuelEdit,
+    color: colorEdit,
+    goodies: goodiesEdit,
+    equipments: equipmentEdit,
+  } = dataToEdit;
+
+  const [goodiesData, setGoodiesData] = useState([]);
+  const [equipamientoData, setEquipamientoData] = useState([]);
 
   useEffect(() => {
-    if (!isChecked.nuevo && !isChecked.seminuevo) {
+    if (goodiesEdit !== undefined) {
+      setGoodiesData(goodiesEdit?.map((value) => value._id));
+    }
+  }, [goodiesEdit]);
+
+  useEffect(() => {
+    if (equipmentEdit !== undefined) {
+      setEquipamientoData(equipmentEdit?.map((value) => value._id));
+    }
+  }, [equipmentEdit]);
+
+  useEffect(() => {
+    setTransmisionOptions(
+      versionEdit?.transmision.map((transmision) => ({
+        endpoint: API_DEV.TRANSMISION + transmision,
+        key: 'transmision',
+      }))
+    );
+    setFuelOptions(
+      versionEdit?.fuel.map((fuel) => ({
+        endpoint: API_DEV.FUEL + fuel,
+        key: 'fuel',
+      }))
+    );
+    setColorOptions(
+      versionEdit?.color.map((color) => ({
+        endpoint: API_DEV.COLOR + color,
+        key: 'color',
+      }))
+    );
+  }, [versionEdit]);
+
+  useEffect(() => {
+    if (transmisionOptions && fuelOptions && colorOptions) {
+      RentingGetOwnOptionsTransmision({
+        transmisionOptions,
+        onSuccess: setDataOptionsAPI,
+      });
+      RentingGetOwnOptionsFuel({ fuelOptions, onSuccess: setDataOptionsAPI });
+      RentingGetOwnOptionsColor({ colorOptions, onSuccess: setDataOptionsAPI });
+    }
+  }, [transmisionOptions, fuelOptions, colorOptions]);
+
+  useEffect(() => {
+    RentingGetDataOptions({ onSuccess: setDataOptionsAPI });
+    if (toEdit) {
+      GetDataRenting({ toEdit, onSuccess: setDataToEdit });
+      setNewRenting(false);
+    } else {
+      setEditData(true);
+      setNewRenting(true);
+    }
+  }, []);
+
+  const watchBrand = watch('brand');
+  const watchModel = watch('model');
+  const watchVersion = watch('version');
+
+  useEffect(() => {
+    if (versionEdit !== undefined) {
+      GetModelVersion({
+        brand: watchBrand || versionEdit?.brand._id,
+        model: watchModel || versionEdit?.model._id,
+        onSuccess: setDataOptionsAPI,
+      });
+    }
+    if (newcar !== undefined) {
+      setIsChecked(newcar);
+    }
+  }, [dataToEdit]);
+
+  useEffect(() => {
+    setDataOptions({ ...dataOptions, ...dataOptionsAPI });
+    // mountMultiples();
+  }, [dataOptionsAPI]);
+
+  const windowSize = useWindowSize();
+
+  const _handleVersionOptions = (res) => {
+    if (versionEdit === undefined) {
+      CreateRentingOptionsVersion({ watchVersion, onSuccess: setDataToEdit });
+    } else {
+      let color = res.version.color;
+      let fuel = res.version.fuel;
+      let transmision = res.version.transmision;
+
+      let flyDataToEdit = versionEdit;
+
+      flyDataToEdit = { ...flyDataToEdit, fuel: fuel, color: color, transmision: transmision };
+
+      setDataToEdit({
+        ...dataToEdit,
+        version: flyDataToEdit,
+      });
+    }
+  };
+
+  const _handleToggle = (e) => {
+    if (e.target.name === 'nuevo') {
+      if (seminuevoRef.current.checked) {
+        seminuevoRef.current.checked = false;
+        setIsChecked(true);
+      } else {
+        setIsChecked(false);
+      }
+    } else {
+      if (nuevoRef.current.checked) {
+        nuevoRef.current.checked = false;
+        setIsChecked(false);
+      } else {
+        setIsChecked(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isChecked) {
+      nuevoRef.current.checked = true;
+      seminuevoRef.current.checked = false;
+    } else {
+      seminuevoRef.current.checked = true;
+      nuevoRef.current.checked = false;
+    }
+
+    if (nuevoRef.current.checked === false && seminuevoRef.current.checked === false) {
       setErrorNuevoSeminuevo(true);
     } else {
       setErrorNuevoSeminuevo(false);
     }
   }, [isChecked]);
 
-  const _handleToggle = (e) => {
-    if (e.target.name === 'nuevo') {
-      if (seminuevoRef.current.checked) {
-        setIsChecked({ ...isChecked, nuevo: e.target.checked, seminuevo: false });
-        seminuevoRef.current.checked = false;
-      } else {
-        setIsChecked({ ...isChecked, nuevo: e.target.checked });
-      }
+  const _handleSuccess = (res) => {
+    handleModal();
+    updateSuccess(res);
+    if (!newRenting) {
+      systemMessage({
+        message: 'Renting actualizado correctamente',
+        typeAlert: 'ok',
+      });
     } else {
-      if (nuevoRef.current.checked) {
-        setIsChecked({ ...isChecked, seminuevo: e.target.checked, nuevo: false });
-        nuevoRef.current.checked = false;
-      } else {
-        setIsChecked({ ...isChecked, seminuevo: e.target.checked });
-      }
+      systemMessage({
+        message: 'Renting creado correctamente',
+        typeAlert: 'ok',
+      });
     }
   };
 
-  const [goodiesData, setGoodiesData] = useState([]);
-  const [equipamientoData, setEquipamientoData] = useState([]);
+  const onSubmit = (data) => {
+    if (!errorNuevoSeminuevo && equipamientoData.length !== 0 && goodiesData.length !== 0) {
+      let queryPutData = {
+        ...data,
+        newcar: isChecked,
+        goodies: goodiesData,
+        equipments: equipamientoData,
+      };
+
+      if (!newRenting) {
+        UpdateDataRentingOffer({
+          toEdit,
+          queryPutData,
+          onSuccess: (res) => _handleSuccess(res),
+          onError: () =>
+            systemMessage({
+              message: 'No se ha podido actualizar correctamente',
+              typeAlert: 'error',
+            }),
+        });
+      } else {
+        queryPutData = {
+          ...queryPutData,
+          provider: dataProvider._id,
+        };
+
+        CreateRentingOffer({
+          queryPutData,
+          onSuccess: (res) => _handleSuccess(res),
+          onError: () =>
+            systemMessage({
+              message: 'No se ha podido crear el renting correctamente',
+              typeAlert: 'error',
+            }),
+        });
+      }
+
+      handleModal();
+    }
+  };
+
   const _handleToggle_goodies = (e) => {
     if (e.target.checked) {
       setGoodiesData([...goodiesData, e.target.id]);
@@ -204,26 +296,47 @@ const RentingForm = ({ toEdit, handleCloseModal }) => {
     }
   };
 
-  const [editData, setEditData] = useState(false);
-  const handleEdit = () => {
-    setEditData(!editData);
+  //* Watches
+
+  useEffect(() => {
+    if (watchBrand) CreateCarRequestModel({ watchBrand, onSuccess: setDataOptionsAPI });
+  }, [watchBrand]);
+  useEffect(() => {
+    if (watchModel) CreateCarRequestVersion({ watchModel, onSuccess: setDataOptionsAPI });
+  }, [watchModel]);
+  useEffect(() => {
+    if (watchVersion)
+      CreateRentingOptionsVersion({ watchVersion, onSuccess: (res) => _handleVersionOptions(res) });
+  }, [watchVersion]);
+  //* Watches
+
+  const _handleShowDelete = () => {
+    setDeleteRenting(!deleteRenting);
   };
 
-  const overrideStrings = {
-    allItemsAreSelected: 'Todos los colores seleccionados',
-    clearSearch: 'Limpiar búsqueda',
-    noOptions: 'Ninguna opción',
-    search: 'Buscar',
-    selectAll: 'Selecciona todos',
-    selectSomeItems: 'Selecciona un color',
+  const _handleSuccessDelete = (res) => {
+    _handleShowDelete();
+    handleModal();
+    systemMessage({
+      message: 'Renting eliminado correctamente',
+      typeAlert: 'ok',
+    });
+    updateSuccess(res);
   };
 
-  const options = [
-    { value: '60a12f9e1e0b813f8dacdf23', label: 'Rojo' },
-    { value: '60a12f9e1e0b813f8dacdf24', label: 'Amarillo' },
-    { value: '60a12f9e1e0b813f8dacdf25', label: 'Azul' },
-    { value: '60a12f9e1e0b813f8dacdf26', label: 'Verde' },
-  ];
+  const _handleDelete = () => {
+    DeleteRentingOffer({
+      rentingOfferId,
+      providerId: dataProvider._id,
+      version: versionEdit._id,
+      onSuccess: (res) => _handleSuccessDelete(res),
+      onError: () =>
+        systemMessage({
+          message: 'No se ha podido eliminar este renting',
+          typeAlert: 'error',
+        }),
+    });
+  };
 
   return (
     <div className={styles.carlist_page}>
@@ -237,9 +350,11 @@ const RentingForm = ({ toEdit, handleCloseModal }) => {
         <div className={styles._wrapper}>
           <div className={styles._title_group}>
             <div className={`${styles._boxElements} ${styles._title_group}`}>
-              <img src={CarIcon} className={styles._icon_title} alt="Crea un Nuevo Renting" />
+              <img src={GearIcon} className={styles._icon_title} alt="Renting" />
               <span className={styles._title}>
-                {editData ? 'Editar un Renting' : 'Crea un Nuevo Renting'}
+                {editData && !newRenting && 'Editar Renting'}
+                {editData && newRenting && 'Crea un nuevo renting'}
+                {!editData && !newRenting && 'Información del renting'}
               </span>
             </div>
 
@@ -248,85 +363,274 @@ const RentingForm = ({ toEdit, handleCloseModal }) => {
                 className={styles._row_buttons}
                 style={{ display: 'flex', justifyContent: 'flex-end' }}
               >
-                {!editData && (
-                  <ButtonComponent
-                    label="Editar Perfil"
-                    alt="Editar Perfil"
-                    typeButton="ok"
-                    actionButton={() => handleEdit()}
-                  />
+                {!editData && !deleteRenting && (
+                  <>
+                    <ButtonComponent
+                      label="Editar Renting"
+                      alt="Editar Renting"
+                      typeButton="ok"
+                      actionButton={() => handleEdit()}
+                    />
+                    {!deleteRenting && (
+                      <ButtonComponent
+                        label="Eliminar Renting"
+                        alt="Eliminar Renting"
+                        typeButton="cancel"
+                        actionButton={() => _handleShowDelete()}
+                      />
+                    )}
+                  </>
                 )}
               </div>
             </div>
           </div>
 
+          {deleteRenting && (
+            <>
+              <div className={styles._confirm_delete}>
+                <h2 className={styles._title_confirm}>
+                  <Exclamation className={styles._icon_svg} />
+                  <span>¿Confirma que desea eliminar este renting?</span>
+                </h2>
+                <div style={{ display: 'flex' }}>
+                  <ButtonComponent
+                    label="Cancelar"
+                    alt="Cancelar"
+                    typeButton="cancelWarning"
+                    actionButton={() => _handleShowDelete()}
+                  />
+                  <ButtonComponent
+                    label="Eliminar renting"
+                    alt="Eliminar renting"
+                    typeButton="okWarning"
+                    actionButton={() => _handleDelete()}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
           <form onSubmit={handleSubmit(onSubmit)}>
+            <h4 className={styles._label_newcar} style={{ textAlign: 'center !important' }}>
+              Estado del vehículo
+            </h4>
+            <div className={`${styles._toggles_list} ${styles._toggles_list_nuevoSemi}`}>
+              {DATADOMIE.CarProfileDataEstate.map((value) => (
+                <div key={value._id}>
+                  <div>
+                    <ToggleButtonComponent
+                      ref={value.name === 'nuevo' ? nuevoRef : seminuevoRef}
+                      label={value.label}
+                      name={value.name}
+                      id={value.name}
+                      type="checkbox"
+                      // defaultChecked={value.name === 'nuevo' ? nuevo : seminuevo}
+                      onChange={(e) => {
+                        _handleToggle(e);
+                      }}
+                      disabled={!editData}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {checkSave && errorNuevoSeminuevo && (
+              <p
+                className={stylesPure._error_label}
+                style={{ textAlign: 'center', marginBottom: '30px' }}
+              >
+                <span className={stylesPure._error_label_icon}>
+                  <FontAwesomeIcon icon="exclamation-triangle" />
+                </span>
+                Selecciona una opción
+              </p>
+            )}
             <div
               className={`${windowSize !== 'sm' && styles._row3_xlg}
       ${windowSize === 'sm' && styles._row3_sm}  
       `}
             >
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carBrand', { required: 'Marca de coche requerida' })}
-                  refs={carBrand}
-                  label="Selecciona una Marca"
-                  placeholder="Marca"
-                  name="carBrand"
-                  defaultValue={carBrand}
-                  dataoptions={carBrandOptions}
-                  dataget="brandname"
-                />
-                {errors.carBrand && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('brand', { required: 'Marca de coche requerida' })}
+                    refs={brand}
+                    label="Selecciona una Marca"
+                    placeholder="Marca"
+                    name="brand"
+                    defaultValue={versionEdit ? versionEdit?.brand?._id : ''}
+                    dataoptions={brand}
+                    dataget="brandname"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Marca</label>
+                    <h3 className={styles._show_info}>
+                      {versionEdit && versionEdit.brand.brandname}
+                    </h3>
+                  </>
+                )}
+                {errors.brand && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carBrand.message}
+                    {errors.brand.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carModel', { required: 'Modelo de coche requerido' })}
-                  refs={carModel}
-                  label="Selecciona un Modelo"
-                  placeholder="Modelo"
-                  name="carModel"
-                  defaultValue={carModel}
-                  dataoptions={carModelOptions}
-                  dataget="modelname"
-                  disabled={watchBrand ? false : true}
-                />
-                {errors.carModel && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('model', { required: 'Modelo de coche requerido' })}
+                    refs={model}
+                    label="Selecciona un Modelo"
+                    placeholder="Modelo"
+                    name="model"
+                    defaultValue={versionEdit ? versionEdit?.model?._id : ''}
+                    dataoptions={model}
+                    dataget="modelname"
+                    disabled={watchBrand || versionEdit?.model ? false : true}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Modelo</label>
+                    <h3 className={styles._show_info}>
+                      {versionEdit && versionEdit.model.modelname}
+                    </h3>
+                  </>
+                )}
+                {errors.model && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carModel.message}
+                    {errors.model.message}
                   </p>
                 )}
               </div>
 
               <div className={styles._boxElements}>
-                <SelectComponent
-                  {...register('carVersion', { required: 'Versión de coche requerida' })}
-                  refs={carVersion}
-                  label="Versión del Modelo"
-                  placeholder="Versión"
-                  name="carVersion"
-                  defaultValue={carVersion}
-                  dataget="carVersion"
-                  dataoptions={carVersionOptions}
-                  disabled={watchModel ? false : true}
-                />
-                {errors.carVersion && (
+                {editData ? (
+                  <SelectComponent
+                    {...register('version', { required: 'Versión de coche requerido' })}
+                    refs={version}
+                    label="Selecciona una Versión"
+                    placeholder="Versión"
+                    name="version"
+                    defaultValue={versionEdit ? versionEdit?._id : ''}
+                    dataoptions={version}
+                    dataget="version"
+                    disabled={watchModel || versionEdit ? false : true}
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Versión</label>
+                    <h3 className={styles._show_info}>{versionEdit && versionEdit.version}</h3>
+                  </>
+                )}
+                {errors.version && (
                   <p className={stylesPure._error_label}>
                     <span className={stylesPure._error_label_icon}>
                       <FontAwesomeIcon icon="exclamation-triangle" />
                     </span>
-                    {errors.carVersion.message}
+                    {errors.version.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div
+              className={`${windowSize !== 'sm' && styles._row3_xlg}
+      ${windowSize === 'sm' && styles._row3_sm}  
+      `}
+            >
+              <div className={styles._boxElements}>
+                {editData ? (
+                  <SelectComponentRentingOffer
+                    {...register('transmision', { required: 'Transmisión del coche requerida' })}
+                    refs={transmision}
+                    label="Selecciona una Transmisión"
+                    placeholder="Transmisión"
+                    name="transmision"
+                    defaultValue={transmisionEdit ? transmisionEdit[0] : ''}
+                    dataoptions={transmision}
+                    dataget="transmisiontype"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Transmisión</label>
+                    <h3 className={styles._show_info}>{transmisionEdit && transmisionEdit}</h3>
+                  </>
+                )}
+                {errors.transmision && (
+                  <p className={stylesPure._error_label}>
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    {errors.transmision.message}
+                  </p>
+                )}
+              </div>
+
+              <div className={styles._boxElements}>
+                {editData ? (
+                  <SelectComponentRentingOffer
+                    {...register('fuel', { required: 'Selecciona un tipo de combustible' })}
+                    refs={fuel}
+                    label="Selecciona una combustible"
+                    placeholder="Combustible"
+                    name="fuel"
+                    defaultValue={fuel ? fuel[0] : ''}
+                    dataoptions={fuel}
+                    dataget="fueltype"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Combustible</label>
+                    <h3 className={styles._show_info}>{fuelEdit && fuelEdit}</h3>
+                  </>
+                )}
+                {errors.fuel && (
+                  <p className={stylesPure._error_label}>
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    {errors.fuel.message}
+                  </p>
+                )}
+              </div>
+
+              <div className={styles._boxElements}>
+                {editData ? (
+                  <SelectComponentRentingOffer
+                    {...register('color', { required: 'Selecciona un color del' })}
+                    refs={color}
+                    label="Color del coche"
+                    placeholder="Color"
+                    name="color"
+                    defaultValue={colorEdit ? colorEdit : ''}
+                    dataoptions={color}
+                    dataget="colorname"
+                    datagetvalue="color"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Colores</label>
+                    <h3 className={`${styles._show_info}`}>
+                      <div
+                        className={styles._item_color_circle}
+                        style={{ backgroundColor: `${colorEdit && colorEdit}` }}
+                      />
+                    </h3>
+                  </>
+                )}
+                {errors.color && (
+                  <p className={stylesPure._error_label}>
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    {errors.color.message}
                   </p>
                 )}
               </div>
@@ -334,167 +638,256 @@ const RentingForm = ({ toEdit, handleCloseModal }) => {
 
             <div
               className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
+      ${windowSize === 'sm' && styles._row3_sm} ${styles._renting_options}`}
             >
               <div className={styles._boxElements}>
-                <SelectMultiple overrideStrings={overrideStrings} options={options} />
-              </div>
-            </div>
-
-            <h2 className={styles._tittle}>Este Renting incluye</h2>
-            <div className={styles._toggles_list}>
-              {goodiesOptions &&
-                goodiesOptions.map((value) => (
-                  <div key={value._id}>
-                    <div>
-                      <ToggleButtonComponent
-                        id={value._id}
-                        name={value.carGoodie}
-                        type="checkbox"
-                        checked={goodies?.filter((goodie) => goodie === value._id)}
-                        label={value.carGoodie}
-                        // checkedState={isChecked && true }
-                        iconlabel={value.iconGoodie}
-                        onChange={(e) => {
-                          _handleToggle_goodies(e);
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-            {checkSave && goodiesData.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de seleccionar al menos una opción
-              </p>
-            )}
-
-            <h2 className={styles._tittle}>Equipamiento Destacado</h2>
-
-            <div className={styles._toggles_list}>
-              {equipamientoOptions &&
-                equipamientoOptions.map((value) => (
-                  <div key={value._id}>
-                    <div>
-                      <ToggleButtonComponent
-                        id={value._id}
-                        name={value.carEquipment}
-                        type="checkbox"
-                        label={value.carEquipment}
-                        onChange={(e) => {
-                          _handleToggle_equipamiento(e);
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-            {checkSave && equipamientoData.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de seleccionar al menos una opción
-              </p>
-            )}
-
-            <h2 className={styles._tittle}>Precios del Renting</h2>
-
-            <div
-              className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-            >
-              <div className={styles._boxElements_groups}>
-                <div className={styles._input_group}>
+                {editData ? (
                   <InputComponent
-                    ref={kmAnualesRef}
-                    name="kmAnuales"
-                    label="Km Anuales"
+                    {...register('km', { required: 'Kilómetros requeridos' })}
+                    refs={km}
+                    label="Km máximos del renting"
                     placeholder="Km"
+                    name="km"
+                    defaultValue={kmEdit && kmEdit}
                     type="number"
                   />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Km del renting</label>
+                    <h3 className={styles._show_info}>
+                      {kmEdit && kmEdit} <span className={styles._units}>Km anuales</span>
+                    </h3>
+                  </>
+                )}
+                {errors.km && (
+                  <p className={stylesPure._error_label}>
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    {errors.km.message}
+                  </p>
+                )}
+              </div>
+
+              <div className={styles._boxElements}>
+                {editData ? (
                   <InputComponent
-                    ref={mesesRentingRef}
-                    name="mesesRenting"
+                    {...register('time', { required: 'Meses del renting requerida' })}
+                    refs={time}
                     label="Meses del renting"
                     placeholder="Meses"
+                    name="time"
+                    defaultValue={timeEdit && timeEdit}
                     type="number"
                   />
-                  <InputComponent
-                    ref={precioRentingRef}
-                    name="precioRenting"
-                    label="Precio Renting"
-                    placeholder="Precio"
-                    type="number"
-                  />
-                </div>
-                <ButtonActionIconComponent
-                  actionButton={() => addRentingOption()}
-                  className={styles._button_group}
-                />
-              </div>
-              <div className={`${styles._boxElements} ${styles._list_add}`}>
-                {rentingOptions.length === 0 && (
-                  <h2 className={styles._title_list}>
-                    <FontAwesomeIcon icon="hand-holding-usd" className={styles._icon_title_list} />
-                    No se ha añadido Opciones de Renting
-                  </h2>
-                )}
-                {rentingOptions.length > 0 && (
+                ) : (
                   <>
+                    <label className={styles._label_show_info}>Tiempo del renting</label>
+                    <h3 className={styles._show_info}>
+                      {timeEdit && timeEdit} <span className={styles._units}>meses</span>
+                    </h3>
+                  </>
+                )}
+                {errors.time && (
+                  <p className={stylesPure._error_label}>
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    {errors.time.message}
+                  </p>
+                )}
+              </div>
+
+              <div className={styles._boxElements}>
+                {editData ? (
+                  <InputComponent
+                    {...register('price', { required: 'Precio del renting requerido' })}
+                    refs={price}
+                    label="Precio del renting"
+                    placeholder="Precio"
+                    name="price"
+                    defaultValue={priceEdit && priceEdit}
+                    type="number"
+                  />
+                ) : (
+                  <>
+                    <label className={styles._label_show_info}>Precio del renting</label>
+                    <h3 className={styles._show_info}>
+                      {priceEdit && priceEdit} <span className={styles._units}>€ al mes</span>
+                    </h3>
+                  </>
+                )}
+                {errors.price && (
+                  <p className={stylesPure._error_label}>
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    {errors.price.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {editData ? (
+              <>
+                <h2 className={styles._tittle}>Este Renting incluye</h2>
+
+                <div className={styles._toggles_list}>
+                  {goody &&
+                    goody.map((value) => (
+                      <div key={value._id}>
+                        <div>
+                          <ToggleButtonComponent
+                            id={value._id}
+                            name={value.cargoodie}
+                            type="checkbox"
+                            checked={
+                              goodiesData?.filter((goodie) => goodie === value._id).length > 0
+                            }
+                            label={value.cargoodie}
+                            iconlabel={value.icongoodie}
+                            onChange={(e) => {
+                              _handleToggle_goodies(e);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+                {checkSave && goodiesData.length === 0 && (
+                  <p
+                    className={stylesPure._error_label}
+                    style={{ textAlign: 'center', marginBottom: '30px' }}
+                  >
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    Ha de seleccionar al menos una opción
+                  </p>
+                )}
+
+                <h2 className={styles._tittle}>Equipamiento Destacado</h2>
+
+                <div className={styles._toggles_list}>
+                  {equipment &&
+                    equipment.map((value) => (
+                      <div key={value._id}>
+                        <div>
+                          <ToggleButtonComponent
+                            id={value._id}
+                            name={value.carequipment}
+                            type="checkbox"
+                            checked={
+                              equipamientoData?.filter((equipment) => equipment === value._id)
+                                .length > 0
+                            }
+                            label={value.carequipment}
+                            onChange={(e) => {
+                              _handleToggle_equipamiento(e);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                </div>
+                {checkSave && equipamientoData.length === 0 && (
+                  <p
+                    className={stylesPure._error_label}
+                    style={{ textAlign: 'center', marginBottom: '30px' }}
+                  >
+                    <span className={stylesPure._error_label_icon}>
+                      <FontAwesomeIcon icon="exclamation-triangle" />
+                    </span>
+                    Ha de seleccionar al menos una opción
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <div
+                  className={`${windowSize !== 'sm' && styles._row3_xlg}
+    ${windowSize === 'sm' && styles._row3_sm}`}
+                >
+                  <div className={styles._boxElements}>
                     <h2 className={styles._title_list}>
-                      <FontAwesomeIcon
-                        icon="hand-holding-usd"
-                        className={styles._icon_title_list}
-                      />
-                      Opciones de Renting
+                      <FontAwesomeIcon icon="medal" className={styles._icon_title_list} />
+                      Este renting incluye
                     </h2>
                     <ul>
-                      {rentingOptions.map((optionRent, index) => (
-                        <li className={styles._list_li_priceRenting} key={index}>
-                          <b>{optionRent.kmAnuales}</b> <i> km anuales, </i> en
-                          <b>{optionRent.mesesRenting}</b> <i> meses, </i> a
-                          <b>{optionRent.precioRenting}</b> <i> € al mes. </i>
-                          <button
-                            className={styles._list_delete}
-                            type="button"
-                            title="Eliminar Opción del Renting"
-                            alt="Eliminar Opción del Renting"
-                            onClick={() => deleteRentingOption(optionRent)}
-                          >
-                            <FontAwesomeIcon icon="times-circle" />
-                          </button>
+                      {goodiesEdit?.map((goodie, index) => (
+                        <li className={styles._list_li} key={index}>
+                          {goodie.cargoodie}
                         </li>
                       ))}
                     </ul>
-                  </>
-                )}
-              </div>
-            </div>
-            {checkSave && rentingOptions.length === 0 && (
-              <p
-                className={stylesPure._error_label}
-                style={{ textAlign: 'center', marginBottom: '30px' }}
-              >
-                <span className={stylesPure._error_label_icon}>
-                  <FontAwesomeIcon icon="exclamation-triangle" />
-                </span>
-                Ha de añadir al menos una opción de renting
-              </p>
+                  </div>
+                  <div className={styles._boxElements}>
+                    <h2 className={styles._title_list}>
+                      <FontAwesomeIcon icon="clipboard-list" className={styles._icon_title_list} />
+                      Listado de equipamiento
+                    </h2>
+                    <ul>
+                      {equipmentEdit?.map((equipment, index) => (
+                        <li className={styles._list_li} key={index}>
+                          {equipment.carequipment}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </>
             )}
 
-            <ButtonComponent label="Guardar" type="submit" alt="Guardar" />
+            <div className={styles._row_buttons}>
+              {editData && !newRenting && (
+                <>
+                  <ButtonComponent
+                    label="Cancelar"
+                    alt="Cancelar"
+                    typeButton="cancel"
+                    actionButton={() => setEditData(false)}
+                  />
+                  <ButtonComponent
+                    label="Guardar"
+                    type="submit"
+                    alt="Guardar"
+                    typeButton="ok"
+                    actionButton={() => {
+                      handleSubmit(onSubmit);
+                      setCheckSave(true);
+                    }}
+                  />
+                </>
+              )}
+              {editData && newRenting && (
+                <>
+                  <ButtonComponent
+                    label="Cancelar"
+                    alt="Cancelar"
+                    typeButton="cancel"
+                    actionButton={() => handleModal()}
+                  />
+                  <ButtonComponent
+                    label="Guardar"
+                    type="submit"
+                    alt="Guardar"
+                    typeButton="ok"
+                    actionButton={() => {
+                      handleSubmit(onSubmit);
+                      setCheckSave(true);
+                    }}
+                  />
+                </>
+              )}
+              {!editData && !newRenting && (
+                <ButtonComponent
+                  label="Cerrar"
+                  alt="Cerrar"
+                  typeButton="cancel"
+                  actionButton={() => handleModal()}
+                />
+              )}
+            </div>
           </form>
         </div>
       </div>

@@ -27,9 +27,6 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
 
   const [store, dispatch] = useContext(StoreContext);
 
-  useEffect(() => {
-    console.log('store effect : ', store);
-  }, [store]);
 
   const Step2Data = store.Step2Data;
   const {
@@ -47,7 +44,6 @@ const Step2Form = ({ stepPagePrev, stepPageNext }) => {
   } = Step2Data;
 
   const onSubmit = (data, e) => {
-    // console.log('data :', data);
     dispatch({ type: types.add, key: 'Step2Data', data });
     stepPageNext();
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './sideBar.module.css';
 import { Link } from 'react-router-dom';
 import { ReactComponent as CloseIcon } from '../../assets/closeIcon.svg';
@@ -6,9 +6,21 @@ import { ReactComponent as FacebookIcon } from '../../assets/facebookIcon.svg';
 import { ReactComponent as InstagramIcon } from '../../assets/instagramIcon.svg';
 import { ReactComponent as LinkedinIcon } from '../../assets/linkedinIcon.svg';
 import { SideBarData } from './sideBarData';
-import { LOGIN_SIGNIN_PAGE } from '../../../routers/routers';
+import { LOGIN_SIGNIN_PAGE, DASHBOARD_PAGE } from '../../../routers/routers';
+import { AuthContextProvider } from '../../../store/authContext';
 
 function SideBar({ openSideBar, closeSideBar }) {
+  const user = useContext(AuthContextProvider);
+  const [loggedInUser, setLoggedInUser] = useState();
+
+  useEffect(() => {
+    const authorizedUser = localStorage.getItem('user-session');
+    if (authorizedUser) {
+      const activeUser = JSON.parse(authorizedUser);
+      setLoggedInUser(activeUser);
+    }
+  }, []);
+
   if (!openSideBar) return null;
   const closeSidebar = () => {
     openSideBar(!openSideBar);
@@ -45,16 +57,24 @@ function SideBar({ openSideBar, closeSideBar }) {
             </div>
             <hr className={styles.divider} />
             <div className={styles.nav_link_container1}>
-              <Link
-                to={{
-                  pathname: LOGIN_SIGNIN_PAGE,
-                  state: { fromHeaderProvider: true },
-                }}
-              >
-                <div className={styles.nav_link} onClick={() => closeSideBar()}>
-                  Proveedores
-                </div>
-              </Link>
+              {loggedInUser ? (
+                <Link to={DASHBOARD_PAGE}>
+                  <div className={styles.nav_link} onClick={() => closeSideBar()}>
+                    Dashboard
+                  </div>
+                </Link>
+              ) : (
+                <Link
+                  to={{
+                    pathname: LOGIN_SIGNIN_PAGE,
+                    state: { fromHeaderProvider: true },
+                  }}
+                >
+                  <div className={styles.nav_link} onClick={() => closeSideBar()}>
+                    Proveedores
+                  </div>
+                </Link>
+              )}
             </div>
           </div>
           <div className={styles.social_container}>

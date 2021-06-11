@@ -1,3 +1,10 @@
+._car_list_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Open Sans;
+}
 .car_list {
   display: flex;
   flex-direction: row;
@@ -6,4 +13,40 @@
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+}
+._pagination_container {
+  display: flex;
+  flex-direction: row;
+}
+._button_container {
+  display: flex;
+  flex-direction: row;
+}
+._page_number_container {
+  display: flex;
+  flex-direction: row;
+  min-width: 100px;
+  margin: 0 10px;
+  justify-content: center;
+}
+._page_number {
+  display: flex;
+  letter-spacing: 15px;
+  cursor: pointer;
+  color: #a9a9a9;
+  align-items: center;
+}
+._page_number_active {
+  color: #6a983c;
+  font-size: 16px;
+  font-weight: 700;
+}
+._button {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 400;
+  border: 1px solid #a9a9a9;
+  border-radius: 8px;
+  background-color: none;
 }

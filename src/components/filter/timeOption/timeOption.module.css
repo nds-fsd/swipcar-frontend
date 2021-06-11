@@ -1,5 +1,65 @@
-._timeOption_container {
+._times_container {
   display: flex;
   flex-direction: column;
+  height: 120px;
+  overflow: auto;
+}
+._time_item_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: rgba(21, 21, 21, 1);
+  height: 19px;
   margin: 6px 0;
+}
+.time_item_active,
+._time_item:hover {
+  background-color: #46760a;
+  border-radius: 4px;
+  height: 19px;
+  width: 120px;
+  color: #ffffff;
+}
+._time_item {
+  padding-left: 10px;
+  font-family: Open sans;
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 400;
+
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+._filter_container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 42px;
+}
+._container_title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+._title {
+  height: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  color: rgba(21, 21, 21, 1);
+  margin-bottom: 12px;
+}
+._filter_cancelation {
+  font-family: Open Sans;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 27px;
+  color: #6a983c;
+  cursor: pointer;
+}
+._filter_cancelation:hover,
+._all_filters_cancelation:hover {
+  font-weight: 600;
 }

@@ -2,82 +2,157 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './carListPage.module.css';
 import useWindowSize from '../../constants/useWindowSize';
-import FilterButton from '../../components/filter/filterButton/filterButton.view';
 import Filter from '../../components/filter/filter.view';
-//import SlideFilter from '../../components/filter/slideFilter.view';
 import Tab from '../../components/tabs/tab.view';
 import CarList from '../../components/carLists/carList.view';
 import { API_DEV } from '../../utils/api.constants';
-
 import { newRequest } from '../../utils/newRequest';
 import { carsLengthRequest } from '../../utils/carsLengthRequest';
 
-const CarsListPage = () => {
-  // const [openSlideFilter, setOpenSlideFilter] = useState(true);
+const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearchValue }) => {
   const windowSize = useWindowSize();
-  // const [openFilter, setOpenFilter] = useState(false);
+
   const location = useLocation();
+
   const [tabQuery, setTabQuery] = useState(location.search);
-  const [listOfCars, setListOfCars] = useState([]);
+  const [rawListOfOffers, setRawListOfOffers] = useState([]);
+
   const [numOfCars, setNumOfCars] = useState([]);
   const [numOfNewCars, setNumOfNewCars] = useState([]);
   const [numOfUsedCars, setNumOfUsedCars] = useState([]);
-  const [fuelSort, setFuelSort] = useState('');
-  const history = useHistory();
+  const [fuelFilter, setFuelFilter] = useState([]);
+  const [brandFilter, setBrandFilter] = useState([]);
+  const [timeFilter, setTimeFilter] = useState([]);
+  const [transmisionFilter, setTransmisionFilter] = useState([]);
+  const [minPriceFilter, setMinPriceFilter] = useState();
+  const [maxPriceFilter, setMaxPriceFilter] = useState();
 
+  const history = useHistory();
+  const tabs = [
+    {
+      id: '1',
+      tab: 'Todas',
+      value: 'todas',
+      num: numOfCars,
+    },
+    {
+      id: '2',
+      tab: 'Coches nuevos',
+      value: 'nuevos',
+      num: numOfNewCars,
+    },
+    {
+      id: '3',
+      tab: 'Coches seminuevos',
+      value: 'seminuevos',
+      num: numOfUsedCars,
+    },
+  ];
+  const [activeTab, setActiveTab] = useState(tabs[0]);
   const handleTabSort = (tab) => {
+    setFuelFilter('');
+    setBrandFilter('');
+    setTimeFilter('');
+    setTransmisionFilter('');
+    setMinPriceFilter('');
+    setMaxPriceFilter('');
+    setSearchValue('');
+    setCategoryFilter('');
     switch (tab) {
-      case 'todos':
+      case 'todas':
+        setActiveTab('1');
         setTabQuery('');
-        /* history.push('rentingoffer?newcar=true'); */
         break;
       case 'nuevos':
+        setActiveTab('2');
         setTabQuery('?newcar=true');
-        /* history.push('rentingoffer?newcar=false'); */
         break;
       case 'seminuevos':
+        setActiveTab('3');
         setTabQuery('?newcar=false');
-        /* history.push('rentingoffer?usedcar=true'); */
         break;
       default:
         setTabQuery('');
-        setFuelSort('');
     }
   };
 
-  useEffect(() => {
-    newRequest({
-      url: `${API_DEV.RENTING_OFFERS}search${tabQuery}`,
-      /* url: `/rentingoffer/search${tabQuery}`, */
-      method: 'POST',
-      onSuccess: setListOfCars,
-    });
-  }, [tabQuery, location]);
-
+  // Tabs Numbers of offers
   useEffect(() => {
     carsLengthRequest({ url: `${API_DEV.RENTING_OFFERS}`, method: 'GET', onSuccess: setNumOfCars });
   }, []);
   useEffect(() => {
     carsLengthRequest({
-      url: `${API_DEV.RENTING_OFFERS}newcars`,
+      url: `${API_DEV.RENTING_OFFERS}search?newcar=true`,
       method: 'POST',
       onSuccess: setNumOfNewCars,
     });
   }, []);
   useEffect(() => {
     carsLengthRequest({
-      url: `${API_DEV.RENTING_OFFERS}usedcars`,
+      url: `${API_DEV.RENTING_OFFERS}search?newcar=false`,
       method: 'POST',
       onSuccess: setNumOfUsedCars,
     });
   }, []);
 
+  // First fetch Raw List of Offers
   useEffect(() => {
-    //console.log('listOfCars.price: ', listOfCars.km);
-    const filteredListOfCars = listOfCars.filter((price) => listOfCars.price < 400);
-    // console.log('filtered list of cars: ', filteredListOfCars);
-  }, [listOfCars]);
+    newRequest({
+      url: `${API_DEV.RENTING_OFFERS}search${tabQuery}`,
+      method: 'POST',
+      onSuccess: setRawListOfOffers,
+    });
+  }, [tabQuery]);
+  console.log('setRawListOfOffers', rawListOfOffers);
+  // Filter by Search from header
 
+  const searchFilterList = rawListOfOffers.filter((offer) => {
+    return (
+      offer.version.brand.brandname.search(searchValue) !== -1 ||
+      offer.version.model.modelname.search(searchValue) !== -1 ||
+      offer.transmision.search(searchValue) !== -1 ||
+      offer.fuel.search(searchValue) !== -1
+    );
+  });
+
+  // Filter list of Offers per Category
+  const filteredListInter = searchFilterList.filter((offer) =>
+    offer.version.model.cartype.cartype.includes(categoryFilter)
+  );
+
+  // Filter list of Offers per Fuel
+  const filteredListInter1 = filteredListInter.filter((offer) => offer.fuel.includes(fuelFilter));
+
+  // Filter list of Offers per brand
+  const filteredListInter2 = filteredListInter1.filter((offer) =>
+    offer.version.brand.brandname.includes(brandFilter)
+  );
+
+  // Filter list of Offers per time
+  let filteredListInter3 = [];
+  timeFilter > 0
+    ? (filteredListInter3 = filteredListInter2.filter((offer) => offer.time === timeFilter))
+    : (filteredListInter3 = filteredListInter2);
+
+  //.filter((offer) => offer.time.includes(timeFilter));
+
+  // Filter list of Offers per transmission
+  const filteredListInter4 = filteredListInter2.filter((offer) =>
+    offer.transmision.includes(transmisionFilter)
+  );
+
+  // Filter list of Offers per price
+  const filteredListInter5 = filteredListInter4.filter(
+    (offer) => offer.price >= (minPriceFilter || 0) && offer.price <= (maxPriceFilter || 2000)
+  );
+
+  // Get 1 car model per rentingOffer
+  function getUniqueOfferByModel(filteredListInter5, key) {
+    return [...new Map(filteredListInter5.map((car) => [car.version.model[key], car])).values()];
+  }
+  const listOfOffers = getUniqueOfferByModel(filteredListInter5, 'modelname');
+
+  
   return (
     <div className={styles._carlist_page}>
       <div className={styles._scene_container}>
@@ -93,31 +168,45 @@ const CarsListPage = () => {
               windowSize === 'md' || windowSize === 'sm' ? styles._title_md : styles._title
             }`}
           >
-            Renting de Coches
+            Ofertas disponibles
           </div>
           <div className={styles._tab_container}>
-            <Tab tab={'Todos'} num={numOfCars} onItemClick={() => handleTabSort('todos')} />
-            <Tab tab={'Nuevos'} num={numOfNewCars} onItemClick={() => handleTabSort('nuevos')} />
-            <Tab
-              tab={'Seminuevos'}
-              num={numOfUsedCars}
-              onItemClick={() => handleTabSort('seminuevos')}
-            />
-          </div>
-        </div>
-        <div className={styles._list_container}>
-          <div className={styles._left_list_container}>
-            <Filter setTabQuery={setTabQuery} />
-          </div>
-          <div className={styles._right_list_container}>
-            <CarList listOfCars={listOfCars} />
+            {tabs.map((tab) => {
+              return (
+                <Tab
+                  key={tab.id}
+                  id={tab.id}
+                  tab={tab.tab}
+                  num={tab.num}
+                  activetab={activeTab}
+                  onItemClick={() => handleTabSort(tab.value, tab.id)}
+                />
+              );
+            })}
           </div>
         </div>
 
-        {/* {openFilter === true ? <FilterButton setOpenFilter={setOpenFilter} /> : null} */}
-        {/*{openSlideFilter === true ? (
-              <FilterButton setOpenSlideFilter={setOpenSlideFilter} />
-            ) : null} */}
+        <div className={styles._list_container}>
+          {windowSize === 'sm' ? (
+            ''
+          ) : (
+            <div className={styles._left_list_container}>
+              <Filter
+                setTabQuery={setTabQuery}
+                setFuelFilter={setFuelFilter}
+                brandFilter={brandFilter}
+                setBrandFilter={setBrandFilter}
+                setTimeFilter={setTimeFilter}
+                setTransmisionFilter={setTransmisionFilter}
+                setMinPriceFilter={setMinPriceFilter}
+                setMaxPriceFilter={setMaxPriceFilter}
+              />
+            </div>
+          )}
+          <div className={styles._right_list_container}>
+            <CarList listOfCars={rawListOfOffers} />
+          </div>
+        </div>
       </div>
     </div>
   );

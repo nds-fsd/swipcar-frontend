@@ -21,8 +21,9 @@ import SelectMultiple from '../../selectMultiple/selectMultiple.view';
 import SelectComponent from '../../pureComponents/selectComponent';
 
 import CarIcon from '../../assets/carEditIcon.gif';
+import { CreateVersion, UpdateVersion } from '../../../utils/dashBoardCalls';
 
-const CarProfileForm = ({ toEdit, handleCloseModal }) => {
+const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) => {
   const [dataToEdit, setDataToEdit] = useState({});
 
   const [newCar, setNewCar] = useState(false);
@@ -68,17 +69,7 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     formState: { errors },
     handleSubmit,
     watch,
-    setValue,
   } = useForm();
-
-  //! setValue
-  // useEffect(() => {
-  //   if (toEdit && setValue) {
-  //     Object.keys(dataToEdit).forEach((key) => {
-  //       setValue(key, `${dataToEdit[key]}`);
-  //     });
-  //   }
-  // }, [toEdit, setValue, dataToEdit]);
 
   const [dataFly, setDataFly] = useState('');
   const [checkSave, setCheckSave] = useState(false);
@@ -124,15 +115,6 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
       );
     }
   };
-
-  // useEffect(() => {
-  //   console.log('optionsColors : ', optionsColors);
-  //   console.log('optionsTransmision : ', optionsTransmision);
-  // }, [optionsColors, optionsTransmision]);
-
-  // useEffect(() => {
-  //   console.log('dataOptionsAPI : ', dataOptionsAPI);
-  // }, [dataOptionsAPI]);
 
   const tecnologiaRef = useRef();
   const confortRef = useRef();
@@ -218,9 +200,9 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
   } = dataOptions;
 
   const {
+    _id,
     brand: brandEdit,
     model: modelEdit,
-    version: versionEdit,
     cartype: cartypeEdit,
     transmision: transmisionEdit,
     fuel: fuelEdit,
@@ -291,32 +273,92 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
     technologiesEdit,
   ]);
 
-  const onSubmit = (data) => {
-    // setCheckSave(true);
-
-    if (
-      selectedColor.length !== 0 &&
-      selectedTransmision.length !== 0 &&
-      technologies.length !== 0 &&
-      conforts.length !== 0 &&
-      securities.length !== 0 &&
-      exteriors.length !== 0
-    ) {
-      let color = selectedColor.map((color) => color.value);
-      let transmision = selectedTransmision.map((transmision) => transmision.value);
-
-      const dataAPI = {
-        ...data,
-        color,
-        transmision,
-        exteriors,
-        securities,
-        conforts,
-        technologies,
-      };
-      console.log('dataAPI  : ', dataAPI);
+  const _handleSuccess = (res) => {
+    handleModal();
+    updateSuccess(res);
+    if (_id === undefined) {
+      systemMessage({
+        message: ' Versión creada correctamente',
+        typeAlert: 'ok',
+      });
     } else {
-      console.log('Falta rellenar algún campo!!');
+      systemMessage({
+        message: ' Versión editada correctamente',
+        typeAlert: 'ok',
+      });
+    }
+  };
+
+  const onSubmit = (data) => {
+    if (_id === undefined) {
+      if (
+        selectedColor.length !== 0 &&
+        selectedTransmision.length !== 0 &&
+        selectedFuel.length !== 0 &&
+        technologies.length !== 0 &&
+        conforts.length !== 0 &&
+        securities.length !== 0 &&
+        exteriors.length !== 0
+      ) {
+        let color = selectedColor.map((color) => color.value);
+        let transmision = selectedTransmision.map((transmision) => transmision.value);
+        let fuel = selectedFuel.map((fuel) => fuel.value);
+
+        const versionData = {
+          ...data,
+          color,
+          transmision,
+          fuel,
+          exteriors,
+          securities,
+          conforts,
+          technologies,
+        };
+        CreateVersion({
+          versionData,
+          onSuccess: (res) => _handleSuccess(res),
+          onError: () =>
+            systemMessage({
+              message: ' No se ha podido crear correctamente',
+              typeAlert: 'error',
+            }),
+        });
+      }
+    } else {
+      if (
+        selectedColor.length !== 0 &&
+        selectedTransmision.length !== 0 &&
+        selectedFuel.length !== 0 &&
+        technologies.length !== 0 &&
+        conforts.length !== 0 &&
+        securities.length !== 0 &&
+        exteriors.length !== 0
+      ) {
+        let color = selectedColor.map((color) => color.value);
+        let transmision = selectedTransmision.map((transmision) => transmision.value);
+        let fuel = selectedFuel.map((fuel) => fuel.value);
+
+        const versionData = {
+          ...data,
+          color,
+          transmision,
+          fuel,
+          exteriors,
+          securities,
+          conforts,
+          technologies,
+        };
+        UpdateVersion({
+          versionId: _id,
+          versionData,
+          onSuccess: (res) => _handleSuccess(res),
+          onError: () =>
+            systemMessage({
+              message: ' No se ha podido editar correctamente',
+              typeAlert: 'error',
+            }),
+        });
+      }
     }
   };
 
@@ -353,12 +395,6 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                       typeButton="ok"
                       actionButton={() => handleEdit()}
                     />
-                    <ButtonComponent
-                      label="Eliminar Vehículo"
-                      alt="Eliminar Vehículo"
-                      typeButton="cancel"
-                      actionButton={() => handleEdit()}
-                    />
                   </>
                 )}
               </div>
@@ -379,7 +415,7 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     label="Selecciona una Marca"
                     placeholder="Marca"
                     name="brand"
-                    defaultValue={brandEdit ? brandEdit : ''}
+                    defaultValue={brandEdit ? brandEdit._id : ''}
                     dataoptions={brand}
                     dataget="brandname"
                   />
@@ -387,7 +423,8 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                   <>
                     <label className={styles._label_show_info}>Marca</label>
                     <h3 className={styles._show_info}>
-                      {brandEdit && brand?.filter((value) => value._id === brandEdit)[0].brandname}
+                      {brandEdit && brandEdit.brandname}
+                      {/* {brandEdit && brand?.filter((value) => value._id === brandEdit)[0].brandname} */}
                     </h3>
                   </>
                 )}
@@ -438,12 +475,12 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     label="Versión del Modelo"
                     placeholder="Versión"
                     name="version"
-                    defaultValue={versionEdit}
+                    defaultValue={dataToEdit && dataToEdit.version}
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Versión</label>
-                    <h3 className={styles._show_info}>{versionEdit}</h3>
+                    <h3 className={styles._show_info}>{dataToEdit && dataToEdit.version}</h3>
                   </>
                 )}
                 {errors.version && (
@@ -571,7 +608,7 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     <label className={styles._label_show_info}>Colores</label>
                     <h3
                       className={`${styles._show_info} ${
-                        selectedColor.length > 5 && styles._text_large
+                        selectedColor.length > 4 && styles._many_colors
                       }`}
                     >
                       {selectedColor && selectedColor.map((value) => `${value.label} , `)}
@@ -596,17 +633,14 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     label="Distintivo Eco"
                     placeholder="Eco Mark"
                     name="ecomark"
-                    defaultValue={ecomarkEdit ? ecomarkEdit : ''}
+                    defaultValue={ecomarkEdit ? ecomarkEdit._id : ''}
                     dataget="ecomarktype"
                     dataoptions={ecomark}
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Distintivo Eco</label>
-                    <h3 className={styles._show_info}>
-                      {ecomarkEdit &&
-                        ecomark?.filter((value) => value._id === ecomarkEdit)[0].ecomarktype}
-                    </h3>
+                    <h3 className={styles._show_info}>{ecomarkEdit && ecomarkEdit.ecomarktype}</h3>
                   </>
                 )}
                 {errors.ecomark && (
@@ -664,7 +698,12 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Emisión</label>
-                    <h3 className={styles._show_info}>{`${emissionEdit} CO2/Km`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${emissionEdit}  `}
+                      <span className={styles._units}>
+                        CO<sub>2</sub> / Km
+                      </span>
+                    </h3>
                   </>
                 )}
                 {errors.emission && (
@@ -693,7 +732,10 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Motor</label>
-                    <h3 className={styles._show_info}>{`${motorEdit} CV`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${motorEdit}  `}
+                      <span className={styles._units}>CV</span>
+                    </h3>
                   </>
                 )}
                 {errors.motor && (
@@ -720,7 +762,12 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Cilindrada</label>
-                    <h3 className={styles._show_info}>{`${displacementEdit} cm3`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${displacementEdit}  `}
+                      <span className={styles._units}>
+                        cm<sup>3</sup>
+                      </span>
+                    </h3>
                   </>
                 )}
                 {errors.displacement && (
@@ -749,11 +796,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     defaultValue={comsumptionEdit}
                     name="comsumption"
                     type="number"
+                    step="any"
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Consumo</label>
-                    <h3 className={styles._show_info}>{`${comsumptionEdit} litros/100km`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${comsumptionEdit}  `}
+                      <span className={styles._units}>litros / 100 Km</span>
+                    </h3>
                   </>
                 )}
                 {errors.comsumption && (
@@ -779,7 +830,10 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Maletero</label>
-                    <h3 className={styles._show_info}>{`${trunkEdit} litros`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${trunkEdit}  `}
+                      <span className={styles._units}>litros</span>
+                    </h3>
                   </>
                 )}
                 {errors.trunk && (
@@ -808,11 +862,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     defaultValue={dimensionslengthEdit}
                     name="dimensionslength"
                     type="number"
+                    step="any"
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Largo</label>
-                    <h3 className={styles._show_info}>{`${dimensionslengthEdit} cm`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${dimensionslengthEdit}  `}
+                      <span className={styles._units}>cm</span>
+                    </h3>
                   </>
                 )}
                 {errors.dimensionslength && (
@@ -834,11 +892,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     defaultValue={dimensionsheightEdit}
                     name="dimensionsheight"
                     type="number"
+                    step="any"
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Alto</label>
-                    <h3 className={styles._show_info}>{`${dimensionsheightEdit} cm`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${dimensionsheightEdit}  `}
+                      <span className={styles._units}>cm</span>
+                    </h3>
                   </>
                 )}
                 {errors.dimensionsheight && (
@@ -860,11 +922,15 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     defaultValue={dimensionswidthEdit}
                     name="dimensionswidth"
                     type="number"
+                    step="any"
                   />
                 ) : (
                   <>
                     <label className={styles._label_show_info}>Ancho</label>
-                    <h3 className={styles._show_info}>{`${dimensionswidthEdit} cm`}</h3>
+                    <h3 className={styles._show_info}>
+                      {`${dimensionswidthEdit}  `}
+                      <span className={styles._units}>cm</span>
+                    </h3>
                   </>
                 )}
                 {errors.dimensionswidth && (
@@ -1238,6 +1304,7 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                       setCheckSave(true);
@@ -1251,12 +1318,13 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                     label="Cancelar"
                     alt="Cancelar"
                     typeButton="cancel"
-                    actionButton={() => handleCloseModal()}
+                    actionButton={() => handleModal()}
                   />
                   <ButtonComponent
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                       setCheckSave(true);
@@ -1264,12 +1332,12 @@ const CarProfileForm = ({ toEdit, handleCloseModal }) => {
                   />
                 </>
               )}
-              {(!editData && !newCar) && (
+              {!editData && !newCar && (
                 <ButtonComponent
                   label="Cerrar"
                   alt="Cerrar"
                   typeButton="cancel"
-                  actionButton={() => handleCloseModal()}
+                  actionButton={() => handleModal()}
                 />
               )}
             </div>

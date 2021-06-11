@@ -15,21 +15,23 @@ import {
   GetDataDashboardTableUserProvider,
   EditProvider,
   NewProvider,
-} from '../../../utils/createCarRequestAll';
+} from '../../../utils/dashBoardCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
 import InputComponent from '../../pureComponents/inputComponent/index';
 
-const ProviderForm = ({ toEdit, handleCloseModal }) => {
+const ProviderForm = ({ toEdit, handleModal, systemMessage }) => {
   const [dataToEdit, setDataToEdit] = useState({});
   const [dataToEditUser, setDataToEditUser] = useState({});
   const [dataToEditCompany, setDataToEditCompany] = useState({});
 
   const [newProvider, setNewProvider] = useState(false);
 
+  const { name: nameEditUser, email: emailEditUser } = dataToEditUser;
+  const { email, phone, companyname, address, web } = dataToEditCompany;
+
   useEffect(() => {
     if (toEdit) {
-      console.log('toEdit   :  ', toEdit);
       GetDataDashboardTableUserProvider({ toEdit, onSuccess: setDataToEdit });
       setNewProvider(false);
     } else {
@@ -44,6 +46,7 @@ const ProviderForm = ({ toEdit, handleCloseModal }) => {
     // let { companyname, email, phone, address, web } = dataToEdit.provider;
     setDataToEditCompany({
       ...dataToEditCompany,
+      _id: dataToEdit.provider?._id,
       companyname: dataToEdit.provider?.companyname,
       email: dataToEdit.provider?.email,
       phone: dataToEdit.provider?.phone,
@@ -60,20 +63,35 @@ const ProviderForm = ({ toEdit, handleCloseModal }) => {
     handleSubmit,
   } = useForm();
 
-  const { name: nameEditUser, email: emailEditUser } = dataToEditUser;
-  const { email, phone, companyname, address, web } = dataToEditCompany;
 
-  const [result, setResult] = useState({});
-  useEffect(() => {
-    console.log('result  : ', result);
-  }, [result]);
+  const _handleSuccess = (type) => {
+    handleEdit();
+    handleModal();
+    if (type !== 'new') {
+      systemMessage({ message: 'Usuario actualizado correctamente', typeAlert: 'ok' });
+    } else {
+      systemMessage({ message: 'Usuario creado correctamente', typeAlert: 'ok' });
+    }
+  };
 
   const onSubmit = (data) => {
     const dataAPI = data;
-    if(newProvider){
-      NewProvider({ dataAPI, onSuccess: ()=> handleCloseModal() });
-    }else {
-      EditProvider({ toEdit, dataAPI, onSuccess: ()=> handleCloseModal() });
+    if (newProvider) {
+      NewProvider({
+        dataAPI,
+        onSuccess: () => _handleSuccess('new'),
+        onError: () =>
+          systemMessage({ message: 'No se ha podido crear el proveedor', typeAlert: 'error' }),
+      });
+    } else {
+      const toEdit = dataToEditCompany?._id;
+      EditProvider({
+        toEdit,
+        dataAPI,
+        onSuccess: () => _handleSuccess('edit'),
+        onError: () =>
+          systemMessage({ message: 'No se ha podido editar el proveedor', typeAlert: 'error' }),
+      });
     }
   };
 
@@ -109,8 +127,8 @@ const ProviderForm = ({ toEdit, handleCloseModal }) => {
               >
                 {!editData && (
                   <ButtonComponent
-                    label="Editar Perfil"
-                    alt="Editar Perfil"
+                    label="Editar proveedor"
+                    alt="Editar proveedor"
                     typeButton="ok"
                     actionButton={() => handleEdit()}
                   />
@@ -310,6 +328,7 @@ const ProviderForm = ({ toEdit, handleCloseModal }) => {
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                     }}
@@ -322,12 +341,13 @@ const ProviderForm = ({ toEdit, handleCloseModal }) => {
                     label="Cancelar"
                     alt="Cancelar"
                     typeButton="cancel"
-                    actionButton={() => handleCloseModal()}
+                    actionButton={() => handleModal()}
                   />
                   <ButtonComponent
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                     }}
@@ -339,7 +359,7 @@ const ProviderForm = ({ toEdit, handleCloseModal }) => {
                   label="Cerrar"
                   alt="Cerrar"
                   typeButton="cancel"
-                  actionButton={() => handleCloseModal()}
+                  actionButton={() => handleModal()}
                 />
               )}
             </div>

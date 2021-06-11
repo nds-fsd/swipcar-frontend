@@ -9,7 +9,13 @@ const ButtonComponent = (props) => {
     <>
       <button
         className={`${styles._button} ${
-          typeButton === 'cancel' ? styles._button_cancel : styles._button_ok
+          typeButton === 'cancel'
+            ? styles._button_cancel
+            : typeButton === 'ok'
+            ? styles._button_ok
+            : typeButton === 'cancelWarning'
+            ? styles._button_cancel_warning
+            : styles._button_ok_warning
         }`}
         onClick={actionButton}
       >
@@ -21,3 +27,11 @@ const ButtonComponent = (props) => {
 };
 
 export default ButtonComponent;
+
+/**
+ * 
+ * 
+          typeButton === 'cancel' ? styles._button_cancel : styles._button_ok
+        }`}
+ * 
+ */
