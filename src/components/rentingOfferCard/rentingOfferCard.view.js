@@ -34,7 +34,7 @@ const RentingOfferCard = ({ rentingOffer, car, photocar }) => {
     user: user.user.id,
     provider: rentingOffer.rentingOffer.provider._id,
   };
-
+  
   const _handleShowReservation = () => {
     setCreateReservation(!createReservation);
     setReservationSuccess(!reservationSuccess);

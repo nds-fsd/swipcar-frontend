@@ -103,7 +103,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
       onSuccess: setRawListOfOffers,
     });
   }, [tabQuery]);
-
+  console.log('setRawListOfOffers', rawListOfOffers);
   // Filter by Search from header
 
   const searchFilterList = rawListOfOffers.filter((offer) => {
@@ -151,6 +151,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
     return [...new Map(filteredListInter5.map((car) => [car.version.model[key], car])).values()];
   }
   const listOfOffers = getUniqueOfferByModel(filteredListInter5, 'modelname');
+
   
   return (
     <div className={styles._carlist_page}>
@@ -203,7 +204,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
             </div>
           )}
           <div className={styles._right_list_container}>
-            <CarList listOfCars={listOfOffers} />
+            <CarList listOfCars={rawListOfOffers} />
           </div>
         </div>
       </div>
