@@ -1,5 +1,5 @@
 export const API_DEV = {
-  API: 'http://localhost:3001/',
+  API: 'https://ecocars.herokuapp.com/',
   CARPROFILE: 'carprofile/',
   USERS: 'user/',
   PROVIDERS: 'provider/',
