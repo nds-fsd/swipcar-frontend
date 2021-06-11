@@ -1,4 +1,5 @@
 export const API_DEV = {
+  // API:  window.location.hostname === 'https://ecocarspring.netlify.app/' ? "https://ecocars.herokuapp.com/" : "http://localhost:3001",
   API: 'https://ecocars.herokuapp.com/',
   CARPROFILE: 'carprofile/',
   USERS: 'user/',
