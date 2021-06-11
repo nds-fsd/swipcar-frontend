@@ -18,10 +18,6 @@ const ReservationUserForm = ({ toEdit, handleModal, updateSuccess, systemMessage
     GetReservation({ toEdit, onSuccess: setDataToEdit });
   }, []);
 
-  useEffect(() => {
-    console.log('dataToEdit  => ', dataToEdit);
-  }, [dataToEdit]);
-
   const windowSize = useWindowSize();
 
   const { _id, user, rentingoffer } = dataToEdit || {};

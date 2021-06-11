@@ -2,8 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import {
-  CreateCarRequestAll,
-  GetDataDashboardTable,
   GetDataVersionTable,
 } from '../../../utils/dashBoardCalls';
 import ButtonComponent from '../../pureComponents/buttonComponent';
@@ -93,11 +91,6 @@ const TableDashboardCarProfile = ({ handleModal, update }) => {
       </button>
     </div>
   );
-
-  // useEffect(() => {
-  //   console.log('dataTable :', dataTable);
-  // }, [dataTable]);
-
   const rows =
     dataTable &&
     dataTable.elements?.map((rowData, index) => {

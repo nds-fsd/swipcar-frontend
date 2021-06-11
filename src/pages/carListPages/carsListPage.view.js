@@ -151,15 +151,8 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
     return [...new Map(filteredListInter5.map((car) => [car.version.model[key], car])).values()];
   }
   const listOfOffers = getUniqueOfferByModel(filteredListInter5, 'modelname');
-  //console.log('listOf Offers: ', listOfOffers);
-  //const listOfOffers = filteredListInter5;
 
-  /* const sortedFinalList = listOfOffers.sort(function (a, b) {
-    if (a.version.brand.brandname < b.version.brand.brandname) return -1;
-    else if (a.version.brand.brandname > b.version.brand.brandname) return 1;
-    return 0;
-  }); */
-  //console.log('final list: ', sortedFinalList);
+  
   return (
     <div className={styles._carlist_page}>
       <div className={styles._scene_container}>

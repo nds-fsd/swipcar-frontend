@@ -156,8 +156,10 @@
   justify-content: flex-end;
 }
 ._img_electric_car {
-  width: 60%;
-  margin: 0 50px;
+  width: 80%;
+  margin: 0px 70px;
+  padding-top: 30px;
+  transform: rotateY(180deg);
 }
 ._charging_container {
   display: flex;

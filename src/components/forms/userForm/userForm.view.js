@@ -8,42 +8,42 @@ import UserIcon from '../../assets/userIcon.gif';
 import styles from '../forms.module.css';
 
 import { useForm } from 'react-hook-form';
-import {
-  CreateCarRequestAll,
-  GetDataCarProfile,
-  GetDataDashboardTableUsers,
-  GetDataDashboardTableUserProvider,
-  EditUser,
-  NewUser,
-  GetDataProvider,
-  UpdateUserProvider,
-  GetDataUser
-} from '../../../utils/dashBoardCalls';
+import { UpdateUserProvider, GetDataUser, UpdateUser } from '../../../utils/dashBoardCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
 import InputComponent from '../../pureComponents/inputComponent/index';
 
-const UserForm = ({ dataUser, handleModal, systemMessage }) => {
-  const { idUser, roleUser } = dataUser;
+const UserForm = ({ systemMessage }) => {
+  const [loggedInUser, setLoggedInUser] = useState();
+  const [dataUser, setDataUser] = useState({});
   const [dataToEdit, setDataToEdit] = useState({});
+
+  useEffect(() => {
+    const authorizedUser = localStorage.getItem('user-session');
+    if (authorizedUser) {
+      const activeUser = JSON.parse(authorizedUser);
+      setLoggedInUser(activeUser);
+    }
+  }, []);
+  useEffect(() => {
+    if (loggedInUser) {
+      setDataUser({ idUser: loggedInUser.user.id, roleUser: loggedInUser.user.role });
+    }
+  }, [loggedInUser]);
+
+  useEffect(() => {
+    if (idUser !== undefined) {
+      GetDataUser({ idUser, onSuccess: setDataToEdit });
+    }
+  }, [dataUser]);
+
+  const { idUser, roleUser } = dataUser || {};
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm();
-
-  // const [changePass, setChangePass] = useState(false);
-
-  useEffect(() => {
-    if (idUser) {
-      GetDataUser({ idUser, onSuccess: setDataToEdit });
-    }
-    if (roleUser === 'provider') {
-      GetDataProvider({ idUser, onSuccess: setDataToEdit });
-    }
-  }, [idUser, roleUser]);
 
   const windowSize = useWindowSize();
 
@@ -54,7 +54,6 @@ const UserForm = ({ dataUser, handleModal, systemMessage }) => {
 
   const _handleSuccess = (res) => {
     GetDataUser({ idUser, onSuccess: setDataToEdit });
-    GetDataProvider({ idUser, onSuccess: setDataToEdit });
     handleEdit();
     systemMessage({ message: 'Usuario actualizado correctamente', typeAlert: 'ok' });
   };
@@ -74,16 +73,28 @@ const UserForm = ({ dataUser, handleModal, systemMessage }) => {
       web: data.web,
     };
 
-    UpdateUserProvider({
-      userData,
-      providerData,
-      onSuccess: (res) => _handleSuccess(res),
-      onError: () =>
-        systemMessage({
-          message: ' No se ha podido actualizar correctamente',
-          typeAlert: 'error',
-        }),
-    });
+    if (roleUser && roleUser === 'provider') {
+      UpdateUserProvider({
+        userData,
+        providerData,
+        onSuccess: (res) => _handleSuccess(res),
+        onError: () =>
+          systemMessage({
+            message: ' No se ha podido actualizar correctamente',
+            typeAlert: 'error',
+          }),
+      });
+    } else {
+      UpdateUser({
+        userData,
+        onSuccess: (res) => _handleSuccess(res),
+        onError: () =>
+          systemMessage({
+            message: ' No se ha podido actualizar correctamente',
+            typeAlert: 'error',
+          }),
+      });
+    }
   };
 
   return (
@@ -183,82 +194,8 @@ const UserForm = ({ dataUser, handleModal, systemMessage }) => {
               </div>
             </div>
 
-            {/*             {editData && (
+            {roleUser && roleUser === 'provider' && (
               <>
-                {changePass ? (
-                  <ButtonComponent
-                    label="Cancelar cambio de password"
-                    alt="Cancelar cambio de password"
-                    typeButton="cancel"
-                    iconData="window-close"
-                    actionButton={() => setChangePass(false)}
-                  />
-                ) : (
-                  <ButtonComponent
-                    label="Cambiar Password"
-                    alt="Cambiar Password"
-                    typeButton="ok"
-                    iconData="key"
-                    actionButton={() => setChangePass(true)}
-                  />
-                )}
-
-                {changePass && (
-                  <div>
-                    <div
-                      className={`${windowSize !== 'sm' && styles._row3_xlg}
-    ${windowSize === 'sm' && styles._row3_sm}  
-    `}
-                    >
-                      <div className={styles._boxElements}>
-                        <InputComponent
-                          {...register('passOneUser', { required: 'Contraseña Requerida' })}
-                          refs={passOneUser}
-                          label="Introduce una contaseña"
-                          placeholder="Contraseña"
-                          // defaultValue={passOneUserData}
-                          name="passOneUser"
-                          type="password"
-                        />
-                        {errors.passOneUser && (
-                          <p className={stylesPure._error_label}>
-                            <span className={stylesPure._error_label_icon}>
-                              <FontAwesomeIcon icon="exclamation-triangle" />
-                            </span>
-                            {errors.passOneUser.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className={styles._boxElements}>
-                        <InputComponent
-                          {...register('passTwoUser', { required: 'Contraseña Requerida' })}
-                          refs={passTwoUser}
-                          label="Repite la contraseña"
-                          placeholder="Repite Contraseña"
-                          // defaultValue={passTwoUserData}
-                          name="passTwoUser"
-                          type="password"
-                        />
-                        {errors.passTwoUser && (
-                          <p className={stylesPure._error_label}>
-                            <span className={stylesPure._error_label_icon}>
-                              <FontAwesomeIcon icon="exclamation-triangle" />
-                            </span>
-                            {errors.passTwoUser.message}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
-            )} */}
-
-            {provider !== null && (
-              <>
-                {/* <hr className={styles._hr_line} /> */}
-
                 <h2 className={styles._tittle}>Información de proveedor</h2>
 
                 <div
@@ -433,6 +370,7 @@ ${windowSize === 'sm' && styles._row3_sm}
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                     }}

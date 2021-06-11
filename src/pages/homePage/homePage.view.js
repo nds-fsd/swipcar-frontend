@@ -167,7 +167,13 @@ const HomePage = () => {
         </div>
         <div className={styles._charging_container}>
           <div className={styles._subtitle}>Descubre todos los puntos de recarga</div>
-          <input className={styles._button} type="button" value="Abrir el mapa" />
+          <iframe
+            src="https://www.google.com/maps/d/embed?mid=11_9-d0ALhNmhxjuBs-vg4QVV9uU&ll=41.41046473683561%2C2.1532425543454847&z=12"
+            title="Puntos de recarga para coches elétricos"
+            width="520"
+            height="280"
+            style={{ border: '2px solid #CCC' }}
+          ></iframe>
         </div>
       </div>
       <div className={styles._white_container}>

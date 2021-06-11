@@ -12,7 +12,7 @@
   box-shadow: 5px 8px 10px -8px #444;
   z-index: 99999;
   animation: alertIn 500ms ease-in-out forwards;
-  background-color: #ffffff80;
+  background-color: #ffffff90;
   display: flex;
 }
 ._ok {

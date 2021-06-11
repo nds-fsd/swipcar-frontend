@@ -46,7 +46,6 @@ const DashboardPage = () => {
     if (authorizedUser) {
       const activeUser = JSON.parse(authorizedUser);
       setLoggedInUser(activeUser);
-      console.log('activeUser:', activeUser);
     }
   }, []);
   useEffect(() => {
@@ -56,15 +55,11 @@ const DashboardPage = () => {
   }, [loggedInUser]);
 
   useEffect(() => {
-    if (dataUser?.roleUser === 'provider') {
-      const toEdit = dataUser?.idUser;
-      GetDataUser({ toEdit, onSuccess: setDataProvider });
+    if (dataUser?.idUser !== undefined) {
+      const idUser = dataUser?.idUser;
+      GetDataUser({ idUser, onSuccess: setDataProvider });
     }
   }, [dataUser]);
-
-  useEffect(() => {
-    console.log('providerId  =>', dataProvider?.provider?._id);
-  }, [dataProvider]);
 
   //?MODAL
   const [showModal, setShowModal] = useState(false);
@@ -94,12 +89,12 @@ const DashboardPage = () => {
   };
   //?SYSTEMMESSAGE
 
-  //?SYSTEMMESSAGE
+  //?UPDATEINFO
   const [update, setUpdate] = useState();
   const updateSuccess = (value) => {
     setUpdate(value);
   };
-  //?SYSTEMMESSAGE
+  //?UPDATEINFO
 
   return (
     <div className={styles._container}>

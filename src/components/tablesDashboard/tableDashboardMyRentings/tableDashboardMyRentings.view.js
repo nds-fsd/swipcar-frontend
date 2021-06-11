@@ -1,23 +1,39 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import {
-  GetAllRentingsOffers,
-  GetDataDashboardTable,
-  GetDataDashboardTableUsers,
-  GetDataUser,
-  GetDataVersionTable,
-  GetMyRentingsOffers,
-} from '../../../utils/dashBoardCalls';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonComponent from '../../pureComponents/buttonComponent';
-
 import styles from '../tablesDashboard.module.css';
 
-const TableDashboardMyRentings = ({ dataProvider, handleModal, update }) => {
+import { GetDataUser, GetMyRentingsOffers } from '../../../utils/dashBoardCalls';
 
-  const { _id } = dataProvider || {};
+const TableDashboardMyRentings = ({ handleModal, update }) => {
+  const [loggedInUser, setLoggedInUser] = useState();
+  const [dataUser, setDataUser] = useState({});
+  const [dataToEdit, setDataToEdit] = useState({});
+  const [dataTable, setDataTable] = useState([]);
 
-  console.log('dataProvider  =>  ', _id);
+  useEffect(() => {
+    const authorizedUser = localStorage.getItem('user-session');
+    if (authorizedUser) {
+      const activeUser = JSON.parse(authorizedUser);
+      setLoggedInUser(activeUser);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setDataUser({ idUser: loggedInUser.user.id, roleUser: loggedInUser.user.role });
+    }
+  }, [loggedInUser]);
+  useEffect(() => {
+    if (idUser !== undefined) {
+      GetDataUser({ idUser, onSuccess: setDataToEdit });
+    }
+  }, [dataUser]);
+
+  const { idUser } = dataUser || {};
+
+  const _id = dataToEdit?.provider?._id;
 
   const pathUrl = useLocation();
   const history = useHistory();
@@ -27,27 +43,26 @@ const TableDashboardMyRentings = ({ dataProvider, handleModal, update }) => {
   const dir = query.get('dir') || 'asc';
   const sort = query.get('sort');
 
-  const [dataTable, setDataTable] = useState([]);
-
-  
   useEffect(() => {
-    console.log('dataTable  => ', dataTable);
-  }, [dataTable]);
-
-  useEffect(() => {
-    let dataProviderID = _id;
-    const queryGetData = { sort, dir, skip, limit };
-    GetMyRentingsOffers({ queryGetData, dataProviderID, onSuccess: setDataTable });
+    if (_id !== undefined) {
+      let dataProviderID = _id;
+      const queryGetData = { sort, dir, skip, limit };
+      GetMyRentingsOffers({ queryGetData, dataProviderID, onSuccess: setDataTable });
+    }
   }, [pathUrl]);
 
   useEffect(() => {
-    let dataProviderID = _id;
-    GetMyRentingsOffers({ dataProviderID, onSuccess: setDataTable });
-  }, [dataProvider]);
+    if (_id !== undefined) {
+      let dataProviderID = _id;
+      GetMyRentingsOffers({ dataProviderID, onSuccess: setDataTable });
+    }
+  }, [_id]);
 
   useEffect(() => {
-    let dataProviderID = _id;
-    GetMyRentingsOffers({ dataProviderID, onSuccess: setDataTable });
+    if (_id !== undefined) {
+      let dataProviderID = _id;
+      GetMyRentingsOffers({ dataProviderID, onSuccess: setDataTable });
+    }
   }, [update]);
 
   const handlePagePrev = () => {
@@ -72,10 +87,6 @@ const TableDashboardMyRentings = ({ dataProvider, handleModal, update }) => {
 
     history.push({ search: query.toString() });
   };
-  // const sortBy = (key) => {
-  //   query.set('sort', key);
-  //   history.push({ search: query.toString() });
-  // };
 
   const Row = ({ _id, version, time, km, price, provider, position }) => (
     <div className={`${styles._table_body_info} ${position % 2 !== 0 && styles._table_row_back}`}>

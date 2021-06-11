@@ -85,10 +85,6 @@ const TableDashboardProviders = ({ handleModal }) => {
     </div>
   );
 
-  // useEffect(() => {
-  //   console.log('dataTable :', dataTable);
-  // }, [dataTable]);
-
   const providers =
     dataTable && dataTable.filter((providerData) => providerData.role === 'provider');
   const rows =

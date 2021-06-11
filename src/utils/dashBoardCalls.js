@@ -206,6 +206,7 @@ export const NewUser = ({ dataAPI, onSuccess = () => {} }) => {
       console.log(err);
     });
 };
+
 export const EditUser = ({ toEdit, dataAPI, onSuccess = () => {}, onError = () => {} }) => {
   const url = API_DEV.API + API_DEV.USERS + toEdit;
   const body = dataAPI;
@@ -229,7 +230,6 @@ export const EditUser = ({ toEdit, dataAPI, onSuccess = () => {}, onError = () =
       onSuccess(res);
     })
     .catch((err) => {
-      console.log('EditUser ERROR!!  =>', err);
       onError(err);
     });
 };
@@ -282,7 +282,6 @@ export const EditProvider = ({ toEdit, dataAPI, onSuccess = () => {}, onError = 
       onSuccess(res);
     })
     .catch((err) => {
-      console.log('EditProvider  ERROR !!   => ', err);
       onError(err);
     });
 };
@@ -320,7 +319,6 @@ export const GetModelVersion = async ({ brand, model, onSuccess = () => {} }) =>
     const keyName = `${datas[index]?.key}`;
     const toSend = { [keyName]: arrayDatas };
     onSuccess(toSend);
-    console.log('toSend GetModelVersion => ', toSend);
   };
   Promise.all(fetchData)
     .then((values) => values.map((res, index) => handlePair(res, index)))
@@ -449,7 +447,6 @@ export const GetDataVersion = ({ toEdit, onSuccess = () => {} }) => {
     })
     .then((res) => {
       onSuccess(res);
-      console.log('GetDataVersion ', res);
     })
     .catch((err) => {
       console.log(err);
@@ -545,11 +542,9 @@ export const UpdateDataRentingOffer = ({
     })
     .then((res) => {
       onSuccess(res);
-      console.log('UpdateDataRentingOffer ==> ', res);
     })
     .catch((err) => {
       onError(err);
-      console.log('UpdateDataRentingOffer ERROR', err);
     });
 };
 
@@ -593,11 +588,9 @@ export const CreateRentingOffer = ({ queryPutData, onSuccess = () => {}, onError
       })
       .then((res) => {
         _handleUpdatesRentingOfferIds(res);
-        // console.log('createRentingOffer RESUL  => ', res);
       })
       .catch((err) => {
         onError(err);
-        console.log('CreateRentingoffer Step2 CREATE ERROR', err);
       });
   };
 
@@ -613,7 +606,6 @@ export const CreateRentingOffer = ({ queryPutData, onSuccess = () => {}, onError
       })
       .then((res) => {
         _handleProviderRentings(provider, _id, version, res.rentingoffers);
-        // console.log('_handleProviderRentings  => ', provider, _id, version, res.rentingoffers);
       })
       .catch((err) => {
         console.log('GetDataUser ERROR : ', err);
@@ -651,7 +643,6 @@ export const CreateRentingOffer = ({ queryPutData, onSuccess = () => {}, onError
             _handleVersionRentings(newRentingOfferId, version);
           })
           .catch((err) => {
-            console.log('_handleProviderRentings   ERROR!! : ', err);
             onError(err);
           });
       } else {
@@ -704,7 +695,6 @@ export const CreateRentingOffer = ({ queryPutData, onSuccess = () => {}, onError
               onSuccess(res);
             })
             .catch((err) => {
-              console.log('_handleVersionRentings   ERROR!! : ', err);
               onError(err);
             });
         } else {
@@ -854,8 +844,8 @@ export const DeleteRentingOffer = ({
   };
 };
 
-export const GetDataUser = ({ toEdit, onSuccess = () => {} }) => {
-  const url = API_DEV.API + API_DEV.USERS + toEdit;
+export const GetDataUser = ({ idUser, onSuccess = () => {} }) => {
+  const url = API_DEV.API + API_DEV.USERS + idUser;
   fetch(url)
     .then((res) => {
       if (res.status === 200) {
@@ -886,6 +876,29 @@ export const GetDataProvider = ({ idUser, onSuccess = () => {} }) => {
     .catch((err) => {
       console.log('GetDataUser : ', err);
     });
+};
+
+export const UpdateUser = async ({ userData, onSuccess = () => {}, onError = () => {} }) => {
+  const { _id: idUser, name, email } = userData || {};
+  const bodyUser = { name: name, email: email };
+  const optionsUser = {
+    method: 'PUT',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    }),
+    mode: 'cors',
+    body: JSON.stringify(bodyUser),
+  };
+  const fetchUser = await fetch(API_DEV.API + API_DEV.USERS + idUser, optionsUser).then((res) => {
+    if (res.status === 200) {
+      return res.json();
+    }
+    return Promise.reject();
+  });
+  Promise.all([fetchUser])
+    .then((res) => onSuccess(res))
+    .catch((res) => onError(res));
 };
 
 export const UpdateUserProvider = async ({
@@ -1034,7 +1047,6 @@ export const CreateVersion = async ({ versionData, onSuccess = () => {}, onError
       });
   };
   //! Create Version
-
   //! Update Version CarProfile
   const _updateCarProfileVersion = (carProfileId, carProfileVersions, addVersion) => {
     if (carProfileVersions === undefined) {
@@ -1102,6 +1114,38 @@ export const CreateVersion = async ({ versionData, onSuccess = () => {}, onError
   //! Update Version CarProfile
 };
 
+export const UpdateVersion = ({
+  versionId,
+  versionData,
+  onSuccess = () => {},
+  onError = () => {},
+}) => {
+  const url = API_DEV.API + API_DEV.VERSION + versionId;
+  const body = versionData;
+  const options = {
+    method: 'PUT',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    }),
+    mode: 'cors',
+    body: JSON.stringify(body),
+  };
+  fetch(url, options)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
+    })
+    .then((res) => {
+      onSuccess(res);
+    })
+    .catch((err) => {
+      onSuccess(err);
+    });
+};
+
 //! Datos Necesarios: userId, rentingOfferId, providerId
 export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError = () => {} }) => {
   const { user: userId, rentingoffer: rentingOfferId, provider: providerId } = queryPutData;
@@ -1129,7 +1173,6 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
     })
     .then((res) => {
       _handleUserReservations(res._id);
-      console.log('Nueva reserva creada es el id => : ', res._id);
     })
     .catch((err) => {
       console.log('FETCH CreateReservation ERROR : ', err);
@@ -1146,8 +1189,9 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
         return Promise.reject();
       })
       .then((res) => {
-        console.log('Array reservation USER  => ', res.reservation);
         _updateUserReservations(res.reservation, newReservationId);
+        // const nameUser = res.name;
+        // const emailUser = res.email;
       })
       .catch((err) => {
         console.log('GetDataUser ERROR : ', err);
@@ -1199,7 +1243,8 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
         })
         .then((res) => {
           _handleUpdateProviderReservations(res.reservations, newReservationId);
-          console.log('Array Reservations Provider  => ', res.reservations);
+          // const nameUser = res.name;
+          // const emailUser = res.email;
         })
         .catch((err) => {
           console.log('_handleProviderReservations ERROR : ', err);
@@ -1209,8 +1254,6 @@ export const CreateReservation = ({ queryPutData, onSuccess = () => {}, onError 
         const resToUpdateReservationsProvider = providerReservations?.find(
           (reservation) => reservation === newReservationId
         );
-        console.log('resToUpdateReservationsProvider  => ', resToUpdateReservationsProvider);
-
         if (resToUpdateReservationsProvider === undefined) {
           let toUpdate = [...providerReservations, newReservationId];
           toUpdate = { reservations: toUpdate };

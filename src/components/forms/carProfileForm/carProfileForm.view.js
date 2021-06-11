@@ -21,7 +21,7 @@ import SelectMultiple from '../../selectMultiple/selectMultiple.view';
 import SelectComponent from '../../pureComponents/selectComponent';
 
 import CarIcon from '../../assets/carEditIcon.gif';
-import { CreateVersion } from '../../../utils/dashBoardCalls';
+import { CreateVersion, UpdateVersion } from '../../../utils/dashBoardCalls';
 
 const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) => {
   const [dataToEdit, setDataToEdit] = useState({});
@@ -69,17 +69,7 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
     formState: { errors },
     handleSubmit,
     watch,
-    setValue,
   } = useForm();
-
-  //! setValue
-  // useEffect(() => {
-  //   if (toEdit && setValue) {
-  //     Object.keys(dataToEdit).forEach((key) => {
-  //       setValue(key, `${dataToEdit[key]}`);
-  //     });
-  //   }
-  // }, [toEdit, setValue, dataToEdit]);
 
   const [dataFly, setDataFly] = useState('');
   const [checkSave, setCheckSave] = useState(false);
@@ -125,15 +115,6 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
       );
     }
   };
-
-  // useEffect(() => {
-  //   console.log('optionsColors : ', optionsColors);
-  //   console.log('optionsTransmision : ', optionsTransmision);
-  // }, [optionsColors, optionsTransmision]);
-
-  // useEffect(() => {
-  //   console.log('dataOptionsAPI : ', dataOptionsAPI);
-  // }, [dataOptionsAPI]);
 
   const tecnologiaRef = useRef();
   const confortRef = useRef();
@@ -219,9 +200,9 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
   } = dataOptions;
 
   const {
+    _id,
     brand: brandEdit,
     model: modelEdit,
-    // version: versionEdit,
     cartype: cartypeEdit,
     transmision: transmisionEdit,
     fuel: fuelEdit,
@@ -295,54 +276,91 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
   const _handleSuccess = (res) => {
     handleModal();
     updateSuccess(res);
-    systemMessage({
-      message: ' Versión creada correctamente',
-      typeAlert: 'ok',
-    });
-  };
-
-  const onSubmit = (data) => {
-    // setCheckSave(true);
-
-    if (
-      selectedColor.length !== 0 &&
-      selectedTransmision.length !== 0 &&
-      selectedFuel.length !== 0 &&
-      technologies.length !== 0 &&
-      conforts.length !== 0 &&
-      securities.length !== 0 &&
-      exteriors.length !== 0
-    ) {
-      let color = selectedColor.map((color) => color.value);
-      let transmision = selectedTransmision.map((transmision) => transmision.value);
-      let fuel = selectedFuel.map((fuel) => fuel.value);
-
-      const versionData = {
-        ...data,
-        color,
-        transmision,
-        fuel,
-        exteriors,
-        securities,
-        conforts,
-        technologies,
-      };
-      console.log('dataAPI versionData : ', versionData);
-      CreateVersion({
-        versionData,
-        onSuccess: (res) => _handleSuccess(res),
-        onError: () =>
-          systemMessage({
-            message: ' No se ha podido crear correctamente',
-            typeAlert: 'error',
-          }),
+    if (_id === undefined) {
+      systemMessage({
+        message: ' Versión creada correctamente',
+        typeAlert: 'ok',
       });
     } else {
-      console.log('Falta rellenar algún campo!!');
+      systemMessage({
+        message: ' Versión editada correctamente',
+        typeAlert: 'ok',
+      });
     }
   };
 
-  console.log('OjúYeah!!');
+  const onSubmit = (data) => {
+    if (_id === undefined) {
+      if (
+        selectedColor.length !== 0 &&
+        selectedTransmision.length !== 0 &&
+        selectedFuel.length !== 0 &&
+        technologies.length !== 0 &&
+        conforts.length !== 0 &&
+        securities.length !== 0 &&
+        exteriors.length !== 0
+      ) {
+        let color = selectedColor.map((color) => color.value);
+        let transmision = selectedTransmision.map((transmision) => transmision.value);
+        let fuel = selectedFuel.map((fuel) => fuel.value);
+
+        const versionData = {
+          ...data,
+          color,
+          transmision,
+          fuel,
+          exteriors,
+          securities,
+          conforts,
+          technologies,
+        };
+        CreateVersion({
+          versionData,
+          onSuccess: (res) => _handleSuccess(res),
+          onError: () =>
+            systemMessage({
+              message: ' No se ha podido crear correctamente',
+              typeAlert: 'error',
+            }),
+        });
+      }
+    } else {
+      if (
+        selectedColor.length !== 0 &&
+        selectedTransmision.length !== 0 &&
+        selectedFuel.length !== 0 &&
+        technologies.length !== 0 &&
+        conforts.length !== 0 &&
+        securities.length !== 0 &&
+        exteriors.length !== 0
+      ) {
+        let color = selectedColor.map((color) => color.value);
+        let transmision = selectedTransmision.map((transmision) => transmision.value);
+        let fuel = selectedFuel.map((fuel) => fuel.value);
+
+        const versionData = {
+          ...data,
+          color,
+          transmision,
+          fuel,
+          exteriors,
+          securities,
+          conforts,
+          technologies,
+        };
+        UpdateVersion({
+          versionId: _id,
+          versionData,
+          onSuccess: (res) => _handleSuccess(res),
+          onError: () =>
+            systemMessage({
+              message: ' No se ha podido editar correctamente',
+              typeAlert: 'error',
+            }),
+        });
+      }
+    }
+  };
 
   return (
     <div className={styles.carlist_page}>
@@ -377,12 +395,6 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
                       typeButton="ok"
                       actionButton={() => handleEdit()}
                     />
-                    {/* <ButtonComponent
-                      label="Eliminar Vehículo"
-                      alt="Eliminar Vehículo"
-                      typeButton="cancel"
-                      actionButton={() => handleEdit()}
-                    /> */}
                   </>
                 )}
               </div>
@@ -1292,6 +1304,7 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                       setCheckSave(true);
@@ -1311,6 +1324,7 @@ const CarProfileForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) =
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                       setCheckSave(true);

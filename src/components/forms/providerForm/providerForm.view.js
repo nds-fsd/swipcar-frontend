@@ -27,14 +27,11 @@ const ProviderForm = ({ toEdit, handleModal, systemMessage }) => {
 
   const [newProvider, setNewProvider] = useState(false);
 
-
-
   const { name: nameEditUser, email: emailEditUser } = dataToEditUser;
   const { email, phone, companyname, address, web } = dataToEditCompany;
 
   useEffect(() => {
     if (toEdit) {
-      console.log('toEdit   :  ', toEdit);
       GetDataDashboardTableUserProvider({ toEdit, onSuccess: setDataToEdit });
       setNewProvider(false);
     } else {
@@ -66,10 +63,6 @@ const ProviderForm = ({ toEdit, handleModal, systemMessage }) => {
     handleSubmit,
   } = useForm();
 
-  const [result, setResult] = useState({});
-  useEffect(() => {
-    console.log('result  : ', result);
-  }, [result]);
 
   const _handleSuccess = (type) => {
     handleEdit();
@@ -81,7 +74,7 @@ const ProviderForm = ({ toEdit, handleModal, systemMessage }) => {
     }
   };
 
-  const onSubmit = (data) => {    
+  const onSubmit = (data) => {
     const dataAPI = data;
     if (newProvider) {
       NewProvider({
@@ -335,6 +328,7 @@ const ProviderForm = ({ toEdit, handleModal, systemMessage }) => {
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                     }}
@@ -353,6 +347,7 @@ const ProviderForm = ({ toEdit, handleModal, systemMessage }) => {
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                     }}

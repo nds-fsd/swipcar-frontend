@@ -41,7 +41,6 @@ const CarListHomePage = ({ listOfCars }) => {
   useEffect(() => {
     setData(listOfCars);
   }, [listOfCars]);
-  //  console.log('listOfCars:', listOfCars);
 
   const handleClick = (event) => {
     setCurrentPage(Number(event.target.id));

@@ -57,14 +57,6 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
     seminuevo,
   });
 
-  // const [dataFormOk, setDataFormOk] = useState(false);
-
-  useEffect(() => {
-    console.log('store : ' , store);
-    // if (store.Step1Data.carBrand !== '') {
-    //   setDataFormOk(true);
-    // }
-  }, [store]);
 
   const onSubmit = (data) => {
     if (!errorNuevoSeminuevo) {
@@ -83,14 +75,9 @@ const Step1Form = ({ stepPagePrev, stepPageNext }) => {
   useEffect(() => {
     setData({ ...data, ...incrementalData });
     dispatch({ type: types.add, key: 'AllDataOptions', data });
-    console.log('incrementalData : ' , incrementalData);
   }, [incrementalData]);
 
 
-  // const addModel = () => {
-  //   setData({ ...data, ...incrementalData });
-  //   dispatch({ type: types.add, key: 'AllDataOptions', data });
-  // }
 
   const watchBrand = watch('carBrand');
   // const watchModel = watch('carModel');
