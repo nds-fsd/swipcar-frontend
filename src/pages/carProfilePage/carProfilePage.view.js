@@ -22,7 +22,7 @@ const CarProfilePage = () => {
 
   const params = useParams();
   const [versionId, setVersionId] = useState(0);
-  const [activeVersion, setActiveVersion] = useState(versionId[0]);
+  const [activeVersion, setActiveVersion] = useState();
 
   let windowSize = useWindowSize();
   const [carProfile, setCarProfile] = useState();
@@ -39,7 +39,7 @@ const CarProfilePage = () => {
 
   const lowerPrice = 230;
 
-  const handleSelectVersion = (id) => {
+  const handleSelectVersion = (version, id) => {
     setActiveVersion(id);
     setVersionId(id);
   };
@@ -71,11 +71,11 @@ const CarProfilePage = () => {
                   </div>
                 </div>
                 <div className={styles._car_version_tag_container}>
-                  {carProfile.version.map((version, id) => {
+                  {carProfile.version.map((version, id, index) => {
                     return (
                       <div
                         key={version._id}
-                        id={version._id}
+                        id={index}
                         className={
                           activeVersion === id
                             ? `${styles._car_version_tag} ${styles._car_version_tag_active}`

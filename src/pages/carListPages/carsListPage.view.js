@@ -103,7 +103,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
       onSuccess: setRawListOfOffers,
     });
   }, [tabQuery]);
-
+  console.log('setRawListOfOffers', rawListOfOffers);
   // Filter by Search from header
 
   const searchFilterList = rawListOfOffers.filter((offer) => {
@@ -153,6 +153,13 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
   const listOfOffers = getUniqueOfferByModel(filteredListInter5, 'modelname');
   //console.log('listOf Offers: ', listOfOffers);
   //const listOfOffers = filteredListInter5;
+
+  /* const sortedFinalList = listOfOffers.sort(function (a, b) {
+    if (a.version.brand.brandname < b.version.brand.brandname) return -1;
+    else if (a.version.brand.brandname > b.version.brand.brandname) return 1;
+    return 0;
+  }); */
+  //console.log('final list: ', sortedFinalList);
   return (
     <div className={styles._carlist_page}>
       <div className={styles._scene_container}>
@@ -204,7 +211,7 @@ const CarsListPage = ({ categoryFilter, setCategoryFilter, searchValue, setSearc
             </div>
           )}
           <div className={styles._right_list_container}>
-            <CarList listOfCars={listOfOffers} />
+            <CarList listOfCars={rawListOfOffers} />
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@
 ._scene_container {
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  width: 80vw;
 }
 
 /* Title & Tab container */
