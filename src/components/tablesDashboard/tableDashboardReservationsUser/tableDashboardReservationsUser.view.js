@@ -1,12 +1,51 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { GetReservationsUser } from '../../../utils/dashBoardCalls';
+import { GetReservationsUser, GetDataUser } from '../../../utils/dashBoardCalls';
 
 import styles from '../tablesDashboard.module.css';
+import { ReactComponent as NoReservation } from '../../assets/noReservation.svg';
 
-const TableDashboardReservationsUser = ({ dataUser, handleModal, update }) => {
+const TableDashboardReservationsUser = ({ handleModal, update }) => {
+  const [loggedInUser, setLoggedInUser] = useState();
+  const [dataUser, setDataUser] = useState({});
+  const [dataToEdit, setDataToEdit] = useState({});
+  const [dataTable, setDataTable] = useState([]);
+
+  useEffect(() => {
+    const authorizedUser = localStorage.getItem('user-session');
+    if (authorizedUser) {
+      const activeUser = JSON.parse(authorizedUser);
+      setLoggedInUser(activeUser);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setDataUser({ idUser: loggedInUser.user.id, roleUser: loggedInUser.user.role });
+    }
+  }, [loggedInUser]);
+  useEffect(() => {
+    if (idUser !== undefined) {
+      GetDataUser({ idUser, onSuccess: setDataToEdit });
+    }
+  }, [dataUser]);
+
   const { idUser } = dataUser;
+
+  useEffect(() => {
+    if (idUser !== undefined) {
+      let dataUserID = idUser;
+      GetReservationsUser({ dataUserID, onSuccess: setDataTable });
+    }
+  }, [idUser]);
+
+  useEffect(() => {
+    if (idUser !== undefined) {
+      let dataUserID = idUser;
+      GetReservationsUser({ dataUserID, onSuccess: setDataTable });
+    }
+  }, [update]);
 
   const pathUrl = useLocation();
   const history = useHistory();
@@ -15,37 +54,6 @@ const TableDashboardReservationsUser = ({ dataUser, handleModal, update }) => {
   const limit = parseInt(query.get('limit')) || 10;
   const dir = query.get('dir') || 'asc';
   const sort = query.get('sort');
-
-  const [dataTable, setDataTable] = useState([]);
-
-  useEffect(() => {
-    console.log('dataTable  => ', dataTable);
-  }, [dataTable]);
-
-  // useEffect(() => {
-  //   let dataProviderID = _id;
-  //   const queryGetData = { sort, dir, skip, limit };
-  //   GetMyRentingsOffers({ queryGetData, dataProviderID, onSuccess: setDataTable });
-  // }, [pathUrl]);
-
-  //! DEV Prueba
-  useEffect(() => {
-    // let dataUserID = idUser;
-    let dataUserID = '60bb2792b5131642677c8b3b';
-    GetReservationsUser({ dataUserID, onSuccess: setDataTable });
-  }, []);
-
-  // useEffect(() => {
-  //   // let dataProviderID = _id;
-  //   let dataProviderID = '60a778f2d04a7109cb497a65';
-  //   GetReservationsProvider({ dataProviderID, onSuccess: setDataTable });
-  // }, [dataProvider]);
-
-  useEffect(() => {
-    // let dataUserID = idUser;
-    let dataUserID = '60bb2792b5131642677c8b3b';
-    GetReservationsUser({ dataUserID, onSuccess: setDataTable });
-  }, [update]);
 
   const handlePagePrev = () => {
     query.set('skip', skip - limit);
@@ -158,6 +166,12 @@ const TableDashboardReservationsUser = ({ dataUser, handleModal, update }) => {
                 <div onClick={() => sortBy('price')}>Mensualidad</div>
               </div>
               <div className={styles._body_data}>{rows}</div>
+              {dataTable?.length === 0 && (
+                <h4 className={styles._title_table_no_results}>
+                  <NoReservation className={styles._icon_no_results} />
+                  <span>Aún no tiene reservas</span>
+                </h4>
+              )}
             </div>
           </div>
           <div className={styles._row_button_pages}>

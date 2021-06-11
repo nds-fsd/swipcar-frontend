@@ -52,7 +52,6 @@ const LoginSigninPage = ({ props }) => {
   } = useForm();
 
   const onSubmitSigninUser = (data) => {
-    //console.log('submitting');
     clearErrors();
     setIsSubmitting(true);
     fetchRequest('POST', 'register', {
@@ -65,7 +64,6 @@ const LoginSigninPage = ({ props }) => {
         history.push('/renting');
       })
       .catch((error) => {
-        console.log(error);
         Object.keys(error.response.error).forEach((key) => {
           setError(key, {
             type: 'manual',
@@ -77,7 +75,6 @@ const LoginSigninPage = ({ props }) => {
   };
 
   const onSubmitSigninProvider = (data) => {
-    //console.log('submitting');
     clearErrors();
     setIsSubmitting(true);
     fetchRequest('POST', 'register', {
@@ -95,7 +92,6 @@ const LoginSigninPage = ({ props }) => {
         history.push('/dashboard');
       })
       .catch((error) => {
-        console.log(error);
         Object.keys(error.response.error).forEach((key) => {
           setError(key, {
             type: 'manual',
@@ -114,7 +110,6 @@ const LoginSigninPage = ({ props }) => {
     })
       .then((res) => {
         setUserSession(res);
-        //console.log(res);
         setIsSubmitting(false);
         if (res.user.role === 'user') {
           if (fromCarProfile) {
@@ -131,7 +126,6 @@ const LoginSigninPage = ({ props }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
         Object.keys(error.response.error).forEach((key) => {
           setError(key, {
             type: 'manual',

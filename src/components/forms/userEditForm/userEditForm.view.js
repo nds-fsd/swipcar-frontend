@@ -2,31 +2,18 @@ import React, { useState, useEffect } from 'react';
 import useWindowSize from '../../../constants/useWindowSize';
 
 import stylesPure from '../../pureComponents/pureComponents.module.css';
-
-import UserIcon from '../../assets/userIcon.gif';
-
 import styles from '../forms.module.css';
 
 import { useForm } from 'react-hook-form';
-import {
-  CreateCarRequestAll,
-  GetDataCarProfile,
-  GetDataDashboardTableUsers,
-  GetDataDashboardTableUserProvider,
-  EditUser,
-  NewUser,
-  GetDataProvider,
-  UpdateUserProvider,
-  GetDataUser,
-} from '../../../utils/dashBoardCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonComponent from '../../pureComponents/buttonComponent/buttonComponent.view';
 import InputComponent from '../../pureComponents/inputComponent/index';
+import UserIcon from '../../assets/userIcon.gif';
+
+import { EditUser, GetDataUser } from '../../../utils/dashBoardCalls';
 
 const UserEditForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) => {
   const [dataToEdit, setDataToEdit] = useState({});
-
-  console.log('toEdit  => ', toEdit);
 
   const {
     register,
@@ -34,10 +21,9 @@ const UserEditForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) => 
     handleSubmit,
   } = useForm();
 
-  // const [changePass, setChangePass] = useState(false);
-
   useEffect(() => {
-    GetDataUser({ toEdit, onSuccess: setDataToEdit });
+    let idUser = toEdit;
+    GetDataUser({ idUser, onSuccess: setDataToEdit });
   }, []);
 
   const windowSize = useWindowSize();
@@ -58,8 +44,6 @@ const UserEditForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) => 
 
   const onSubmit = (data) => {
     const dataAPI = data;
-    console.log('dataAPI => ', data);
-
     EditUser({
       toEdit,
       dataAPI,
@@ -182,6 +166,7 @@ const UserEditForm = ({ toEdit, handleModal, systemMessage, updateSuccess }) => 
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                     }}

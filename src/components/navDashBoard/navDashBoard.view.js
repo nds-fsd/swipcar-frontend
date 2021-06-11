@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import styles from './navDashBoard.module.css';
 import {
+  HOME_PAGE,
   DASHBOARD_CARS_PAGE,
   DASHBOARD_ALL_RENTINGS_PAGE,
   DASHBOARD_MY_RENTINGS_PAGE,
@@ -24,6 +25,7 @@ import { ReactComponent as User } from '../assets/user.svg';
 import { ReactComponent as Cars } from '../assets/cars.svg';
 import { ReactComponent as Profile } from '../assets/profile.svg';
 import { ReactComponent as Logout } from '../assets/logout.svg';
+import { ReactComponent as Site } from '../assets/site.svg';
 
 const NavDashBoard = ({ dataUser, locationUrl }) => {
   const { idUser, roleUser } = dataUser;
@@ -117,18 +119,20 @@ const NavDashBoard = ({ dataUser, locationUrl }) => {
           </>
         )}
 
-        <h4 className={styles._title}>Mi Cuenta</h4>
+        {roleUser && roleUser !== 'superadmin' && <h4 className={styles._title}>Mi Cuenta</h4>}
 
-        <Link
-          type="button"
-          className={`${styles._button} ${
-            locationUrl === DASHBOARD_MY_PROFILE_PAGE && styles._active
-          }`}
-          to={`${DASHBOARD_MY_PROFILE_PAGE}`}
-        >
-          <Profile className={styles._icon_svg} />
-          <span className={styles._titleButton}>Mi Perfil</span>
-        </Link>
+        {roleUser && roleUser !== 'superadmin' && (
+          <Link
+            type="button"
+            className={`${styles._button} ${
+              locationUrl === DASHBOARD_MY_PROFILE_PAGE && styles._active
+            }`}
+            to={`${DASHBOARD_MY_PROFILE_PAGE}`}
+          >
+            <Profile className={styles._icon_svg} />
+            <span className={styles._titleButton}>Mi Perfil</span>
+          </Link>
+        )}
 
         {roleUser && roleUser === 'user' && (
           <Link
@@ -153,6 +157,11 @@ const NavDashBoard = ({ dataUser, locationUrl }) => {
           <Logout className={styles._icon_svg} />
           <span className={styles._titleButton}>Logout</span>
         </button>
+
+        <Link type="button" className={`${styles._button} ${styles._button_site}`} to={`${HOME_PAGE}`}>
+          <Site className={styles._icon_svg} />
+          <span className={styles._titleButton}>Inicio</span>
+        </Link>
       </div>
     </>
   );

@@ -17,9 +17,6 @@ const ReservationForm = ({ toEdit, handleModal, updateSuccess, systemMessage }) 
     GetReservation({ toEdit, onSuccess: setDataToEdit });
   }, []);
 
-  useEffect(() => {
-    console.log('dataToEdit  => ', dataToEdit);
-  }, [dataToEdit]);
 
   const windowSize = useWindowSize();
 

@@ -50,10 +50,6 @@ const TableDashboardAllRentings = ({ dataUser, handleModal, update }) => {
   const [dataTable, setDataTable] = useState([]);
   
   useEffect(() => {
-    console.log('dataTable  => ', dataTable);
-  }, [dataTable]);
-
-  useEffect(() => {
     const queryGetData = { sort, dir, skip, limit };
     GetAllRentingsOffers({ queryGetData, onSuccess: setDataTable });
   }, [pathUrl]);

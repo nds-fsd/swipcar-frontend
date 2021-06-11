@@ -43,14 +43,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
     watch,
   } = useForm();
 
-  // const [provider, setProvider] = useState('');
-  // useEffect(() => {
-  //   if (dataProvider) {
-  //     setProvider(dataProvider._id);
-  //   }
-  //   // console.log('dataToEdit  => ', dataToEdit);
-  // }, [dataProvider]);
-
   const [checkSave, setCheckSave] = useState(false);
   const [deleteRenting, setDeleteRenting] = useState(false);
   const [dataOptions, setDataOptions] = useState({});
@@ -104,7 +96,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
     if (goodiesEdit !== undefined) {
       setGoodiesData(goodiesEdit?.map((value) => value._id));
     }
-    console.log('goodiesEdit  => ', goodiesEdit);
   }, [goodiesEdit]);
 
   useEffect(() => {
@@ -189,7 +180,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
       let transmision = res.version.transmision;
 
       let flyDataToEdit = versionEdit;
-      console.log('_flyDataToEdit => ', flyDataToEdit);
 
       flyDataToEdit = { ...flyDataToEdit, fuel: fuel, color: color, transmision: transmision };
 
@@ -198,8 +188,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
         version: flyDataToEdit,
       });
     }
-
-    // console.log('res createrentingoptions => ',res);
   };
 
   const _handleToggle = (e) => {
@@ -260,7 +248,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
         goodies: goodiesData,
         equipments: equipamientoData,
       };
-      console.log('queryPutData  : ', queryPutData);
 
       if (!newRenting) {
         UpdateDataRentingOffer({
@@ -278,7 +265,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
           ...queryPutData,
           provider: dataProvider._id,
         };
-        console.log('queryPutData  : ', queryPutData);
 
         CreateRentingOffer({
           queryPutData,
@@ -292,8 +278,6 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
       }
 
       handleModal();
-    } else {
-      console.log('algo falta gachon!!');
     }
   };
 
@@ -410,8 +394,8 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
                 </h2>
                 <div style={{ display: 'flex' }}>
                   <ButtonComponent
-                    label="Cancelar eliminiación"
-                    alt="Cancelar eliminiación"
+                    label="Cancelar"
+                    alt="Cancelar"
                     typeButton="cancelWarning"
                     actionButton={() => _handleShowDelete()}
                   />
@@ -867,6 +851,7 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                       setCheckSave(true);
@@ -886,6 +871,7 @@ const RentingForm = ({ toEdit, dataProvider, handleModal, systemMessage, updateS
                     label="Guardar"
                     type="submit"
                     alt="Guardar"
+                    typeButton="ok"
                     actionButton={() => {
                       handleSubmit(onSubmit);
                       setCheckSave(true);

@@ -1,12 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router';
-import {
-  GetDataDashboardTable,
-  GetDataDashboardTableUsers,
-} from '../../../utils/dashBoardCalls';
+import React from 'react';
 import UserForm from '../../forms/userForm';
-import ButtonComponent from '../../pureComponents/buttonComponent';
 
 import styles from '../tablesDashboard.module.css';
 

@@ -25,12 +25,9 @@ const Step3Form = ({ stepPagePrev, stepPageNext }) => {
   } = useForm();
   const [entradas, setentradas] = useState([]);
 
-  console.log('errors : ', errors);
 
   const onSubmit = (data, e) => {
-    console.log('data :', data);
     setentradas([...entradas, data]);
-    console.log('entradas : ', entradas);
     stepPageNext();
     // limpiar campos
     e.target.reset();

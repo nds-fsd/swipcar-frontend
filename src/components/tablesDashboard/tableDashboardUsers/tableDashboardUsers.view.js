@@ -78,10 +78,6 @@ const TableDashboardUsers = ({ handleModal, update }) => {
     </div>
   );
 
-  // useEffect(() => {
-  //   console.log('dataTable :', dataTable);
-  // }, [dataTable]);
-
   const usuarios = dataTable && dataTable.filter((usersData) => usersData.role === 'user');
   const rows =
     usuarios &&

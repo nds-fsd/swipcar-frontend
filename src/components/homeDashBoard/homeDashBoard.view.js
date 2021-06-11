@@ -4,6 +4,7 @@ import useWindowSize from '../../constants/useWindowSize';
 
 import styles from './homeDashBoard.module.css';
 import {
+  HOME_PAGE,
   DASHBOARD_CARS_PAGE,
   DASHBOARD_ALL_RENTINGS_PAGE,
   DASHBOARD_MY_RENTINGS_PAGE,
@@ -22,12 +23,10 @@ import { ReactComponent as User } from '../assets/user.svg';
 import { ReactComponent as Cars } from '../assets/cars.svg';
 import { ReactComponent as Profile } from '../assets/profile.svg';
 import { ReactComponent as Logout } from '../assets/logout.svg';
-// import { CreateReservation } from '../../utils/dashBoardCalls';
+import { ReactComponent as Site } from '../assets/site.svg';
 
 const HomeDashBoard = ({ dataUser, locationUrl }) => {
   const { idUser, roleUser } = dataUser;
-  // console.log('idUser : ', idUser);
-  // console.log('roleUser : ', roleUser);
 
   const history = useHistory();
   const handleCloseSession = () => {
@@ -36,12 +35,6 @@ const HomeDashBoard = ({ dataUser, locationUrl }) => {
   };
 
   const windowSize = useWindowSize();
-
-  // const queryPutData = {
-  //   rentingoffer: "60b4d6dceba1da0e9cc476fb",
-  //   user: "60bb2792b5131642677c8b3b",
-  //   provider: "60a778f2d04a7109cb497a65"
-  // }
 
   return (
     <div
@@ -164,18 +157,20 @@ const HomeDashBoard = ({ dataUser, locationUrl }) => {
       ${windowSize === 'sm' && styles._row3_sm}  
       `}
       >
-        <div className={styles._boxElements}>
-          <Link
-            type="button"
-            className={`${styles._button} ${
-              locationUrl === DASHBOARD_MY_PROFILE_PAGE && styles._active
-            }`}
-            to={`${DASHBOARD_MY_PROFILE_PAGE}`}
-          >
-            <Profile className={styles._icon_svg} />
-            <span className={styles._titleButton}>Mi Perfil</span>
-          </Link>
-        </div>
+        {roleUser && roleUser !== 'superadmin' && (
+          <div className={styles._boxElements}>
+            <Link
+              type="button"
+              className={`${styles._button} ${
+                locationUrl === DASHBOARD_MY_PROFILE_PAGE && styles._active
+              }`}
+              to={`${DASHBOARD_MY_PROFILE_PAGE}`}
+            >
+              <Profile className={styles._icon_svg} />
+              <span className={styles._titleButton}>Mi Perfil</span>
+            </Link>
+          </div>
+        )}
 
         {roleUser && roleUser === 'user' && (
           <div className={styles._boxElements}>
@@ -203,28 +198,43 @@ const HomeDashBoard = ({ dataUser, locationUrl }) => {
             <span className={styles._titleButton}>Cerrar sesión</span>
           </button>
         </div>
-        {/* <div className={styles._boxElements}>
-          <button
-            className={styles._button}
-            alt=" Cerrar Sesión"
-            type="button"
-            style={{ width: '100%' }}
-            onClick={() =>
-              CreateReservation({
-                queryPutData,
-                onSuccess: () => alert('Hecho'),
-                onError: () => alert('EEEERRROOOORR!'),
-              })
-            }
-          >
-            <Logout className={styles._icon_svg} />
-            <span className={styles._titleButton}>New Reservation</span>
-          </button>
-        </div> */}
+        {roleUser && roleUser === 'superadmin' && (
+          <>
+            <div className={styles._boxElements}></div>
+            <div className={styles._boxElements}></div>
+          </>
+        )}
         {windowSize !== 'sm' && (
           <>
             <div className={styles._boxElements}></div>
             {roleUser && roleUser === 'provider' && <div className={styles._boxElements}></div>}
+          </>
+        )}
+      </div>
+
+      <h4 className={styles._tittle_section}>Inicio</h4>
+
+      <div
+        className={`${windowSize !== 'sm' && styles._row3_xlg}
+      ${windowSize === 'sm' && styles._row3_sm}  
+      `}
+      >
+        <div className={styles._boxElements}>
+          <Link
+            type="button"
+            className={`${styles._button} ${styles._button_site}`}
+            to={`${HOME_PAGE}`}
+          >
+            <Site className={styles._icon_svg} />
+            <span className={styles._titleButton}>Inicio</span>
+          </Link>
+        </div>
+
+        <div className={styles._boxElements}></div>
+        {windowSize !== 'sm' && (
+          <>
+            <div className={styles._boxElements}></div>
+            <div className={styles._boxElements}></div>
           </>
         )}
       </div>
